@@ -30,6 +30,14 @@ export type UserMinAggregateOutputType = {
   name: string | null
   role: $Enums.UserRole | null
   googleId: string | null
+  passwordHash: string | null
+  firstName: string | null
+  lastName: string | null
+  phone: string | null
+  address: string | null
+  phoneVerifiedAt: Date | null
+  pendingVerificationSid: string | null
+  phoneVerificationSentAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -40,6 +48,14 @@ export type UserMaxAggregateOutputType = {
   name: string | null
   role: $Enums.UserRole | null
   googleId: string | null
+  passwordHash: string | null
+  firstName: string | null
+  lastName: string | null
+  phone: string | null
+  address: string | null
+  phoneVerifiedAt: Date | null
+  pendingVerificationSid: string | null
+  phoneVerificationSentAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -50,6 +66,14 @@ export type UserCountAggregateOutputType = {
   name: number
   role: number
   googleId: number
+  passwordHash: number
+  firstName: number
+  lastName: number
+  phone: number
+  address: number
+  phoneVerifiedAt: number
+  pendingVerificationSid: number
+  phoneVerificationSentAt: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -62,6 +86,14 @@ export type UserMinAggregateInputType = {
   name?: true
   role?: true
   googleId?: true
+  passwordHash?: true
+  firstName?: true
+  lastName?: true
+  phone?: true
+  address?: true
+  phoneVerifiedAt?: true
+  pendingVerificationSid?: true
+  phoneVerificationSentAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -72,6 +104,14 @@ export type UserMaxAggregateInputType = {
   name?: true
   role?: true
   googleId?: true
+  passwordHash?: true
+  firstName?: true
+  lastName?: true
+  phone?: true
+  address?: true
+  phoneVerifiedAt?: true
+  pendingVerificationSid?: true
+  phoneVerificationSentAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -82,6 +122,14 @@ export type UserCountAggregateInputType = {
   name?: true
   role?: true
   googleId?: true
+  passwordHash?: true
+  firstName?: true
+  lastName?: true
+  phone?: true
+  address?: true
+  phoneVerifiedAt?: true
+  pendingVerificationSid?: true
+  phoneVerificationSentAt?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -165,6 +213,14 @@ export type UserGroupByOutputType = {
   name: string | null
   role: $Enums.UserRole
   googleId: string | null
+  passwordHash: string | null
+  firstName: string | null
+  lastName: string | null
+  phone: string | null
+  address: string | null
+  phoneVerifiedAt: Date | null
+  pendingVerificationSid: string | null
+  phoneVerificationSentAt: Date | null
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
@@ -196,8 +252,17 @@ export type UserWhereInput = {
   name?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.EnumUserRoleFilter<"User"> | $Enums.UserRole
   googleId?: Prisma.StringNullableFilter<"User"> | string | null
+  passwordHash?: Prisma.StringNullableFilter<"User"> | string | null
+  firstName?: Prisma.StringNullableFilter<"User"> | string | null
+  lastName?: Prisma.StringNullableFilter<"User"> | string | null
+  phone?: Prisma.StringNullableFilter<"User"> | string | null
+  address?: Prisma.StringNullableFilter<"User"> | string | null
+  phoneVerifiedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  pendingVerificationSid?: Prisma.StringNullableFilter<"User"> | string | null
+  phoneVerificationSentAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  professionalApplication?: Prisma.XOR<Prisma.ProfessionalApplicationNullableScalarRelationFilter, Prisma.ProfessionalApplicationWhereInput> | null
   businesses?: Prisma.BusinessListRelationFilter
   reservations?: Prisma.ReservationListRelationFilter
   clientSessions?: Prisma.ClientSessionListRelationFilter
@@ -209,8 +274,17 @@ export type UserOrderByWithRelationInput = {
   name?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
   googleId?: Prisma.SortOrderInput | Prisma.SortOrder
+  passwordHash?: Prisma.SortOrderInput | Prisma.SortOrder
+  firstName?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastName?: Prisma.SortOrderInput | Prisma.SortOrder
+  phone?: Prisma.SortOrderInput | Prisma.SortOrder
+  address?: Prisma.SortOrderInput | Prisma.SortOrder
+  phoneVerifiedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  pendingVerificationSid?: Prisma.SortOrderInput | Prisma.SortOrder
+  phoneVerificationSentAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  professionalApplication?: Prisma.ProfessionalApplicationOrderByWithRelationInput
   businesses?: Prisma.BusinessOrderByRelationAggregateInput
   reservations?: Prisma.ReservationOrderByRelationAggregateInput
   clientSessions?: Prisma.ClientSessionOrderByRelationAggregateInput
@@ -225,8 +299,17 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   name?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.EnumUserRoleFilter<"User"> | $Enums.UserRole
+  passwordHash?: Prisma.StringNullableFilter<"User"> | string | null
+  firstName?: Prisma.StringNullableFilter<"User"> | string | null
+  lastName?: Prisma.StringNullableFilter<"User"> | string | null
+  phone?: Prisma.StringNullableFilter<"User"> | string | null
+  address?: Prisma.StringNullableFilter<"User"> | string | null
+  phoneVerifiedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  pendingVerificationSid?: Prisma.StringNullableFilter<"User"> | string | null
+  phoneVerificationSentAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  professionalApplication?: Prisma.XOR<Prisma.ProfessionalApplicationNullableScalarRelationFilter, Prisma.ProfessionalApplicationWhereInput> | null
   businesses?: Prisma.BusinessListRelationFilter
   reservations?: Prisma.ReservationListRelationFilter
   clientSessions?: Prisma.ClientSessionListRelationFilter
@@ -238,6 +321,14 @@ export type UserOrderByWithAggregationInput = {
   name?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
   googleId?: Prisma.SortOrderInput | Prisma.SortOrder
+  passwordHash?: Prisma.SortOrderInput | Prisma.SortOrder
+  firstName?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastName?: Prisma.SortOrderInput | Prisma.SortOrder
+  phone?: Prisma.SortOrderInput | Prisma.SortOrder
+  address?: Prisma.SortOrderInput | Prisma.SortOrder
+  phoneVerifiedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  pendingVerificationSid?: Prisma.SortOrderInput | Prisma.SortOrder
+  phoneVerificationSentAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
@@ -254,6 +345,14 @@ export type UserScalarWhereWithAggregatesInput = {
   name?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   role?: Prisma.EnumUserRoleWithAggregatesFilter<"User"> | $Enums.UserRole
   googleId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  passwordHash?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  firstName?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  lastName?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  phone?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  address?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  phoneVerifiedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  pendingVerificationSid?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  phoneVerificationSentAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
@@ -264,8 +363,17 @@ export type UserCreateInput = {
   name?: string | null
   role: $Enums.UserRole
   googleId?: string | null
+  passwordHash?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  phone?: string | null
+  address?: string | null
+  phoneVerifiedAt?: Date | string | null
+  pendingVerificationSid?: string | null
+  phoneVerificationSentAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  professionalApplication?: Prisma.ProfessionalApplicationCreateNestedOneWithoutUserInput
   businesses?: Prisma.BusinessCreateNestedManyWithoutOwnerInput
   reservations?: Prisma.ReservationCreateNestedManyWithoutClientInput
   clientSessions?: Prisma.ClientSessionCreateNestedManyWithoutClientInput
@@ -277,8 +385,17 @@ export type UserUncheckedCreateInput = {
   name?: string | null
   role: $Enums.UserRole
   googleId?: string | null
+  passwordHash?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  phone?: string | null
+  address?: string | null
+  phoneVerifiedAt?: Date | string | null
+  pendingVerificationSid?: string | null
+  phoneVerificationSentAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  professionalApplication?: Prisma.ProfessionalApplicationUncheckedCreateNestedOneWithoutUserInput
   businesses?: Prisma.BusinessUncheckedCreateNestedManyWithoutOwnerInput
   reservations?: Prisma.ReservationUncheckedCreateNestedManyWithoutClientInput
   clientSessions?: Prisma.ClientSessionUncheckedCreateNestedManyWithoutClientInput
@@ -290,8 +407,17 @@ export type UserUpdateInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pendingVerificationSid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerificationSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  professionalApplication?: Prisma.ProfessionalApplicationUpdateOneWithoutUserNestedInput
   businesses?: Prisma.BusinessUpdateManyWithoutOwnerNestedInput
   reservations?: Prisma.ReservationUpdateManyWithoutClientNestedInput
   clientSessions?: Prisma.ClientSessionUpdateManyWithoutClientNestedInput
@@ -303,8 +429,17 @@ export type UserUncheckedUpdateInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pendingVerificationSid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerificationSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  professionalApplication?: Prisma.ProfessionalApplicationUncheckedUpdateOneWithoutUserNestedInput
   businesses?: Prisma.BusinessUncheckedUpdateManyWithoutOwnerNestedInput
   reservations?: Prisma.ReservationUncheckedUpdateManyWithoutClientNestedInput
   clientSessions?: Prisma.ClientSessionUncheckedUpdateManyWithoutClientNestedInput
@@ -316,6 +451,14 @@ export type UserCreateManyInput = {
   name?: string | null
   role: $Enums.UserRole
   googleId?: string | null
+  passwordHash?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  phone?: string | null
+  address?: string | null
+  phoneVerifiedAt?: Date | string | null
+  pendingVerificationSid?: string | null
+  phoneVerificationSentAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -326,6 +469,14 @@ export type UserUpdateManyMutationInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pendingVerificationSid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerificationSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -336,6 +487,14 @@ export type UserUncheckedUpdateManyInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pendingVerificationSid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerificationSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -346,6 +505,14 @@ export type UserCountOrderByAggregateInput = {
   name?: Prisma.SortOrder
   role?: Prisma.SortOrder
   googleId?: Prisma.SortOrder
+  passwordHash?: Prisma.SortOrder
+  firstName?: Prisma.SortOrder
+  lastName?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
+  address?: Prisma.SortOrder
+  phoneVerifiedAt?: Prisma.SortOrder
+  pendingVerificationSid?: Prisma.SortOrder
+  phoneVerificationSentAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -356,6 +523,14 @@ export type UserMaxOrderByAggregateInput = {
   name?: Prisma.SortOrder
   role?: Prisma.SortOrder
   googleId?: Prisma.SortOrder
+  passwordHash?: Prisma.SortOrder
+  firstName?: Prisma.SortOrder
+  lastName?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
+  address?: Prisma.SortOrder
+  phoneVerifiedAt?: Prisma.SortOrder
+  pendingVerificationSid?: Prisma.SortOrder
+  phoneVerificationSentAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -366,6 +541,14 @@ export type UserMinOrderByAggregateInput = {
   name?: Prisma.SortOrder
   role?: Prisma.SortOrder
   googleId?: Prisma.SortOrder
+  passwordHash?: Prisma.SortOrder
+  firstName?: Prisma.SortOrder
+  lastName?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
+  address?: Prisma.SortOrder
+  phoneVerifiedAt?: Prisma.SortOrder
+  pendingVerificationSid?: Prisma.SortOrder
+  phoneVerificationSentAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -387,8 +570,26 @@ export type EnumUserRoleFieldUpdateOperationsInput = {
   set?: $Enums.UserRole
 }
 
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
+}
+
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
+}
+
+export type UserCreateNestedOneWithoutProfessionalApplicationInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutProfessionalApplicationInput, Prisma.UserUncheckedCreateWithoutProfessionalApplicationInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutProfessionalApplicationInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutProfessionalApplicationNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutProfessionalApplicationInput, Prisma.UserUncheckedCreateWithoutProfessionalApplicationInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutProfessionalApplicationInput
+  upsert?: Prisma.UserUpsertWithoutProfessionalApplicationInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutProfessionalApplicationInput, Prisma.UserUpdateWithoutProfessionalApplicationInput>, Prisma.UserUncheckedUpdateWithoutProfessionalApplicationInput>
 }
 
 export type UserCreateNestedOneWithoutBusinessesInput = {
@@ -433,14 +634,123 @@ export type UserUpdateOneRequiredWithoutClientSessionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutClientSessionsInput, Prisma.UserUpdateWithoutClientSessionsInput>, Prisma.UserUncheckedUpdateWithoutClientSessionsInput>
 }
 
+export type UserCreateWithoutProfessionalApplicationInput = {
+  id?: string
+  email: string
+  name?: string | null
+  role: $Enums.UserRole
+  googleId?: string | null
+  passwordHash?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  phone?: string | null
+  address?: string | null
+  phoneVerifiedAt?: Date | string | null
+  pendingVerificationSid?: string | null
+  phoneVerificationSentAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  businesses?: Prisma.BusinessCreateNestedManyWithoutOwnerInput
+  reservations?: Prisma.ReservationCreateNestedManyWithoutClientInput
+  clientSessions?: Prisma.ClientSessionCreateNestedManyWithoutClientInput
+}
+
+export type UserUncheckedCreateWithoutProfessionalApplicationInput = {
+  id?: string
+  email: string
+  name?: string | null
+  role: $Enums.UserRole
+  googleId?: string | null
+  passwordHash?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  phone?: string | null
+  address?: string | null
+  phoneVerifiedAt?: Date | string | null
+  pendingVerificationSid?: string | null
+  phoneVerificationSentAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  businesses?: Prisma.BusinessUncheckedCreateNestedManyWithoutOwnerInput
+  reservations?: Prisma.ReservationUncheckedCreateNestedManyWithoutClientInput
+  clientSessions?: Prisma.ClientSessionUncheckedCreateNestedManyWithoutClientInput
+}
+
+export type UserCreateOrConnectWithoutProfessionalApplicationInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutProfessionalApplicationInput, Prisma.UserUncheckedCreateWithoutProfessionalApplicationInput>
+}
+
+export type UserUpsertWithoutProfessionalApplicationInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutProfessionalApplicationInput, Prisma.UserUncheckedUpdateWithoutProfessionalApplicationInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutProfessionalApplicationInput, Prisma.UserUncheckedCreateWithoutProfessionalApplicationInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutProfessionalApplicationInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutProfessionalApplicationInput, Prisma.UserUncheckedUpdateWithoutProfessionalApplicationInput>
+}
+
+export type UserUpdateWithoutProfessionalApplicationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pendingVerificationSid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerificationSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  businesses?: Prisma.BusinessUpdateManyWithoutOwnerNestedInput
+  reservations?: Prisma.ReservationUpdateManyWithoutClientNestedInput
+  clientSessions?: Prisma.ClientSessionUpdateManyWithoutClientNestedInput
+}
+
+export type UserUncheckedUpdateWithoutProfessionalApplicationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pendingVerificationSid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerificationSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  businesses?: Prisma.BusinessUncheckedUpdateManyWithoutOwnerNestedInput
+  reservations?: Prisma.ReservationUncheckedUpdateManyWithoutClientNestedInput
+  clientSessions?: Prisma.ClientSessionUncheckedUpdateManyWithoutClientNestedInput
+}
+
 export type UserCreateWithoutBusinessesInput = {
   id?: string
   email: string
   name?: string | null
   role: $Enums.UserRole
   googleId?: string | null
+  passwordHash?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  phone?: string | null
+  address?: string | null
+  phoneVerifiedAt?: Date | string | null
+  pendingVerificationSid?: string | null
+  phoneVerificationSentAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  professionalApplication?: Prisma.ProfessionalApplicationCreateNestedOneWithoutUserInput
   reservations?: Prisma.ReservationCreateNestedManyWithoutClientInput
   clientSessions?: Prisma.ClientSessionCreateNestedManyWithoutClientInput
 }
@@ -451,8 +761,17 @@ export type UserUncheckedCreateWithoutBusinessesInput = {
   name?: string | null
   role: $Enums.UserRole
   googleId?: string | null
+  passwordHash?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  phone?: string | null
+  address?: string | null
+  phoneVerifiedAt?: Date | string | null
+  pendingVerificationSid?: string | null
+  phoneVerificationSentAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  professionalApplication?: Prisma.ProfessionalApplicationUncheckedCreateNestedOneWithoutUserInput
   reservations?: Prisma.ReservationUncheckedCreateNestedManyWithoutClientInput
   clientSessions?: Prisma.ClientSessionUncheckedCreateNestedManyWithoutClientInput
 }
@@ -479,8 +798,17 @@ export type UserUpdateWithoutBusinessesInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pendingVerificationSid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerificationSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  professionalApplication?: Prisma.ProfessionalApplicationUpdateOneWithoutUserNestedInput
   reservations?: Prisma.ReservationUpdateManyWithoutClientNestedInput
   clientSessions?: Prisma.ClientSessionUpdateManyWithoutClientNestedInput
 }
@@ -491,8 +819,17 @@ export type UserUncheckedUpdateWithoutBusinessesInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pendingVerificationSid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerificationSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  professionalApplication?: Prisma.ProfessionalApplicationUncheckedUpdateOneWithoutUserNestedInput
   reservations?: Prisma.ReservationUncheckedUpdateManyWithoutClientNestedInput
   clientSessions?: Prisma.ClientSessionUncheckedUpdateManyWithoutClientNestedInput
 }
@@ -503,8 +840,17 @@ export type UserCreateWithoutReservationsInput = {
   name?: string | null
   role: $Enums.UserRole
   googleId?: string | null
+  passwordHash?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  phone?: string | null
+  address?: string | null
+  phoneVerifiedAt?: Date | string | null
+  pendingVerificationSid?: string | null
+  phoneVerificationSentAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  professionalApplication?: Prisma.ProfessionalApplicationCreateNestedOneWithoutUserInput
   businesses?: Prisma.BusinessCreateNestedManyWithoutOwnerInput
   clientSessions?: Prisma.ClientSessionCreateNestedManyWithoutClientInput
 }
@@ -515,8 +861,17 @@ export type UserUncheckedCreateWithoutReservationsInput = {
   name?: string | null
   role: $Enums.UserRole
   googleId?: string | null
+  passwordHash?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  phone?: string | null
+  address?: string | null
+  phoneVerifiedAt?: Date | string | null
+  pendingVerificationSid?: string | null
+  phoneVerificationSentAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  professionalApplication?: Prisma.ProfessionalApplicationUncheckedCreateNestedOneWithoutUserInput
   businesses?: Prisma.BusinessUncheckedCreateNestedManyWithoutOwnerInput
   clientSessions?: Prisma.ClientSessionUncheckedCreateNestedManyWithoutClientInput
 }
@@ -543,8 +898,17 @@ export type UserUpdateWithoutReservationsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pendingVerificationSid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerificationSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  professionalApplication?: Prisma.ProfessionalApplicationUpdateOneWithoutUserNestedInput
   businesses?: Prisma.BusinessUpdateManyWithoutOwnerNestedInput
   clientSessions?: Prisma.ClientSessionUpdateManyWithoutClientNestedInput
 }
@@ -555,8 +919,17 @@ export type UserUncheckedUpdateWithoutReservationsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pendingVerificationSid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerificationSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  professionalApplication?: Prisma.ProfessionalApplicationUncheckedUpdateOneWithoutUserNestedInput
   businesses?: Prisma.BusinessUncheckedUpdateManyWithoutOwnerNestedInput
   clientSessions?: Prisma.ClientSessionUncheckedUpdateManyWithoutClientNestedInput
 }
@@ -567,8 +940,17 @@ export type UserCreateWithoutClientSessionsInput = {
   name?: string | null
   role: $Enums.UserRole
   googleId?: string | null
+  passwordHash?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  phone?: string | null
+  address?: string | null
+  phoneVerifiedAt?: Date | string | null
+  pendingVerificationSid?: string | null
+  phoneVerificationSentAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  professionalApplication?: Prisma.ProfessionalApplicationCreateNestedOneWithoutUserInput
   businesses?: Prisma.BusinessCreateNestedManyWithoutOwnerInput
   reservations?: Prisma.ReservationCreateNestedManyWithoutClientInput
 }
@@ -579,8 +961,17 @@ export type UserUncheckedCreateWithoutClientSessionsInput = {
   name?: string | null
   role: $Enums.UserRole
   googleId?: string | null
+  passwordHash?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  phone?: string | null
+  address?: string | null
+  phoneVerifiedAt?: Date | string | null
+  pendingVerificationSid?: string | null
+  phoneVerificationSentAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  professionalApplication?: Prisma.ProfessionalApplicationUncheckedCreateNestedOneWithoutUserInput
   businesses?: Prisma.BusinessUncheckedCreateNestedManyWithoutOwnerInput
   reservations?: Prisma.ReservationUncheckedCreateNestedManyWithoutClientInput
 }
@@ -607,8 +998,17 @@ export type UserUpdateWithoutClientSessionsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pendingVerificationSid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerificationSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  professionalApplication?: Prisma.ProfessionalApplicationUpdateOneWithoutUserNestedInput
   businesses?: Prisma.BusinessUpdateManyWithoutOwnerNestedInput
   reservations?: Prisma.ReservationUpdateManyWithoutClientNestedInput
 }
@@ -619,8 +1019,17 @@ export type UserUncheckedUpdateWithoutClientSessionsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pendingVerificationSid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerificationSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  professionalApplication?: Prisma.ProfessionalApplicationUncheckedUpdateOneWithoutUserNestedInput
   businesses?: Prisma.BusinessUncheckedUpdateManyWithoutOwnerNestedInput
   reservations?: Prisma.ReservationUncheckedUpdateManyWithoutClientNestedInput
 }
@@ -680,8 +1089,17 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   name?: boolean
   role?: boolean
   googleId?: boolean
+  passwordHash?: boolean
+  firstName?: boolean
+  lastName?: boolean
+  phone?: boolean
+  address?: boolean
+  phoneVerifiedAt?: boolean
+  pendingVerificationSid?: boolean
+  phoneVerificationSentAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  professionalApplication?: boolean | Prisma.User$professionalApplicationArgs<ExtArgs>
   businesses?: boolean | Prisma.User$businessesArgs<ExtArgs>
   reservations?: boolean | Prisma.User$reservationsArgs<ExtArgs>
   clientSessions?: boolean | Prisma.User$clientSessionsArgs<ExtArgs>
@@ -694,6 +1112,14 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   name?: boolean
   role?: boolean
   googleId?: boolean
+  passwordHash?: boolean
+  firstName?: boolean
+  lastName?: boolean
+  phone?: boolean
+  address?: boolean
+  phoneVerifiedAt?: boolean
+  pendingVerificationSid?: boolean
+  phoneVerificationSentAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -704,6 +1130,14 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   name?: boolean
   role?: boolean
   googleId?: boolean
+  passwordHash?: boolean
+  firstName?: boolean
+  lastName?: boolean
+  phone?: boolean
+  address?: boolean
+  phoneVerifiedAt?: boolean
+  pendingVerificationSid?: boolean
+  phoneVerificationSentAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -714,12 +1148,21 @@ export type UserSelectScalar = {
   name?: boolean
   role?: boolean
   googleId?: boolean
+  passwordHash?: boolean
+  firstName?: boolean
+  lastName?: boolean
+  phone?: boolean
+  address?: boolean
+  phoneVerifiedAt?: boolean
+  pendingVerificationSid?: boolean
+  phoneVerificationSentAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "name" | "role" | "googleId" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "name" | "role" | "googleId" | "passwordHash" | "firstName" | "lastName" | "phone" | "address" | "phoneVerifiedAt" | "pendingVerificationSid" | "phoneVerificationSentAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  professionalApplication?: boolean | Prisma.User$professionalApplicationArgs<ExtArgs>
   businesses?: boolean | Prisma.User$businessesArgs<ExtArgs>
   reservations?: boolean | Prisma.User$reservationsArgs<ExtArgs>
   clientSessions?: boolean | Prisma.User$clientSessionsArgs<ExtArgs>
@@ -731,6 +1174,7 @@ export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
   objects: {
+    professionalApplication: Prisma.$ProfessionalApplicationPayload<ExtArgs> | null
     businesses: Prisma.$BusinessPayload<ExtArgs>[]
     reservations: Prisma.$ReservationPayload<ExtArgs>[]
     clientSessions: Prisma.$ClientSessionPayload<ExtArgs>[]
@@ -741,6 +1185,14 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     name: string | null
     role: $Enums.UserRole
     googleId: string | null
+    passwordHash: string | null
+    firstName: string | null
+    lastName: string | null
+    phone: string | null
+    address: string | null
+    phoneVerifiedAt: Date | null
+    pendingVerificationSid: string | null
+    phoneVerificationSentAt: Date | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["user"]>
@@ -1137,6 +1589,7 @@ readonly fields: UserFieldRefs;
  */
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  professionalApplication<T extends Prisma.User$professionalApplicationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$professionalApplicationArgs<ExtArgs>>): Prisma.Prisma__ProfessionalApplicationClient<runtime.Types.Result.GetResult<Prisma.$ProfessionalApplicationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   businesses<T extends Prisma.User$businessesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$businessesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BusinessPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reservations<T extends Prisma.User$reservationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reservationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReservationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   clientSessions<T extends Prisma.User$clientSessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$clientSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ClientSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -1174,6 +1627,14 @@ export interface UserFieldRefs {
   readonly name: Prisma.FieldRef<"User", 'String'>
   readonly role: Prisma.FieldRef<"User", 'UserRole'>
   readonly googleId: Prisma.FieldRef<"User", 'String'>
+  readonly passwordHash: Prisma.FieldRef<"User", 'String'>
+  readonly firstName: Prisma.FieldRef<"User", 'String'>
+  readonly lastName: Prisma.FieldRef<"User", 'String'>
+  readonly phone: Prisma.FieldRef<"User", 'String'>
+  readonly address: Prisma.FieldRef<"User", 'String'>
+  readonly phoneVerifiedAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly pendingVerificationSid: Prisma.FieldRef<"User", 'String'>
+  readonly phoneVerificationSentAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }
@@ -1566,6 +2027,25 @@ export type UserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Limit how many Users to delete.
    */
   limit?: number
+}
+
+/**
+ * User.professionalApplication
+ */
+export type User$professionalApplicationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ProfessionalApplication
+   */
+  select?: Prisma.ProfessionalApplicationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ProfessionalApplication
+   */
+  omit?: Prisma.ProfessionalApplicationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProfessionalApplicationInclude<ExtArgs> | null
+  where?: Prisma.ProfessionalApplicationWhereInput
 }
 
 /**

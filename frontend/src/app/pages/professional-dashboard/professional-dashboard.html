@@ -51,6 +51,7 @@
       </div>
 
       <div class="profile-actions" aria-label="Acciones del negocio">
+        <a class="profile-link" routerLink="/dashboard/history">{{ labels().history }} →</a>
         <a class="profile-link profile-link-primary" routerLink="/dashboard/profile">
           Editar perfil <span aria-hidden="true">↗</span>
         </a>
@@ -76,7 +77,7 @@
         <article class="stat-card">
           <div class="stat-icon" aria-hidden="true">✦</div>
           <div>
-            <span>Servicios activos</span>
+            <span>{{ labels().services }} disponibles</span>
             <strong>{{ activeServicesCount() }}</strong>
             <small>Disponibles para reservar</small>
           </div>
@@ -85,7 +86,7 @@
         <article class="stat-card">
           <div class="stat-icon" aria-hidden="true">◷</div>
           <div>
-            <span>Reservas confirmadas</span>
+            <span>{{ labels().bookings }} confirmadas</span>
             <strong>{{ confirmedReservationsCount() }}</strong>
             <small>Incluye próximas y pendientes</small>
           </div>
@@ -94,7 +95,7 @@
         <article class="stat-card">
           <div class="stat-icon" aria-hidden="true">→</div>
           <div>
-            <span>Próximas reservas</span>
+            <span>Próximas {{ labels().bookings.toLowerCase() }}</span>
             <strong>{{ upcomingReservations().length }}</strong>
             <small>Aún no han comenzado</small>
           </div>
@@ -132,8 +133,8 @@
           <article class="reservation-card attention-card">
             <div class="reservation-main">
               <span class="reservation-label">Atención pendiente</span>
-              <strong>{{ reservation.service?.name || 'Servicio' }}</strong>
-              <p>{{ reservation.client?.name || reservation.client?.email || 'Cliente' }}</p>
+              <strong>{{ reservation.service?.name || labels().service }}</strong>
+              <p>{{ reservation.client?.name || reservation.client?.email || labels().person }}</p>
             </div>
 
             <div class="reservation-date">
@@ -144,7 +145,7 @@
             <button
               type="button"
               class="complete-button"
-              [disabled]="completingReservationId() === reservation.id"
+              [disabled]="completingReservationId() !== null"
               (click)="completeReservation(reservation.id)"
             >
               @if (completingReservationId() === reservation.id) {
@@ -162,15 +163,15 @@
       <div class="section-heading">
         <div>
           <p class="section-kicker">AGENDA</p>
-          <h2 id="upcoming-title">Próximas reservas</h2>
-          <p>Las reservas confirmadas que aún tienes por atender.</p>
+          <h2 id="upcoming-title">Próximas {{ labels().bookings.toLowerCase() }}</h2>
+          <p>Las {{ labels().bookings.toLowerCase() }} confirmadas que aún tienes por atender.</p>
         </div>
       </div>
 
       @if (upcomingReservations().length === 0) {
         <div class="empty-state">
           <strong>Tu agenda está despejada</strong>
-          <p>No hay próximas reservas confirmadas.</p>
+          <p>No hay próximas {{ labels().bookings.toLowerCase() }} confirmadas.</p>
         </div>
       }
 
@@ -178,9 +179,9 @@
         @for (reservation of upcomingReservations(); track reservation.id) {
           <article class="reservation-card">
             <div class="reservation-main">
-              <span class="reservation-label">Reserva confirmada</span>
-              <strong>{{ reservation.service?.name || 'Servicio' }}</strong>
-              <p>{{ reservation.client?.name || reservation.client?.email || 'Cliente' }}</p>
+              <span class="reservation-label">{{ labels().booking }} confirmada</span>
+              <strong>{{ reservation.service?.name || labels().service }}</strong>
+              <p>{{ reservation.client?.name || reservation.client?.email || labels().person }}</p>
             </div>
 
             <div class="reservation-date">
@@ -188,18 +189,7 @@
               <span>{{ formatTime(reservation.startsAt) }}</span>
             </div>
 
-            <button
-              type="button"
-              class="complete-button"
-              [disabled]="completingReservationId() === reservation.id"
-              (click)="completeReservation(reservation.id)"
-            >
-              @if (completingReservationId() === reservation.id) {
-                Registrando...
-              } @else {
-                Marcar como atendido
-              }
-            </button>
+
           </article>
         }
       </div>
@@ -209,19 +199,19 @@
       <div class="section-heading">
         <div>
           <p class="section-kicker">CATÁLOGO</p>
-          <h2 id="services-title">Servicios</h2>
-          <p>Lo que tus clientes pueden reservar.</p>
+          <h2 id="services-title">{{ labels().services }}</h2>
+          <p>Lo que tus {{ labels().people.toLowerCase() }} pueden reservar.</p>
         </div>
 
         <a class="section-action" routerLink="/dashboard/services">
-          Gestionar servicios <span aria-hidden="true">→</span>
+          Gestionar {{ labels().services.toLowerCase() }} <span aria-hidden="true">→</span>
         </a>
       </div>
 
       @if (services().length === 0) {
         <div class="empty-state">
-          <strong>Aún no tienes servicios</strong>
-          <p>Agrega tu primer servicio para comenzar a recibir reservas.</p>
+          <strong>Aún no tienes {{ labels().services.toLowerCase() }}</strong>
+          <p>Agrega lo que ofreces para comenzar a recibir {{ labels().bookings.toLowerCase() }}.</p>
         </div>
       }
 
@@ -248,7 +238,7 @@
         <div>
           <p class="section-kicker">AGENDA</p>
           <h2 id="availability-title">Disponibilidad</h2>
-          <p>Horarios en los que puedes recibir reservas.</p>
+          <p>Horarios en los que puedes recibir {{ labels().bookings.toLowerCase() }}.</p>
         </div>
 
         <a class="section-action" routerLink="/dashboard/availability">
@@ -259,7 +249,7 @@
       @if (availabilities().length === 0) {
         <div class="empty-state">
           <strong>No has configurado horarios</strong>
-          <p>Define tu disponibilidad para que tus clientes puedan reservar.</p>
+          <p>Define tu disponibilidad para que tus {{ labels().people.toLowerCase() }} puedan reservar.</p>
         </div>
       }
 

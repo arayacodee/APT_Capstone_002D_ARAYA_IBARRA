@@ -1,0 +1,107 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+
+// Test configuration never connects to Neon: all persistence calls used below are replaced.
+Object.assign(process.env, {
+  DATABASE_URL: 'postgresql://test:test@localhost/test',
+  GOOGLE_CLIENT_ID: 'test-client', AUTH_SECRET: 'test-secret-with-at-least-32-characters',
+  CLOUDINARY_CLOUD_NAME: 'test', CLOUDINARY_API_KEY: 'test', CLOUDINARY_API_SECRET: 'test',
+});
+const { prisma } = await import('../src/lib/prisma.js');
+const { getSessions, updateSession, addEvidence, deleteEvidence } = await import('../src/controllers/session.controller.js');
+const { requireRole } = await import('../src/middleware/auth.middleware.js');
+const { deleteBusinessAvatar, deleteBusinessCover } = await import('../src/controllers/business.controller.js');
+
+function response() {
+  return { statusCode: 200, body: undefined as any,
+    status(code: number) { this.statusCode = code; return this; },
+    json(body: any) { this.body = body; return this; }, send() { return this; }
+  };
+}
+
+test('historial restringido al profesional propietario y paginado', async () => {
+  const original = prisma.clientSession.findMany;
+  let query: any;
+  prisma.clientSession.findMany = (async (args: any) => { query = args; return []; }) as any;
+  try {
+    const res = response();
+    await getSessions({ authUser: { id: 'owner' }, query: {} } as any, res as any);
+    assert.equal(query.where.business.ownerId, 'owner');
+    assert.equal(query.take, 51);
+    assert.deepEqual(res.body, { items: [], nextCursor: null });
+  } finally { prisma.clientSession.findMany = original; }
+});
+
+test('un cliente no puede usar los endpoints profesionales de historial', () => {
+  const res = response();
+  let reached = false;
+  requireRole('PROFESSIONAL')({ authUser: { role: 'CLIENT' } } as any, res as any, () => { reached = true; });
+  assert.equal(res.statusCode, 403);
+  assert.equal(reached, false);
+});
+
+test('una nota no puede editar una atención ajena', async () => {
+  const original = prisma.clientSession.updateMany;
+  let query: any;
+  prisma.clientSession.updateMany = (async (args: any) => { query = args; return { count: 0 }; }) as any;
+  try {
+    const res = response();
+    await updateSession({ authUser: { id: 'owner' }, params: { id: '00000000-0000-4000-8000-000000000001' }, body: { notes: 'Nota' } } as any, res as any);
+    assert.equal(query.where.business.ownerId, 'owner');
+    assert.equal(res.statusCode, 404);
+  } finally { prisma.clientSession.updateMany = original; }
+});
+
+test('no sube imágenes a Cloudinary si la atención no pertenece al usuario', async () => {
+  const original = prisma.clientSession.findFirst;
+  prisma.clientSession.findFirst = (async () => null) as any;
+  try {
+    const res = response();
+    await addEvidence({ authUser: { id: 'owner' }, params: { id: '00000000-0000-4000-8000-000000000001' }, body: {}, file: { buffer: Buffer.from('test') } } as any, res as any);
+    assert.equal(res.statusCode, 404);
+  } finally { prisma.clientSession.findFirst = original; }
+});
+
+test('no elimina imágenes ajenas', async () => {
+  const original = prisma.sessionEvidence.findFirst;
+  let query: any;
+  prisma.sessionEvidence.findFirst = (async (args: any) => { query = args; return null; }) as any;
+  try {
+    const res = response();
+    await deleteEvidence({ authUser: { id: 'owner' }, params: { id: '00000000-0000-4000-8000-000000000001' } } as any, res as any);
+    assert.equal(query.where.session.business.ownerId, 'owner');
+    assert.equal(res.statusCode, 404);
+  } finally { prisma.sessionEvidence.findFirst = original; }
+});
+
+test('elimina la referencia de avatar y portada solo en el negocio del usuario', async () => {
+  const originals = { findFirst: prisma.business.findFirst, updateMany: prisma.business.updateMany, findUniqueOrThrow: prisma.business.findUniqueOrThrow };
+  const business = { id: 'business', avatarUrl: null, avatarPublicId: null, coverUrl: null, coverPublicId: null };
+  let lookup: any;
+  let update: any;
+  prisma.business.findFirst = (async (args: any) => { lookup = args; return business; }) as any;
+  prisma.business.updateMany = (async (args: any) => { update = args; return { count: 1 }; }) as any;
+  prisma.business.findUniqueOrThrow = (async () => business) as any;
+  try {
+    for (const [handler, kind] of [[deleteBusinessAvatar, 'avatar'], [deleteBusinessCover, 'cover']] as const) {
+      const res = response();
+      await handler({ authUser: { id: 'owner' } } as any, res as any);
+      assert.equal(lookup.where.ownerId, 'owner');
+      assert.equal(update.where.ownerId, 'owner');
+      assert.equal(update.data[`${kind}Url`], null);
+      assert.equal(update.data[`${kind}PublicId`], null);
+      assert.equal(res.statusCode, 200);
+    }
+  } finally { Object.assign(prisma.business, originals); }
+});
+
+test('no elimina una imagen reemplazada concurrentemente', async () => {
+  const originals = { findFirst: prisma.business.findFirst, updateMany: prisma.business.updateMany };
+  prisma.business.findFirst = (async () => ({ id: 'business', avatarUrl: 'old-url', avatarPublicId: 'old-id' })) as any;
+  prisma.business.updateMany = (async () => ({ count: 0 })) as any;
+  try {
+    const res = response();
+    await deleteBusinessAvatar({ authUser: { id: 'owner' } } as any, res as any);
+    assert.equal(res.statusCode, 409);
+  } finally { Object.assign(prisma.business, originals); }
+});

@@ -2,6 +2,9 @@ import { Router } from "express";
 
 import {
   googleLogin,
+  passwordLogin,
+  register,
+  adminLogin,
   getCurrentUser,
   logout
 } from "../controllers/auth.controller.js";
@@ -11,6 +14,10 @@ import {
 } from "../middleware/auth.middleware.js";
 
 const router = Router();
+import { adminLoginLimit } from '../middleware/admin-login-limit.js';
+router.post('/admin', adminLoginLimit(), adminLogin);
+router.post('/login', adminLoginLimit(), passwordLogin);
+router.post('/register', adminLoginLimit(), register);
 
 router.post(
   "/google",

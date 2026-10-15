@@ -4,14 +4,19 @@ import { z } from "zod";
 import { prisma } from "../lib/prisma.js";
 
 import { uploadImageBuffer } from "../lib/cloudinary-upload.js";
+import { cloudinary } from "../lib/cloudinary.js";
+import { randomUUID } from "node:crypto";
+import { businessProfileFields } from '../lib/business-profile.js';
 
 const createBusinessSchema = z.object({
+  ...businessProfileFields,
   name: z.string().min(2).max(100),
   description: z.string().max(500).optional(),
 });
 
 const updateBusinessSchema = z
   .object({
+    ...businessProfileFields,
     name: z.string().min(2).max(100).optional(),
     description: z.string().max(500).nullable().optional(),
   })
@@ -35,7 +40,6 @@ export const createBusiness = async (
     });
   }
 
-  const { name, description } = result.data;
   const ownerId = req.authUser!.id;
 
   try {
@@ -57,8 +61,7 @@ export const createBusiness = async (
     const business =
       await prisma.business.create({
         data: {
-          name,
-          description,
+          ...result.data,
           ownerId,
         },
 
@@ -253,7 +256,7 @@ export const updateBusinessAvatar = async (
           folder:
             `cronos/businesses/${business.id}/avatar`,
 
-          public_id: "profile",
+          public_id: randomUUID(),
 
           resource_type: "image",
 
@@ -278,6 +281,10 @@ export const updateBusinessAvatar = async (
             uploaded.public_id,
         },
       });
+
+    if (business.avatarPublicId && business.avatarPublicId !== uploaded.public_id) {
+      await cloudinary.uploader.destroy(business.avatarPublicId, { invalidate: true }).catch(error => console.error("Old avatar cleanup failed:", error));
+    }
 
     return res
       .status(200)
@@ -333,7 +340,7 @@ export const updateBusinessCover = async (
           folder:
             `cronos/businesses/${business.id}/cover`,
 
-          public_id: "hero",
+          public_id: randomUUID(),
 
           resource_type: "image",
 
@@ -355,6 +362,10 @@ export const updateBusinessCover = async (
           coverPublicId: uploaded.public_id,
         },
       });
+
+    if (business.coverPublicId && business.coverPublicId !== uploaded.public_id) {
+      await cloudinary.uploader.destroy(business.coverPublicId, { invalidate: true }).catch(error => console.error("Old cover cleanup failed:", error));
+    }
 
     return res
       .status(200)
@@ -424,3 +435,27 @@ export const updateMyBusiness = async (
 
   
 };
+
+const deleteBusinessImage = (kind: "avatar" | "cover") => async (req: Request, res: Response) => {
+  const business = await prisma.business.findFirst({ where: { ownerId: req.authUser!.id } });
+  if (!business) return res.status(404).json({ error: "Perfil profesional no encontrado." });
+  const url = kind === "avatar" ? business.avatarUrl : business.coverUrl;
+  const publicId = kind === "avatar" ? business.avatarPublicId : business.coverPublicId;
+  // Compare the current image before clearing it so a concurrent replacement is preserved.
+  const changed = await prisma.business.updateMany({
+    where: {
+      id: business.id, ownerId: req.authUser!.id,
+      ...(kind === "avatar" ? { avatarUrl: url, avatarPublicId: publicId } : { coverUrl: url, coverPublicId: publicId }),
+    },
+    data: kind === "avatar" ? { avatarUrl: null, avatarPublicId: null } : { coverUrl: null, coverPublicId: null },
+  });
+  if (!changed.count) return res.status(409).json({ error: "La imagen cambió. Actualiza el perfil antes de eliminarla." });
+  if (publicId) {
+    // Removal from the profile succeeds even if Cloudinary cleanup needs a later retry.
+    await cloudinary.uploader.destroy(publicId, { invalidate: true }).catch(error => console.error("Business image cleanup failed:", error));
+  }
+  return res.json(await prisma.business.findUniqueOrThrow({ where: { id: business.id } }));
+};
+
+export const deleteBusinessAvatar = deleteBusinessImage("avatar");
+export const deleteBusinessCover = deleteBusinessImage("cover");

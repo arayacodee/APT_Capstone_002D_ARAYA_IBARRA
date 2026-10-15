@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import { z } from "zod";
 import { prisma } from "../lib/prisma.js";
+import { cancelSafely, completeSafely, ReservationConflict } from "../lib/reservation-state.js";
 
 const createReservationSchema =
   z.object({
@@ -253,11 +254,11 @@ export const createReservation = async (
 
         return res.status(201).json(reservation);
       } catch (error) {
-        if (
-          isPrismaRetryableError(error) &&
-          attempt < maxAttempts
-        ) {
-          continue;
+        if (isPrismaRetryableError(error)) {
+          if (attempt < maxAttempts) continue;
+          return res.status(409).json({
+            error: "El horario cambió mientras reservabas. Actualiza los horarios e intenta nuevamente.",
+          });
         }
 
         throw error;
@@ -422,242 +423,34 @@ export const getReservationById = async (
   }
 };
 
-export const cancelReservation = async (
-  req: Request<{ id: string }>,
-  res: Response
-) => {
+export const cancelReservation = async (req: Request<{ id: string }>, res: Response) => {
   try {
-    const reservation =
-      await prisma.reservation.findUnique({
-        where: {
-          id: req.params.id,
-        },
-
-        include: {
-          business: true,
-        },
-      });
-
-    if (!reservation) {
-      return res.status(404).json({
-        error: "Reservation not found",
-      });
-    }
-
+    const reservation = await prisma.reservation.findUnique({ where: { id: req.params.id }, include: { business: true } });
+    if (!reservation) return res.status(404).json({ error: "Reserva no encontrada." });
     const user = req.authUser!;
-
-    const allowed =
-      user.role === "CLIENT"
-        ? reservation.clientId === user.id
-        : reservation.business.ownerId === user.id;
-
-    if (!allowed) {
-      return res.status(403).json({
-        error: "Forbidden",
-      });
-    }
-
-    if (reservation.status === "CANCELLED") {
-      return res.status(200).json(reservation);
-    }
-
-    const cancelledReservation =
-      await prisma.reservation.update({
-        where: {
-          id: reservation.id,
-        },
-
-        data: {
-          status: "CANCELLED",
-        },
-      });
-
-    return res
-      .status(200)
-      .json(cancelledReservation);
+    const allowed = user.role === "SUPERADMIN" || (user.role === "CLIENT" ? reservation.clientId === user.id : reservation.business.ownerId === user.id);
+    if (!allowed) return res.status(403).json({ error: "Forbidden" });
+    const cancelled = await prisma.$transaction(tx => cancelSafely(tx, reservation.id));
+    return res.json(cancelled);
   } catch (error) {
-    console.error(
-      "Cancel reservation error:",
-      error
-    );
-
-    return res.status(500).json({
-      error: "Internal server error",
-    });
+    if (error instanceof ReservationConflict) return res.status(409).json({ error: error.message });
+    console.error("Cancel reservation error:", error);
+    return res.status(500).json({ error: "No fue posible cancelar la reserva." });
   }
 };
 
-export const completeReservation = async (
-  req: Request<{ id: string }>,
-  res: Response
-) => {
-  const result =
-    completeReservationSchema.safeParse(
-      req.body
-    );
-
-  if (!result.success) {
-    return res.status(400).json({
-      error: "Invalid request data",
-      details: result.error.flatten(),
-    });
-  }
-
+export const completeReservation = async (req: Request<{ id: string }>, res: Response) => {
+  const result = completeReservationSchema.safeParse(req.body);
+  if (!result.success) return res.status(400).json({ error: "Nota inválida.", details: result.error.flatten() });
   try {
-    const reservation =
-      await prisma.reservation.findUnique({
-        where: {
-          id: req.params.id,
-        },
-
-        include: {
-          business: true,
-          service: true,
-          client: {
-            select: {
-              id: true,
-              name: true,
-              email: true,
-            },
-          },
-          clientSession: true,
-        },
-      });
-
-    if (!reservation) {
-      return res.status(404).json({
-        error: "Reservation not found",
-      });
-    }
-
-    // Solo el dueño del negocio puede registrar una atención.
-    // Esto impide generar historiales para negocios ajenos.
-    if (
-      reservation.business.ownerId !==
-      req.authUser!.id
-    ) {
-      return res.status(403).json({
-        error: "Forbidden",
-      });
-    }
-
-
-    // Una reserva futura todavía no representa una atención real.
-    // Esta regla se valida en backend aunque Angular oculte el botón.
-    if (
-      reservation.startsAt > new Date()
-    ) {
-      return res.status(409).json({
-        error:
-          "A future reservation cannot be completed",
-      });
-    }
-
-
-    if (
-      reservation.status === "CANCELLED"
-    ) {
-      return res.status(409).json({
-        error:
-          "A cancelled reservation cannot be completed",
-      });
-    }
-
-    if (
-      reservation.status === "PENDING"
-    ) {
-      return res.status(409).json({
-        error:
-          "The reservation must be confirmed first",
-      });
-    }
-
-
-
-    // Si ya fue completada, devolvemos la sesión existente.
-    // Así evitamos duplicar el historial accidentalmente.
-    if (
-      reservation.status === "COMPLETED" &&
-      reservation.clientSession
-    ) {
-      return res.status(200).json({
-        reservation,
-        session:
-          reservation.clientSession,
-      });
-    }
-
-    const completed =
-      await prisma.$transaction(
-        async (tx) => {
-          const updatedReservation =
-            await tx.reservation.update({
-              where: {
-                id: reservation.id,
-              },
-
-              data: {
-                status: "COMPLETED",
-              },
-            });
-
-          const session =
-            await tx.clientSession.create({
-              data: {
-                businessId:
-                  reservation.businessId,
-
-                clientId:
-                  reservation.clientId,
-
-                reservationId:
-                  reservation.id,
-
-                occurredAt:
-                  new Date(),
-
-                notes:
-                  result.data.notes ||
-                  null,
-              },
-
-              include: {
-                client: {
-                  select: {
-                    id: true,
-                    name: true,
-                    email: true,
-                  },
-                },
-
-                reservation: {
-                  include: {
-                    service: true,
-                  },
-                },
-              },
-            });
-
-          return {
-            reservation:
-              updatedReservation,
-
-            session,
-          };
-        }
-      );
-
-    return res
-      .status(200)
-      .json(completed);
+    const reservation = await prisma.reservation.findUnique({ where: { id: req.params.id }, include: { business: true } });
+    if (!reservation) return res.status(404).json({ error: "Reserva no encontrada." });
+    if (req.authUser!.role !== "SUPERADMIN" && reservation.business.ownerId !== req.authUser!.id) return res.status(403).json({ error: "Forbidden" });
+    const completed = await prisma.$transaction(tx => completeSafely(tx, reservation.id, result.data.notes));
+    return res.json(completed);
   } catch (error) {
-    console.error(
-      "Complete reservation error:",
-      error
-    );
-
-    return res.status(500).json({
-      error: "Internal server error",
-    });
+    if (error instanceof ReservationConflict) return res.status(409).json({ error: error.message });
+    console.error("Complete reservation error:", error);
+    return res.status(500).json({ error: "No fue posible registrar la atención." });
   }
 };

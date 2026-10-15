@@ -11,10 +11,29 @@
 
 export const UserRole = {
   CLIENT: 'CLIENT',
-  PROFESSIONAL: 'PROFESSIONAL'
+  PROFESSIONAL: 'PROFESSIONAL',
+  SUPERADMIN: 'SUPERADMIN'
 } as const
 
 export type UserRole = (typeof UserRole)[keyof typeof UserRole]
+
+
+export const BusinessCategory = {
+  GENERAL: 'GENERAL',
+  WELLNESS: 'WELLNESS',
+  BEAUTY: 'BEAUTY'
+} as const
+
+export type BusinessCategory = (typeof BusinessCategory)[keyof typeof BusinessCategory]
+
+
+export const AttentionMode = {
+  ONSITE: 'ONSITE',
+  ONLINE: 'ONLINE',
+  BOTH: 'BOTH'
+} as const
+
+export type AttentionMode = (typeof AttentionMode)[keyof typeof AttentionMode]
 
 
 export const ReservationStatus = {

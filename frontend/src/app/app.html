@@ -9,6 +9,9 @@
     </a>
 
     <nav class="nav-links">
+      @if (auth.isSuperadmin()) {
+        <a routerLink="/admin">Administración</a>
+      }
       <a routerLink="/">
         Explorar
       </a>
@@ -27,6 +30,7 @@
 
       @if (auth.currentUser(); as user) {
         <div class="account">
+          @if (!auth.isSuperadmin()) { <a routerLink="/account/profile">Mis datos</a> }
           <span class="account-name">
             {{ user.name || user.email }}
           </span>
@@ -67,9 +71,9 @@
         Gestiona servicios, horarios y reservas desde un solo lugar.
       </p>
       <small>
-        Las cuentas profesionales son habilitadas por Cronos. Si ya tienes una,
-        ingresa con Google desde el menú superior.
+        Conoce el plan mensual y prepara el perfil profesional de tu empresa.
       </small>
+      <a class="company-link" routerLink="/companies">¿Quieres que tu empresa sea parte de Cronos? →</a>
     </section>
 
     <div class="footer-columns">

@@ -12,10 +12,13 @@ import {
 
 import { ApiService } from '../../core/services/api.service';
 import { AuthService } from '../../core/services/auth.service';
+import { profileForm, profileRequest } from '../../models/business-category';
+import { BusinessProfileFields } from '../../components/business-profile-fields';
 
 @Component({
   selector: 'app-professional-onboarding',
   imports: [
+    BusinessProfileFields,
     FormsModule
   ],
   templateUrl: './professional-onboarding.html',
@@ -30,6 +33,7 @@ export class ProfessionalOnboarding
   errorMessage = signal('');
 
   form = {
+    ...profileForm(),
     name: '',
     description: ''
   };
@@ -97,6 +101,7 @@ export class ProfessionalOnboarding
     this.errorMessage.set('');
 
     this.api.createBusiness({
+      ...profileRequest(this.form),
       name,
 
       description:

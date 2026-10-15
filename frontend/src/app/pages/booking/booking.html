@@ -9,7 +9,7 @@
     </a>
     <span class="booking-security">
       <span aria-hidden="true">✓</span>
-      Reserva segura
+      {{ labels().booking }} segura
     </span>
   </div>
 
@@ -70,11 +70,11 @@
             </div>
 
             <div class="date-field">
-              <label for="booking-date">Fecha de la reserva</label>
+              <label for="booking-date">Fecha de la {{ labels().booking.toLowerCase() }}</label>
               <input
                 id="booking-date"
                 type="date"
-                [min]="minDate"
+                [min]="minDate()"
                 [value]="selectedDate()"
                 (change)="onDateChange($event)"
               />
@@ -128,7 +128,7 @@
                 <span class="step-number complete">✓</span>
                 <div>
                   <p class="step-kicker">ÚLTIMO PASO</p>
-                  <h2 id="confirmation-step-title">Confirma tu reserva</h2>
+                  <h2 id="confirmation-step-title">Confirma tu {{ labels().booking.toLowerCase() }}</h2>
                   <p>Revisa los datos antes de continuar.</p>
                 </div>
               </div>
@@ -148,9 +148,9 @@
                 (click)="confirmReservation()"
               >
                 @if (submitting()) {
-                  Confirmando reserva...
+                  Confirmando {{ labels().booking.toLowerCase() }}...
                 } @else {
-                  Confirmar reserva
+                  Confirmar {{ labels().booking.toLowerCase() }}
                   <span aria-hidden="true">→</span>
                 }
               </button>
@@ -196,7 +196,7 @@
           }
 
           <div class="aside-service">
-            <span>Servicio</span>
+            <span>{{ labels().service }}</span>
             <strong>{{ currentService.name }}</strong>
           </div>
 

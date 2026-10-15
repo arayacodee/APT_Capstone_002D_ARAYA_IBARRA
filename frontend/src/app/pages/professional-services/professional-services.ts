@@ -1,4 +1,5 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, computed } from '@angular/core';
+import { businessLabels } from '../../models/business-category';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ApiService } from '../../core/services/api.service';
@@ -21,6 +22,7 @@ import {
   styleUrl: './professional-services.css'
 })
 export class ProfessionalServices implements OnInit {
+  readonly labels = computed(() => businessLabels(this.business()?.category));
   business = signal<Business | null>(null);
   services = signal<Service[]>([]);
 

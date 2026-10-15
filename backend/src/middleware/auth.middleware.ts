@@ -6,6 +6,7 @@ import {
 
 import { prisma } from "../lib/prisma.js";
 import { env } from "../config/env.js";
+import { privateUserSelect } from '../lib/user-profile.js';
 
 import {
   SESSION_COOKIE,
@@ -36,12 +37,7 @@ export const authenticate = async (
           id: session.userId
         },
 
-        select: {
-          id: true,
-          email: true,
-          name: true,
-          role: true
-        }
+        select: privateUserSelect
       });
 
     if (!user) {
@@ -74,7 +70,7 @@ export const authenticate = async (
 export const requireRole =
   (
     ...roles: Array<
-      'CLIENT' | 'PROFESSIONAL'
+      'CLIENT' | 'PROFESSIONAL' | 'SUPERADMIN'
     >
   ) =>
   (

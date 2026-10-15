@@ -8,6 +8,8 @@ import {
   updateMyBusiness,
   updateBusinessAvatar,
   updateBusinessCover,
+  deleteBusinessAvatar,
+  deleteBusinessCover,
 } from "../controllers/business.controller.js";
 
 import {
@@ -20,6 +22,12 @@ import {
 } from "../middleware/upload.middleware.js";
 
 const router = Router();
+import { getBusinessPhotos, addBusinessPhoto, deleteBusinessPhoto } from '../controllers/business-gallery.controller.js';
+router.get('/:id/photos', getBusinessPhotos);
+router.post('/me/photos', authenticate, requireRole('PROFESSIONAL', 'SUPERADMIN'), uploadBusinessImage, addBusinessPhoto);
+router.delete('/me/photos/:id', authenticate, requireRole('PROFESSIONAL', 'SUPERADMIN'), deleteBusinessPhoto);
+router.delete("/me/avatar", authenticate, requireRole("PROFESSIONAL", "SUPERADMIN"), deleteBusinessAvatar);
+router.delete("/me/cover", authenticate, requireRole("PROFESSIONAL", "SUPERADMIN"), deleteBusinessCover);
 
 
 // Rutas públicas
@@ -34,14 +42,14 @@ router.get(
 router.get(
   "/me",
   authenticate,
-  requireRole("PROFESSIONAL"),
+  requireRole("PROFESSIONAL", "SUPERADMIN"),
   getMyBusiness
 );
 
 router.patch(
   "/me",
   authenticate,
-  requireRole("PROFESSIONAL"),
+  requireRole("PROFESSIONAL", "SUPERADMIN"),
   updateMyBusiness
 );
 
@@ -50,7 +58,7 @@ router.patch(
 router.put(
   "/me/avatar",
   authenticate,
-  requireRole("PROFESSIONAL"),
+  requireRole("PROFESSIONAL", "SUPERADMIN"),
   uploadBusinessImage,
   updateBusinessAvatar
 );
@@ -60,7 +68,7 @@ router.put(
 router.put(
   "/me/cover",
   authenticate,
-  requireRole("PROFESSIONAL"),
+  requireRole("PROFESSIONAL", "SUPERADMIN"),
   uploadBusinessImage,
   updateBusinessCover
 );
@@ -77,7 +85,7 @@ router.get(
 router.post(
   "/",
   authenticate,
-  requireRole("PROFESSIONAL"),
+  requireRole("PROFESSIONAL", "SUPERADMIN"),
   createBusiness
 );
 

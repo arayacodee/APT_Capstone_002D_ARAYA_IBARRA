@@ -15,7 +15,7 @@
       PANEL PROFESIONAL
     </p>
 
-    <h1>Servicios</h1>
+    <h1>{{ labels().services }}</h1>
 
     @if (business(); as currentBusiness) {
       <p>{{ currentBusiness.name }}</p>
@@ -23,7 +23,7 @@
   </header>
 
   @if (loading()) {
-    <p>Cargando servicios...</p>
+    <p>Cargando {{ labels().services.toLowerCase() }}...</p>
   }
 
   @if (errorMessage()) {
@@ -41,7 +41,7 @@
   @if (!loading()) {
 
     <section class="create-section">
-      <h2>Nuevo servicio</h2>
+      <h2>Agregar {{ labels().service.toLowerCase() }}</h2>
 
       <form
         class="service-form"
@@ -105,17 +105,17 @@
           @if (saving()) {
             Guardando...
           } @else {
-            Crear servicio
+            Crear {{ labels().service.toLowerCase() }}
           }
         </button>
       </form>
     </section>
 
     <section class="list-section">
-      <h2>Servicios actuales</h2>
+      <h2>{{ labels().services }} actuales</h2>
 
       @if (services().length === 0) {
-        <p>No hay servicios registrados.</p>
+        <p>Aún no has agregado {{ labels().services.toLowerCase() }}.</p>
       }
 
       <div class="service-list">

@@ -1,5 +1,7 @@
 import {
   Component,
+  DestroyRef,
+  inject,
   OnInit,
   computed,
   signal
@@ -10,13 +12,15 @@ import {
   RouterLink
 } from '@angular/router';
 
-import { forkJoin } from 'rxjs';
+import { forkJoin, interval } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { ApiService } from '../../core/services/api.service';
 import { AuthService } from '../../core/services/auth.service';
 
 import { User } from '../../models/user.model';
 import { Business } from '../../models/business.model';
+import { businessLabels } from '../../models/business-category';
 import { Service } from '../../models/service.model';
 import { Availability } from '../../models/availability.model';
 import { Reservation } from '../../models/reservation.model';
@@ -28,6 +32,10 @@ import { Reservation } from '../../models/reservation.model';
   styleUrl: './professional-dashboard.css'
 })
 export class ProfessionalDashboard implements OnInit {
+  readonly labels = computed(() => businessLabels(this.business()?.category));
+  private readonly destroyRef = inject(DestroyRef);
+  readonly now = signal(new Date());
+
   professional = signal<User | null>(null);
   business = signal<Business | null>(null);
 
@@ -50,6 +58,7 @@ export class ProfessionalDashboard implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    interval(1000).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => this.now.set(new Date()));
     this.loadDashboard();
   }
 
@@ -164,6 +173,7 @@ export class ProfessionalDashboard implements OnInit {
   completeReservation(
     reservationId: string
   ): void {
+    if (this.completingReservationId()) return;
     const notes = window.prompt(
       'Puedes agregar una nota de atención (opcional):'
     );
@@ -240,7 +250,7 @@ export class ProfessionalDashboard implements OnInit {
   }
 
   upcomingReservations = computed(() => {
-    const now = new Date();
+    const now = this.now();
 
     // Próximas reservas son las confirmadas
     // cuya hora todavía no ha llegado.
@@ -262,7 +272,7 @@ export class ProfessionalDashboard implements OnInit {
 
   pendingAttentionReservations =
     computed(() => {
-      const now = new Date();
+      const now = this.now();
 
       // Estas reservas ya ocurrieron pero continúan
       // CONFIRMED, por lo que falta registrar la atención.

@@ -1,35 +1,25 @@
-<main class="login-page">
-  <section class="login-card" aria-labelledby="login-title">
-
-    <h1 id="login-title">Ingresa a Cronos</h1>
-
-    <p class="login-description">
-      Continúa con Google para comenzar a reservar.
-    </p>
-
-    <div class="google-section">
-      <p class="google-label">Continúa con tu cuenta Google</p>
-      <div
-        id="google-signin-button"
-        role="group"
-        aria-label="Autenticación con Google"
-      ></div>
-    </div>
-
-    @if (loading()) {
-      <p class="loading" role="status" aria-live="polite">
-        Verificando tu cuenta e iniciando sesión...
-      </p>
-    }
-
-    @if (errorMessage()) {
-      <p class="error" role="alert">
-        {{ errorMessage() }}
-      </p>
-    }
-
-    <p class="account-note">
-      El acceso profesional está disponible para cuentas habilitadas por Cronos.
-    </p>
-  </section>
-</main>
+<main class="login-page"><section class="login-card">
+<h1>{{ companyRegistration ? 'Tu cuenta para registrar tu empresa' : 'Bienvenido a Cronos' }}</h1><p>{{ companyRegistration ? 'Al completar este paso continuarás con los datos de tu empresa.' : '¿Quieres iniciar sesión o crear una cuenta?' }}</p>
+<div class="access-options"><button type="button" (click)="choose('login')" [class.selected]="mode() === 'login'" [disabled]="loading()">Iniciar sesión</button><button type="button" (click)="choose('register')" [class.selected]="mode() === 'register'" [disabled]="loading()">Registrarme</button></div>
+@if (mode()) {
+<h2>{{ mode() === 'login' ? 'Iniciar sesión' : 'Crear mi cuenta' }}</h2>
+<form (ngSubmit)="submit()">
+@if (mode() === 'register') {
+<label>Nombre<input name="firstName" autocomplete="given-name" [(ngModel)]="form.firstName" required minlength="2" maxlength="80" [disabled]="loading()"></label>
+<label>Apellido<input name="lastName" autocomplete="family-name" [(ngModel)]="form.lastName" required minlength="2" maxlength="80" [disabled]="loading()"></label>
+}
+<label>Correo electrónico<input name="email" type="email" autocomplete="email" [(ngModel)]="form.email" required maxlength="254" [disabled]="loading()"></label>
+<label>Contraseña<input name="password" type="password" [autocomplete]="mode() === 'register' ? 'new-password' : 'current-password'" [(ngModel)]="form.password" required [minlength]="mode() === 'register' ? 8 : 1" maxlength="256" [disabled]="loading()"></label>
+@if (mode() === 'register') {
+<small>Usa al menos 8 caracteres.</small>
+<label>Número de teléfono<input name="phone" type="tel" autocomplete="tel" [(ngModel)]="form.phone" required maxlength="40" [disabled]="loading()"></label>
+<small>Guardaremos tu número sin solicitar un código SMS.</small>
+<label>Dirección<input name="address" autocomplete="street-address" [(ngModel)]="form.address" required minlength="5" maxlength="300" [disabled]="loading()"></label>
+}
+<button type="submit" [disabled]="loading()">{{ loading() ? 'Procesando…' : mode() === 'login' ? 'Ingresar' : 'Crear cuenta' }}</button>
+</form>
+}
+@if (errorMessage()) { <p class="error" role="alert">{{ errorMessage() }}</p> }
+@if (!companyRegistration) { <section class="company-invitation"><h2>¿Quieres que tu empresa sea parte de Cronos?</h2><p>Plan profesional por $7.900 CLP al mes.</p><a routerLink="/companies">Conocer el plan y registrar mi empresa →</a></section> }
+<p class="account-note"><a routerLink="/admin/login">Acceso de administración</a></p>
+</section></main>

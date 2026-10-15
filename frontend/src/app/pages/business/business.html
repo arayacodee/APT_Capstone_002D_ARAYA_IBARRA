@@ -52,7 +52,7 @@
         <div class="profile-heading">
 
           <p class="eyebrow">
-            PROFESIONAL EN CRONOS
+            {{ labels().category }}
           </p>
 
           <h1>
@@ -71,12 +71,21 @@
 
     </section>
 
+    @if (currentBusiness.professionalName || currentBusiness.specialties || currentBusiness.address || mode()) {
+      <section class="business-details" aria-label="Información del negocio">
+        @if (currentBusiness.professionalName) { <div><h2>{{ labels().professional }}</h2><p>{{ currentBusiness.professionalName }}</p></div> }
+        @if (currentBusiness.specialties) { <div><h2>Especialidades</h2><p>{{ currentBusiness.specialties }}</p></div> }
+        @if (mode()) { <div><h2>Modalidad de atención</h2><p>{{ mode() }}</p></div> }
+        @if (currentBusiness.address) { <div><h2>Lugar de atención</h2><p>{{ currentBusiness.address }}</p></div> }
+      </section>
+    }
+
     <section class="content-section">
 
       <div class="section-title">
         <div>
           <p class="eyebrow">
-            SERVICIOS
+            {{ labels().services }}
           </p>
 
           <h2>
@@ -87,7 +96,7 @@
 
       @if (services().length === 0) {
         <div class="empty-state">
-          Actualmente no hay servicios disponibles.
+          Actualmente no hay {{ labels().services.toLowerCase() }} disponibles.
         </div>
       }
 
@@ -127,7 +136,7 @@
                   service.id
                 ]"
               >
-                Reservar
+                {{ labels().reserve }}
               </a>
 
             </div>
@@ -139,32 +148,9 @@
 
     </section>
 
-    <section class="portfolio-section">
-
-      <div class="section-title">
-        <div>
-          <p class="eyebrow">
-            TRABAJOS
-          </p>
-
-          <h2>
-            Conoce su trabajo.
-          </h2>
-        </div>
-      </div>
-
-      <div class="portfolio-grid">
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-
-      <p class="portfolio-note">
-        El portafolio estará disponible próximamente.
-      </p>
-
-    </section>
+    <app-business-gallery [businessId]="currentBusiness.id" />
 
   }
 
 </main>
+

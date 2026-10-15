@@ -1,5 +1,7 @@
 import {
   Component,
+  OnDestroy,
+  computed,
   OnInit,
   signal
 } from '@angular/core';
@@ -9,17 +11,22 @@ import { RouterLink } from '@angular/router';
 
 import { ApiService } from '../../core/services/api.service';
 import { Business } from '../../models/business.model';
+import { profileForm, profileRequest } from '../../models/business-category';
+import { BusinessProfileFields } from '../../components/business-profile-fields';
+import { BusinessGallery } from '../../components/business-gallery';
 
 @Component({
   selector: 'app-professional-profile',
   imports: [
+    BusinessProfileFields,
+    BusinessGallery,
     FormsModule,
     RouterLink
   ],
   templateUrl: './professional-profile.html',
   styleUrl: './professional-profile.css'
 })
-export class ProfessionalProfile implements OnInit {
+export class ProfessionalProfile implements OnInit, OnDestroy {
   business = signal<Business | null>(null);
 
     // Estado temporal usado para seleccionar,
@@ -35,11 +42,14 @@ export class ProfessionalProfile implements OnInit {
 
   loading = signal(true);
   saving = signal(false);
+  deletingImage = signal<'avatar' | 'cover' | null>(null);
+  readonly imageBusy = computed(() => this.saving() || this.uploadingAvatar() || this.uploadingCover() || this.deletingImage() !== null);
 
   errorMessage = signal('');
   successMessage = signal('');
 
   form = {
+    ...profileForm(),
     name: '',
     description: ''
   };
@@ -60,6 +70,7 @@ export class ProfessionalProfile implements OnInit {
         this.business.set(business);
 
         this.form = {
+          ...profileForm(business),
           name: business.name,
           description:
             business.description ?? ''
@@ -81,6 +92,7 @@ export class ProfessionalProfile implements OnInit {
   }
 
   onAvatarSelected(event: Event): void {
+      if (this.imageBusy()) return;
       const input =
         event.target as HTMLInputElement;
 
@@ -118,6 +130,8 @@ export class ProfessionalProfile implements OnInit {
       this.errorMessage.set('');
       this.successMessage.set('');
 
+      this.cancelAvatarSelection();
+      input.value = '';
       this.selectedAvatar.set(file);
 
       // La previsualización es local y no sube nada todavía.
@@ -128,6 +142,7 @@ export class ProfessionalProfile implements OnInit {
     }
 
     uploadAvatar(): void {
+    if (this.imageBusy()) return;
     const file =
       this.selectedAvatar();
 
@@ -152,8 +167,7 @@ export class ProfessionalProfile implements OnInit {
           // Actualizamos el perfil sin tener que recargar la página.
           this.business.set(business);
 
-          this.selectedAvatar.set(null);
-          this.avatarPreview.set(null);
+          this.cancelAvatarSelection();
 
           this.successMessage.set(
             'Foto de perfil actualizada correctamente.'
@@ -177,6 +191,7 @@ export class ProfessionalProfile implements OnInit {
 
 
   onCoverSelected(event: Event): void {
+    if (this.imageBusy()) return;
     const input =
       event.target as HTMLInputElement;
 
@@ -214,6 +229,8 @@ export class ProfessionalProfile implements OnInit {
     this.errorMessage.set('');
     this.successMessage.set('');
 
+    this.cancelCoverSelection();
+    input.value = '';
     this.selectedCover.set(file);
 
     // Creamos una URL temporal para mostrar la portada
@@ -224,6 +241,7 @@ export class ProfessionalProfile implements OnInit {
   }
 
   uploadCover(): void {
+    if (this.imageBusy()) return;
     const file =
       this.selectedCover();
 
@@ -248,8 +266,7 @@ export class ProfessionalProfile implements OnInit {
           // Actualizamos inmediatamente la vista local.
           this.business.set(business);
 
-          this.selectedCover.set(null);
-          this.coverPreview.set(null);
+          this.cancelCoverSelection();
 
           this.successMessage.set(
             'Portada actualizada correctamente.'
@@ -273,6 +290,7 @@ export class ProfessionalProfile implements OnInit {
 
 
   saveProfile(): void {
+    if (this.imageBusy()) return;
     const name =
       this.form.name.trim();
 
@@ -292,6 +310,7 @@ export class ProfessionalProfile implements OnInit {
     this.successMessage.set('');
 
     this.api.updateMyBusiness({
+      ...profileRequest(this.form),
       name,
       description:
         description || null
@@ -302,6 +321,7 @@ export class ProfessionalProfile implements OnInit {
         this.business.set(business);
 
         this.form = {
+          ...profileForm(business),
           name: business.name,
           description:
             business.description ?? ''
@@ -325,5 +345,44 @@ export class ProfessionalProfile implements OnInit {
         this.saving.set(false);
       }
     });
+  }
+  cancelAvatarSelection(): void {
+    const url = this.avatarPreview();
+    if (url) URL.revokeObjectURL(url);
+    this.avatarPreview.set(null);
+    this.selectedAvatar.set(null);
+  }
+
+  cancelCoverSelection(): void {
+    const url = this.coverPreview();
+    if (url) URL.revokeObjectURL(url);
+    this.coverPreview.set(null);
+    this.selectedCover.set(null);
+  }
+
+  removeImage(kind: 'avatar' | 'cover'): void {
+    if (this.imageBusy()) return;
+    this.deletingImage.set(kind);
+    this.errorMessage.set('');
+    this.successMessage.set('');
+    const request = kind === 'avatar' ? this.api.deleteBusinessAvatar() : this.api.deleteBusinessCover();
+    request.subscribe({
+      next: business => {
+        this.business.set(business);
+        if (kind === 'avatar') this.cancelAvatarSelection();
+        else this.cancelCoverSelection();
+        this.deletingImage.set(null);
+        this.successMessage.set(kind === 'avatar' ? 'Foto de perfil eliminada.' : 'Portada eliminada.');
+      },
+      error: error => {
+        this.errorMessage.set(error?.error?.error ?? 'No fue posible eliminar la imagen.');
+        this.deletingImage.set(null);
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.cancelAvatarSelection();
+    this.cancelCoverSelection();
   }
 }

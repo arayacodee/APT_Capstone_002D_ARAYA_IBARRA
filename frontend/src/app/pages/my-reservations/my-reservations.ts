@@ -69,7 +69,8 @@ export class MyReservations implements OnInit {
   }
 
   cancelReservation(reservation: Reservation): void {
-    if (reservation.status === 'CANCELLED') {
+    if (this.cancellingId()) return;
+    if (!['PENDING', 'CONFIRMED'].includes(reservation.status)) {
       return;
     }
 
@@ -105,17 +106,17 @@ export class MyReservations implements OnInit {
     });
   }
 
-  formatDate(value: string): string {
+  formatDate(value: string, timezone = 'America/Santiago'): string {
     return new Intl.DateTimeFormat('es-CL', {
-      dateStyle: 'full'
+      dateStyle: 'full', timeZone: timezone
     }).format(new Date(value));
   }
 
-  formatTime(value: string): string {
+  formatTime(value: string, timezone = 'America/Santiago'): string {
     return new Intl.DateTimeFormat('es-CL', {
       hour: '2-digit',
       minute: '2-digit',
-      hour12: false
+      hour12: false, timeZone: timezone
     }).format(new Date(value));
   }
 

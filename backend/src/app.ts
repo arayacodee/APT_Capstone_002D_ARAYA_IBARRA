@@ -1,4 +1,8 @@
 import express from "express";
+import adminRoutes from "./routes/admin.routes.js";
+import accountRoutes from './routes/account.routes.js';
+import type { ErrorRequestHandler } from "express";
+import sessionRoutes from "./routes/session.routes.js";
 import cors from "cors";
 import { prisma } from "./lib/prisma.js";
 import { env } from "./config/env.js";
@@ -22,7 +26,7 @@ app.use(
   })
 );
 
-app.use(express.json());
+app.use(express.json({ limit: "100kb" }));
 app.use(cookieParser());
 
 app.use(
@@ -30,7 +34,6 @@ app.use(
   authRoutes
 );
 
-app.use(express.json({ limit: "100kb" }));
 
 app.get("/health", async (_req, res) => {
   try {
@@ -54,9 +57,12 @@ app.get("/health", async (_req, res) => {
 
 
 app.use("/api/businesses", businessRoutes);
+app.use("/api/admin", adminRoutes);
+app.use('/api/account', accountRoutes);
 app.use("/api/services", serviceRoutes);
 app.use("/api/availabilities", availabilityRoutes);
 app.use("/api/reservations", reservationRoutes);
+app.use("/api/sessions", sessionRoutes);
 
 app.use((_req, res) => {
   res.status(404).json({
@@ -66,4 +72,12 @@ app.use((_req, res) => {
 
 
 
+const handleError: ErrorRequestHandler = (error, _req, res, _next) => {
+  if (res.headersSent) return _next(error);
+  if (error?.type === "entity.parse.failed") return void res.status(400).json({ error: "JSON inválido." });
+  if (error?.type === "entity.too.large") return void res.status(413).json({ error: "Solicitud demasiado grande." });
+  console.error("Unhandled API error:", error);
+  res.status(500).json({ error: "No fue posible completar la solicitud." });
+};
+app.use(handleError);
 export default app;

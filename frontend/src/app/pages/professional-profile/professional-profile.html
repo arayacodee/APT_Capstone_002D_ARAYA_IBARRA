@@ -72,6 +72,15 @@
         </div>
 
         <div class="cover-actions">
+          @if (business()?.coverUrl) {
+            <button type="button" class="secondary-button remove-button" [disabled]="imageBusy()" (click)="removeImage('cover')">
+              {{ deletingImage() === 'cover' ? 'Eliminando...' : 'Eliminar portada' }}
+            </button>
+          }
+          @if (selectedCover()) {
+            <button type="button" class="secondary-button" [disabled]="imageBusy()" (click)="cancelCoverSelection()">Cancelar selección</button>
+          }
+
 
           <label class="file-button">
             Seleccionar portada
@@ -79,6 +88,7 @@
             <input
               type="file"
               accept="image/jpeg,image/png,image/webp"
+              [disabled]="imageBusy()"
               (change)="onCoverSelected($event)"
             />
           </label>
@@ -87,7 +97,7 @@
             <button
               type="button"
               class="secondary-button"
-              [disabled]="uploadingCover()"
+              [disabled]="imageBusy()"
               (click)="uploadCover()"
             >
               @if (uploadingCover()) {
@@ -142,12 +152,21 @@
           </p>
         </div>
 
+        @if (business()?.avatarUrl) {
+          <button type="button" class="secondary-button remove-button" [disabled]="imageBusy()" (click)="removeImage('avatar')">
+            {{ deletingImage() === 'avatar' ? 'Eliminando...' : 'Eliminar foto de perfil' }}
+          </button>
+        }
+        @if (selectedAvatar()) {
+          <button type="button" class="secondary-button" [disabled]="imageBusy()" (click)="cancelAvatarSelection()">Cancelar selección</button>
+        }
         <label class="file-button">
           Seleccionar imagen
 
           <input
             type="file"
             accept="image/jpeg,image/png,image/webp"
+            [disabled]="imageBusy()"
             (change)="onAvatarSelected($event)"
           />
         </label>
@@ -156,7 +175,7 @@
           <button
             type="button"
             class="secondary-button"
-            [disabled]="uploadingAvatar()"
+            [disabled]="imageBusy()"
             (click)="uploadAvatar()"
           >
             @if (uploadingAvatar()) {
@@ -205,22 +224,13 @@
         ></textarea>
       </label>
 
-      <div class="future-section">
-        <strong>
-          Próximamente
-        </strong>
-
-        <p>
-          Aquí también podrás gestionar foto de perfil,
-          portada y portafolio de trabajos.
-        </p>
-      </div>
+      <app-business-profile-fields [form]="form" [disabled]="imageBusy()" />
 
       <div class="actions">
         <button
           type="submit"
           class="primary-button"
-          [disabled]="saving()"
+          [disabled]="imageBusy()"
         >
           @if (saving()) {
             Guardando...
@@ -245,4 +255,5 @@
     </form>
   }
 
+  @if (business(); as currentBusiness) { <app-business-gallery [businessId]="currentBusiness.id" [editable]="true" /> }
 </main>

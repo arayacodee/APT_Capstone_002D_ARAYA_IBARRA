@@ -1,0 +1,32 @@
+<main>
+  <a routerLink="/dashboard">← Volver al panel</a>
+  <h1>{{ labels().history }}</h1>
+  <p>Consulta las atenciones de tus {{ labels().people.toLowerCase() }} y registra notas e imágenes privadas.</p>
+  @if (error()) { <p class="error" role="alert">{{ error() }}</p> }
+  @if (success()) { <p class="success" role="status">{{ success() }}</p> }
+  @if (loading()) { <p role="status">Cargando atenciones...</p> }
+  @if (!loading() && sessions().length === 0) { <p>Aún no hay atenciones registradas.</p> }
+  @for (session of sessions(); track session.id) {
+    <article>
+      <h2>{{ session.client?.name || session.client?.email || labels().person }}</h2>
+      <p>{{ session.reservation?.service?.name }} · {{ formatDate(session) }}</p>
+      <label [for]="'notes-' + session.id">Notas de atención</label>
+      <textarea [id]="'notes-' + session.id" [(ngModel)]="notes[session.id]" maxlength="1500" rows="3" [disabled]="busy()"></textarea>
+      <button type="button" (click)="saveNotes(session)" [disabled]="busy()">Guardar nota</button>
+      <div class="evidences">
+        @for (evidence of session.evidences; track evidence.id) {
+          <figure>
+            <a [href]="evidence.imageUrl" target="_blank" rel="noopener noreferrer"><img [src]="evidence.imageUrl" [alt]="evidence.caption || 'Evidencia de atención'" loading="lazy"></a>
+            @if (evidence.caption) { <figcaption>{{ evidence.caption }}</figcaption> }
+            <button type="button" (click)="remove(session, evidence)" [disabled]="busy()">Eliminar imagen</button>
+          </figure>
+        }
+      </div>
+      <label [for]="'caption-' + session.id">Descripción de la nueva imagen</label>
+      <input [id]="'caption-' + session.id" [(ngModel)]="captions[session.id]" maxlength="300" [disabled]="busy()">
+      <label [for]="'image-' + session.id">Agregar evidencia (JPEG, PNG o WebP, hasta 5 MB)</label>
+      <input [id]="'image-' + session.id" type="file" accept="image/jpeg,image/png,image/webp" (change)="upload(session, $event)" [disabled]="busy()">
+    </article>
+  }
+  @if (nextCursor()) { <button type="button" (click)="load()" [disabled]="loading()">Cargar más atenciones</button> }
+</main>

@@ -398,7 +398,9 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   User: 'User',
+  ProfessionalApplication: 'ProfessionalApplication',
   Business: 'Business',
+  BusinessPhoto: 'BusinessPhoto',
   Service: 'Service',
   Availability: 'Availability',
   Reservation: 'Reservation',
@@ -419,7 +421,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "business" | "service" | "availability" | "reservation" | "clientSession" | "sessionEvidence"
+    modelProps: "user" | "professionalApplication" | "business" | "businessPhoto" | "service" | "availability" | "reservation" | "clientSession" | "sessionEvidence"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -497,6 +499,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ProfessionalApplication: {
+      payload: Prisma.$ProfessionalApplicationPayload<ExtArgs>
+      fields: Prisma.ProfessionalApplicationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ProfessionalApplicationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfessionalApplicationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ProfessionalApplicationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfessionalApplicationPayload>
+        }
+        findFirst: {
+          args: Prisma.ProfessionalApplicationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfessionalApplicationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ProfessionalApplicationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfessionalApplicationPayload>
+        }
+        findMany: {
+          args: Prisma.ProfessionalApplicationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfessionalApplicationPayload>[]
+        }
+        create: {
+          args: Prisma.ProfessionalApplicationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfessionalApplicationPayload>
+        }
+        createMany: {
+          args: Prisma.ProfessionalApplicationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ProfessionalApplicationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfessionalApplicationPayload>[]
+        }
+        delete: {
+          args: Prisma.ProfessionalApplicationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfessionalApplicationPayload>
+        }
+        update: {
+          args: Prisma.ProfessionalApplicationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfessionalApplicationPayload>
+        }
+        deleteMany: {
+          args: Prisma.ProfessionalApplicationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ProfessionalApplicationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ProfessionalApplicationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfessionalApplicationPayload>[]
+        }
+        upsert: {
+          args: Prisma.ProfessionalApplicationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfessionalApplicationPayload>
+        }
+        aggregate: {
+          args: Prisma.ProfessionalApplicationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProfessionalApplication>
+        }
+        groupBy: {
+          args: Prisma.ProfessionalApplicationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProfessionalApplicationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ProfessionalApplicationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProfessionalApplicationCountAggregateOutputType> | number
+        }
+      }
+    }
     Business: {
       payload: Prisma.$BusinessPayload<ExtArgs>
       fields: Prisma.BusinessFieldRefs
@@ -568,6 +644,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.BusinessCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.BusinessCountAggregateOutputType> | number
+        }
+      }
+    }
+    BusinessPhoto: {
+      payload: Prisma.$BusinessPhotoPayload<ExtArgs>
+      fields: Prisma.BusinessPhotoFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.BusinessPhotoFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessPhotoPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.BusinessPhotoFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessPhotoPayload>
+        }
+        findFirst: {
+          args: Prisma.BusinessPhotoFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessPhotoPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.BusinessPhotoFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessPhotoPayload>
+        }
+        findMany: {
+          args: Prisma.BusinessPhotoFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessPhotoPayload>[]
+        }
+        create: {
+          args: Prisma.BusinessPhotoCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessPhotoPayload>
+        }
+        createMany: {
+          args: Prisma.BusinessPhotoCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.BusinessPhotoCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessPhotoPayload>[]
+        }
+        delete: {
+          args: Prisma.BusinessPhotoDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessPhotoPayload>
+        }
+        update: {
+          args: Prisma.BusinessPhotoUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessPhotoPayload>
+        }
+        deleteMany: {
+          args: Prisma.BusinessPhotoDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.BusinessPhotoUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.BusinessPhotoUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessPhotoPayload>[]
+        }
+        upsert: {
+          args: Prisma.BusinessPhotoUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessPhotoPayload>
+        }
+        aggregate: {
+          args: Prisma.BusinessPhotoAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateBusinessPhoto>
+        }
+        groupBy: {
+          args: Prisma.BusinessPhotoGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BusinessPhotoGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.BusinessPhotoCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BusinessPhotoCountAggregateOutputType> | number
         }
       }
     }
@@ -986,6 +1136,14 @@ export const UserScalarFieldEnum = {
   name: 'name',
   role: 'role',
   googleId: 'googleId',
+  passwordHash: 'passwordHash',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  phone: 'phone',
+  address: 'address',
+  phoneVerifiedAt: 'phoneVerifiedAt',
+  pendingVerificationSid: 'pendingVerificationSid',
+  phoneVerificationSentAt: 'phoneVerificationSentAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -993,10 +1151,30 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const ProfessionalApplicationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  businessName: 'businessName',
+  category: 'category',
+  description: 'description',
+  monthlyPrice: 'monthlyPrice',
+  currency: 'currency',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProfessionalApplicationScalarFieldEnum = (typeof ProfessionalApplicationScalarFieldEnum)[keyof typeof ProfessionalApplicationScalarFieldEnum]
+
+
 export const BusinessScalarFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
+  category: 'category',
+  professionalName: 'professionalName',
+  specialties: 'specialties',
+  address: 'address',
+  attentionMode: 'attentionMode',
   timezone: 'timezone',
   ownerId: 'ownerId',
   avatarUrl: 'avatarUrl',
@@ -1008,6 +1186,18 @@ export const BusinessScalarFieldEnum = {
 } as const
 
 export type BusinessScalarFieldEnum = (typeof BusinessScalarFieldEnum)[keyof typeof BusinessScalarFieldEnum]
+
+
+export const BusinessPhotoScalarFieldEnum = {
+  id: 'id',
+  businessId: 'businessId',
+  imageUrl: 'imageUrl',
+  imagePublicId: 'imagePublicId',
+  caption: 'caption',
+  createdAt: 'createdAt'
+} as const
+
+export type BusinessPhotoScalarFieldEnum = (typeof BusinessPhotoScalarFieldEnum)[keyof typeof BusinessPhotoScalarFieldEnum]
 
 
 export const ServiceScalarFieldEnum = {
@@ -1153,6 +1343,20 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
+ * Reference to a field of type 'BusinessCategory'
+ */
+export type EnumBusinessCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BusinessCategory'>
+    
+
+
+/**
+ * Reference to a field of type 'BusinessCategory[]'
+ */
+export type ListEnumBusinessCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BusinessCategory[]'>
+    
+
+
+/**
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -1163,6 +1367,20 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'AttentionMode'
+ */
+export type EnumAttentionModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AttentionMode'>
+    
+
+
+/**
+ * Reference to a field of type 'AttentionMode[]'
+ */
+export type ListEnumAttentionModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AttentionMode[]'>
     
 
 
@@ -1366,7 +1584,9 @@ export interface PrismaClientOptionsWithAdapter extends PrismaClientBaseOptions 
 export type PrismaClientOptions = PrismaClientOptionsWithAccelerateUrl | PrismaClientOptionsWithAdapter
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
+  professionalApplication?: Prisma.ProfessionalApplicationOmit
   business?: Prisma.BusinessOmit
+  businessPhoto?: Prisma.BusinessPhotoOmit
   service?: Prisma.ServiceOmit
   availability?: Prisma.AvailabilityOmit
   reservation?: Prisma.ReservationOmit

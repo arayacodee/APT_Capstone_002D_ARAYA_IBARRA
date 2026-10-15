@@ -3,6 +3,9 @@
   margin: 0 auto;
   padding: 70px 24px 120px;
 }
+.business-details { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; margin-top: 32px; padding: 28px; border-radius: 24px; background: var(--surface); }
+.business-details h2 { font-size: 16px; margin-bottom: 10px; }
+.business-details p { color: var(--text-secondary); margin: 0; white-space: pre-line; overflow-wrap: anywhere; }
 
 
 /* HERO DEL PERFIL */
