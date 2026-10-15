@@ -42,7 +42,7 @@ router.patch(
 // por el profesional propietario del negocio.
 router.patch(
   "/:id/complete",
-  requireRole("PROFESSIONAL"),
+  requireRole("PROFESSIONAL", "SUPERADMIN"),
   completeReservation
 );
 

@@ -70,12 +70,12 @@
           <div class="reservation-details">
             <p>
               <strong>Fecha:</strong>
-              {{ formatDate(reservation.startsAt) }}
+              {{ formatDate(reservation.startsAt, reservation.business?.timezone) }}
             </p>
 
             <p>
               <strong>Hora:</strong>
-              {{ formatTime(reservation.startsAt) }}
+              {{ formatTime(reservation.startsAt, reservation.business?.timezone) }}
             </p>
 
             @if (reservation.service) {
@@ -93,12 +93,12 @@
           </div>
         </div>
 
-        @if (reservation.status !== 'CANCELLED') {
+        @if (reservation.status === 'CONFIRMED' || reservation.status === 'PENDING') {
           <button
             type="button"
             class="cancel-button"
             [disabled]="
-              cancellingId() === reservation.id
+              cancellingId() !== null
             "
             (click)="cancelReservation(reservation)"
           >

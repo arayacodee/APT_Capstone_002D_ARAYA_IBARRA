@@ -1,3 +1,4 @@
+import { environment } from '../../../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -19,7 +20,10 @@ import {
 import {
   CreateReservationRequest,
   Reservation,
-  CompleteReservationResponse
+  CompleteReservationResponse,
+  ClientSession,
+  SessionEvidence,
+  SessionPage
 } from '../../models/reservation.model';
 
 
@@ -33,7 +37,19 @@ import {
   providedIn: 'root'
 })
 export class ApiService {
-  private readonly baseUrl = 'http://localhost:3000';
+  activateProfessionalDemo() { return this.http.post<AuthResponse>(`${this.baseUrl}/api/account/professional-application/activate-demo`, {}); }
+  passwordLogin(email: string, password: string) { return this.http.post<AuthResponse>(`${this.baseUrl}/api/auth/login`, { email, password }); }
+  register(data: { email: string; password: string; firstName: string; lastName: string; phone: string; address: string }) { return this.http.post<AuthResponse>(`${this.baseUrl}/api/auth/register`, data); }
+  accountConfiguration() { return this.http.get<{ smsAvailable: boolean; monthlyPrice: number; currency: string; paymentsAvailable: boolean }>(`${this.baseUrl}/api/account/configuration`); }
+  updateContact(data: { firstName: string; lastName: string; phone: string; address: string }) { return this.http.patch<AuthResponse>(`${this.baseUrl}/api/account/profile`, data); }
+  sendPhoneCode() { return this.http.post<{ message: string }>(`${this.baseUrl}/api/account/phone/send`, {}); }
+  checkPhoneCode(code: string) { return this.http.post<AuthResponse>(`${this.baseUrl}/api/account/phone/check`, { code }); }
+  professionalApplication() { return this.http.get<{ application: { businessName: string; category: 'GENERAL' | 'WELLNESS' | 'BEAUTY'; description: string | null } | null }>(`${this.baseUrl}/api/account/professional-application`); }
+  saveProfessionalApplication(data: { businessName: string; category: 'GENERAL' | 'WELLNESS' | 'BEAUTY'; description: string }) { return this.http.put(`${this.baseUrl}/api/account/professional-application`, data); }
+  adminLogin(email: string, password: string): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.baseUrl}/api/auth/admin`, { email, password });
+  }
+  private readonly baseUrl = environment.apiUrl.replace(/\/$/, '');
 
   constructor(private readonly http: HttpClient) {}
 
@@ -135,6 +151,14 @@ export class ApiService {
       `${this.baseUrl}/api/businesses/me/cover`,
       formData
     );
+  }
+
+  deleteBusinessAvatar(): Observable<Business> {
+    return this.http.delete<Business>(`${this.baseUrl}/api/businesses/me/avatar`);
+  }
+
+  deleteBusinessCover(): Observable<Business> {
+    return this.http.delete<Business>(`${this.baseUrl}/api/businesses/me/cover`);
   }
 
 
@@ -251,4 +275,26 @@ export class ApiService {
       {}
     );
   }
+
+  getSessions(cursor?: string): Observable<SessionPage> {
+    return this.http.get<SessionPage>(
+      `${this.baseUrl}/api/sessions`, { params: cursor ? { cursor } : {} }
+    );
+  }
+
+  updateSession(id: string, notes: string | null): Observable<ClientSession> {
+    return this.http.patch<ClientSession>(`${this.baseUrl}/api/sessions/${id}`, { notes });
+  }
+
+  addEvidence(id: string, file: File, caption: string): Observable<SessionEvidence> {
+    const data = new FormData();
+    data.append('image', file);
+    data.append('caption', caption);
+    return this.http.post<SessionEvidence>(`${this.baseUrl}/api/sessions/${id}/evidences`, data);
+  }
+
+  deleteEvidence(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/api/sessions/evidences/${id}`);
+  }
 }
+

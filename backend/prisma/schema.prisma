@@ -10,6 +10,19 @@ datasource db {
 enum UserRole {
   CLIENT
   PROFESSIONAL
+  SUPERADMIN
+}
+
+enum BusinessCategory {
+  GENERAL
+  WELLNESS
+  BEAUTY
+}
+
+enum AttentionMode {
+  ONSITE
+  ONLINE
+  BOTH
 }
 
 enum ReservationStatus {
@@ -25,6 +38,15 @@ model User {
   name         String?
   role         UserRole
   googleId     String?       @unique
+  passwordHash String?
+  firstName    String?
+  lastName     String?
+  phone        String?
+  address      String?
+  phoneVerifiedAt DateTime?
+  pendingVerificationSid String?
+  phoneVerificationSentAt DateTime?
+  professionalApplication ProfessionalApplication?
 
   businesses   Business[]
   reservations Reservation[]
@@ -34,10 +56,29 @@ model User {
   updatedAt    DateTime      @updatedAt
 }
 
+model ProfessionalApplication {
+  id String @id @default(uuid())
+  userId String @unique
+  businessName String
+  category BusinessCategory @default(GENERAL)
+  description String?
+  monthlyPrice Int @default(7900)
+  currency String @default("CLP")
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model Business {
+  photos BusinessPhoto[]
   id             String         @id @default(uuid())
   name           String
   description    String?
+  category       BusinessCategory @default(GENERAL)
+  professionalName String?
+  specialties    String?
+  address        String?
+  attentionMode  AttentionMode?
   timezone       String @default("America/Santiago")
   ownerId        String
 
@@ -54,6 +95,17 @@ model Business {
 
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
+}
+
+model BusinessPhoto {
+  id String @id @default(uuid())
+  businessId String
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  imageUrl String
+  imagePublicId String
+  caption String?
+  createdAt DateTime @default(now())
+  @@index([businessId, createdAt])
 }
 
 

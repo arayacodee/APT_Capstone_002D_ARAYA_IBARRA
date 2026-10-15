@@ -1,4 +1,5 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, computed } from '@angular/core';
+import { BusinessCategory, businessCategories, businessLabels } from '../../models/business-category';
 import { RouterLink } from '@angular/router';
 
 import { ApiService } from '../../core/services/api.service';
@@ -11,6 +12,10 @@ import { Business } from '../../models/business.model';
   styleUrl: './home.css'
 })
 export class Home implements OnInit {
+  readonly categories = businessCategories;
+  readonly category = signal<BusinessCategory | ''>('');
+  readonly filteredBusinesses = computed(() => this.businesses().filter(business => !this.category() || (business.category ?? 'GENERAL') === this.category()));
+  readonly businessLabels = businessLabels;
   businesses = signal<Business[]>([]);
   loading = signal(true);
   errorMessage = signal('');

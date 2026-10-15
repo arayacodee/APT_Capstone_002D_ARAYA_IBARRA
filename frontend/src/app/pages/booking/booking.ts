@@ -1,5 +1,8 @@
 import {
   Component,
+  DestroyRef,
+  computed,
+  inject,
   OnInit,
   signal
 } from '@angular/core';
@@ -9,10 +12,13 @@ import {
   RouterLink
 } from '@angular/router';
 
+import { Subscription } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ApiService } from '../../core/services/api.service';
 import { AuthService } from '../../core/services/auth.service';
 
 import { Business } from '../../models/business.model';
+import { businessLabels } from '../../models/business-category';
 import { Service } from '../../models/service.model';
 
 @Component({
@@ -22,6 +28,7 @@ import { Service } from '../../models/service.model';
   styleUrl: './booking.css'
 })
 export class Booking implements OnInit {
+  readonly labels = computed(() => businessLabels(this.business()?.category));
   service = signal<Service | null>(null);
   business = signal<Business | null>(null);
 
@@ -36,8 +43,16 @@ export class Booking implements OnInit {
   errorMessage = signal('');
   successMessage = signal('');
 
-  readonly minDate =
-    new Date().toISOString().slice(0, 10);
+  private readonly destroyRef = inject(DestroyRef);
+  private slotsRequest?: Subscription;
+  readonly minDate = computed(() => {
+    const parts = new Intl.DateTimeFormat('en-US', {
+      timeZone: this.business()?.timezone ?? 'America/Santiago',
+      year: 'numeric', month: '2-digit', day: '2-digit'
+    }).formatToParts(new Date());
+    const part = (type: string) => parts.find(p => p.type === type)!.value;
+    return part('year') + '-' + part('month') + '-' + part('day');
+  });
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -131,6 +146,8 @@ export class Booking implements OnInit {
     const input =
       event.target as HTMLInputElement;
 
+    this.slotsRequest?.unsubscribe();
+    this.loadingSlots.set(false);
     this.selectedDate.set(
       input.value
     );
@@ -154,16 +171,17 @@ export class Booking implements OnInit {
       return;
     }
 
+    this.slotsRequest?.unsubscribe();
     this.loadingSlots.set(true);
-    this.errorMessage.set('');
 
     // Angular ya no descarga reservas de otros clientes.
     // Express devuelve únicamente los horarios libres.
-    this.api
+    this.slotsRequest = this.api
       .getAvailableSlots(
         service.id,
         date
       )
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (response) => {
           this.availableTimes.set(
@@ -196,6 +214,7 @@ export class Booking implements OnInit {
   }
 
   confirmReservation(): void {
+    if (this.submitting() || this.loadingSlots()) return;
     const service = this.service();
     const business = this.business();
 
@@ -203,7 +222,8 @@ export class Booking implements OnInit {
       !service ||
       !business ||
       !this.selectedDate() ||
-      !this.selectedTime()
+      !this.selectedTime() ||
+      !this.availableTimes().includes(this.selectedTime())
     ) {
       this.errorMessage.set(
         'Selecciona una fecha y una hora.'

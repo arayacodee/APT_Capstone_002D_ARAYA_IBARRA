@@ -1,21 +1,15 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { ProfessionalProfile } from './professional-profile';
+import { testProviders } from '../../testing/test-providers';
 
 describe('ProfessionalProfile', () => {
-  let component: ProfessionalProfile;
-  let fixture: ComponentFixture<ProfessionalProfile>;
-
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ProfessionalProfile],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(ProfessionalProfile);
-    component = fixture.componentInstance;
-    await fixture.whenStable();
+    await TestBed.configureTestingModule({ imports: [ProfessionalProfile], providers: testProviders() }).compileComponents();
   });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('renderiza sin sesión y sin depender de servicios externos', async () => {
+    const fixture = TestBed.createComponent(ProfessionalProfile);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(fixture.componentInstance).toBeTruthy();
   });
 });

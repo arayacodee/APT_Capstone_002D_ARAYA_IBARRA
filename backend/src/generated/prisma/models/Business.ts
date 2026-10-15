@@ -28,6 +28,11 @@ export type BusinessMinAggregateOutputType = {
   id: string | null
   name: string | null
   description: string | null
+  category: $Enums.BusinessCategory | null
+  professionalName: string | null
+  specialties: string | null
+  address: string | null
+  attentionMode: $Enums.AttentionMode | null
   timezone: string | null
   ownerId: string | null
   avatarUrl: string | null
@@ -42,6 +47,11 @@ export type BusinessMaxAggregateOutputType = {
   id: string | null
   name: string | null
   description: string | null
+  category: $Enums.BusinessCategory | null
+  professionalName: string | null
+  specialties: string | null
+  address: string | null
+  attentionMode: $Enums.AttentionMode | null
   timezone: string | null
   ownerId: string | null
   avatarUrl: string | null
@@ -56,6 +66,11 @@ export type BusinessCountAggregateOutputType = {
   id: number
   name: number
   description: number
+  category: number
+  professionalName: number
+  specialties: number
+  address: number
+  attentionMode: number
   timezone: number
   ownerId: number
   avatarUrl: number
@@ -72,6 +87,11 @@ export type BusinessMinAggregateInputType = {
   id?: true
   name?: true
   description?: true
+  category?: true
+  professionalName?: true
+  specialties?: true
+  address?: true
+  attentionMode?: true
   timezone?: true
   ownerId?: true
   avatarUrl?: true
@@ -86,6 +106,11 @@ export type BusinessMaxAggregateInputType = {
   id?: true
   name?: true
   description?: true
+  category?: true
+  professionalName?: true
+  specialties?: true
+  address?: true
+  attentionMode?: true
   timezone?: true
   ownerId?: true
   avatarUrl?: true
@@ -100,6 +125,11 @@ export type BusinessCountAggregateInputType = {
   id?: true
   name?: true
   description?: true
+  category?: true
+  professionalName?: true
+  specialties?: true
+  address?: true
+  attentionMode?: true
   timezone?: true
   ownerId?: true
   avatarUrl?: true
@@ -187,6 +217,11 @@ export type BusinessGroupByOutputType = {
   id: string
   name: string
   description: string | null
+  category: $Enums.BusinessCategory
+  professionalName: string | null
+  specialties: string | null
+  address: string | null
+  attentionMode: $Enums.AttentionMode | null
   timezone: string
   ownerId: string
   avatarUrl: string | null
@@ -222,6 +257,11 @@ export type BusinessWhereInput = {
   id?: Prisma.StringFilter<"Business"> | string
   name?: Prisma.StringFilter<"Business"> | string
   description?: Prisma.StringNullableFilter<"Business"> | string | null
+  category?: Prisma.EnumBusinessCategoryFilter<"Business"> | $Enums.BusinessCategory
+  professionalName?: Prisma.StringNullableFilter<"Business"> | string | null
+  specialties?: Prisma.StringNullableFilter<"Business"> | string | null
+  address?: Prisma.StringNullableFilter<"Business"> | string | null
+  attentionMode?: Prisma.EnumAttentionModeNullableFilter<"Business"> | $Enums.AttentionMode | null
   timezone?: Prisma.StringFilter<"Business"> | string
   ownerId?: Prisma.StringFilter<"Business"> | string
   avatarUrl?: Prisma.StringNullableFilter<"Business"> | string | null
@@ -230,6 +270,7 @@ export type BusinessWhereInput = {
   coverPublicId?: Prisma.StringNullableFilter<"Business"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Business"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Business"> | Date | string
+  photos?: Prisma.BusinessPhotoListRelationFilter
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   services?: Prisma.ServiceListRelationFilter
   availabilities?: Prisma.AvailabilityListRelationFilter
@@ -241,6 +282,11 @@ export type BusinessOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  category?: Prisma.SortOrder
+  professionalName?: Prisma.SortOrderInput | Prisma.SortOrder
+  specialties?: Prisma.SortOrderInput | Prisma.SortOrder
+  address?: Prisma.SortOrderInput | Prisma.SortOrder
+  attentionMode?: Prisma.SortOrderInput | Prisma.SortOrder
   timezone?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   avatarUrl?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -249,6 +295,7 @@ export type BusinessOrderByWithRelationInput = {
   coverPublicId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  photos?: Prisma.BusinessPhotoOrderByRelationAggregateInput
   owner?: Prisma.UserOrderByWithRelationInput
   services?: Prisma.ServiceOrderByRelationAggregateInput
   availabilities?: Prisma.AvailabilityOrderByRelationAggregateInput
@@ -263,6 +310,11 @@ export type BusinessWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.BusinessWhereInput | Prisma.BusinessWhereInput[]
   name?: Prisma.StringFilter<"Business"> | string
   description?: Prisma.StringNullableFilter<"Business"> | string | null
+  category?: Prisma.EnumBusinessCategoryFilter<"Business"> | $Enums.BusinessCategory
+  professionalName?: Prisma.StringNullableFilter<"Business"> | string | null
+  specialties?: Prisma.StringNullableFilter<"Business"> | string | null
+  address?: Prisma.StringNullableFilter<"Business"> | string | null
+  attentionMode?: Prisma.EnumAttentionModeNullableFilter<"Business"> | $Enums.AttentionMode | null
   timezone?: Prisma.StringFilter<"Business"> | string
   ownerId?: Prisma.StringFilter<"Business"> | string
   avatarUrl?: Prisma.StringNullableFilter<"Business"> | string | null
@@ -271,6 +323,7 @@ export type BusinessWhereUniqueInput = Prisma.AtLeast<{
   coverPublicId?: Prisma.StringNullableFilter<"Business"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Business"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Business"> | Date | string
+  photos?: Prisma.BusinessPhotoListRelationFilter
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   services?: Prisma.ServiceListRelationFilter
   availabilities?: Prisma.AvailabilityListRelationFilter
@@ -282,6 +335,11 @@ export type BusinessOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  category?: Prisma.SortOrder
+  professionalName?: Prisma.SortOrderInput | Prisma.SortOrder
+  specialties?: Prisma.SortOrderInput | Prisma.SortOrder
+  address?: Prisma.SortOrderInput | Prisma.SortOrder
+  attentionMode?: Prisma.SortOrderInput | Prisma.SortOrder
   timezone?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   avatarUrl?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -302,6 +360,11 @@ export type BusinessScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Business"> | string
   name?: Prisma.StringWithAggregatesFilter<"Business"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"Business"> | string | null
+  category?: Prisma.EnumBusinessCategoryWithAggregatesFilter<"Business"> | $Enums.BusinessCategory
+  professionalName?: Prisma.StringNullableWithAggregatesFilter<"Business"> | string | null
+  specialties?: Prisma.StringNullableWithAggregatesFilter<"Business"> | string | null
+  address?: Prisma.StringNullableWithAggregatesFilter<"Business"> | string | null
+  attentionMode?: Prisma.EnumAttentionModeNullableWithAggregatesFilter<"Business"> | $Enums.AttentionMode | null
   timezone?: Prisma.StringWithAggregatesFilter<"Business"> | string
   ownerId?: Prisma.StringWithAggregatesFilter<"Business"> | string
   avatarUrl?: Prisma.StringNullableWithAggregatesFilter<"Business"> | string | null
@@ -316,6 +379,11 @@ export type BusinessCreateInput = {
   id?: string
   name: string
   description?: string | null
+  category?: $Enums.BusinessCategory
+  professionalName?: string | null
+  specialties?: string | null
+  address?: string | null
+  attentionMode?: $Enums.AttentionMode | null
   timezone?: string
   avatarUrl?: string | null
   avatarPublicId?: string | null
@@ -323,6 +391,7 @@ export type BusinessCreateInput = {
   coverPublicId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  photos?: Prisma.BusinessPhotoCreateNestedManyWithoutBusinessInput
   owner: Prisma.UserCreateNestedOneWithoutBusinessesInput
   services?: Prisma.ServiceCreateNestedManyWithoutBusinessInput
   availabilities?: Prisma.AvailabilityCreateNestedManyWithoutBusinessInput
@@ -334,6 +403,11 @@ export type BusinessUncheckedCreateInput = {
   id?: string
   name: string
   description?: string | null
+  category?: $Enums.BusinessCategory
+  professionalName?: string | null
+  specialties?: string | null
+  address?: string | null
+  attentionMode?: $Enums.AttentionMode | null
   timezone?: string
   ownerId: string
   avatarUrl?: string | null
@@ -342,6 +416,7 @@ export type BusinessUncheckedCreateInput = {
   coverPublicId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  photos?: Prisma.BusinessPhotoUncheckedCreateNestedManyWithoutBusinessInput
   services?: Prisma.ServiceUncheckedCreateNestedManyWithoutBusinessInput
   availabilities?: Prisma.AvailabilityUncheckedCreateNestedManyWithoutBusinessInput
   reservations?: Prisma.ReservationUncheckedCreateNestedManyWithoutBusinessInput
@@ -352,6 +427,11 @@ export type BusinessUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.EnumBusinessCategoryFieldUpdateOperationsInput | $Enums.BusinessCategory
+  professionalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  specialties?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attentionMode?: Prisma.NullableEnumAttentionModeFieldUpdateOperationsInput | $Enums.AttentionMode | null
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -359,6 +439,7 @@ export type BusinessUpdateInput = {
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  photos?: Prisma.BusinessPhotoUpdateManyWithoutBusinessNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutBusinessesNestedInput
   services?: Prisma.ServiceUpdateManyWithoutBusinessNestedInput
   availabilities?: Prisma.AvailabilityUpdateManyWithoutBusinessNestedInput
@@ -370,6 +451,11 @@ export type BusinessUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.EnumBusinessCategoryFieldUpdateOperationsInput | $Enums.BusinessCategory
+  professionalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  specialties?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attentionMode?: Prisma.NullableEnumAttentionModeFieldUpdateOperationsInput | $Enums.AttentionMode | null
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -378,6 +464,7 @@ export type BusinessUncheckedUpdateInput = {
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  photos?: Prisma.BusinessPhotoUncheckedUpdateManyWithoutBusinessNestedInput
   services?: Prisma.ServiceUncheckedUpdateManyWithoutBusinessNestedInput
   availabilities?: Prisma.AvailabilityUncheckedUpdateManyWithoutBusinessNestedInput
   reservations?: Prisma.ReservationUncheckedUpdateManyWithoutBusinessNestedInput
@@ -388,6 +475,11 @@ export type BusinessCreateManyInput = {
   id?: string
   name: string
   description?: string | null
+  category?: $Enums.BusinessCategory
+  professionalName?: string | null
+  specialties?: string | null
+  address?: string | null
+  attentionMode?: $Enums.AttentionMode | null
   timezone?: string
   ownerId: string
   avatarUrl?: string | null
@@ -402,6 +494,11 @@ export type BusinessUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.EnumBusinessCategoryFieldUpdateOperationsInput | $Enums.BusinessCategory
+  professionalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  specialties?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attentionMode?: Prisma.NullableEnumAttentionModeFieldUpdateOperationsInput | $Enums.AttentionMode | null
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -415,6 +512,11 @@ export type BusinessUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.EnumBusinessCategoryFieldUpdateOperationsInput | $Enums.BusinessCategory
+  professionalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  specialties?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attentionMode?: Prisma.NullableEnumAttentionModeFieldUpdateOperationsInput | $Enums.AttentionMode | null
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -439,6 +541,11 @@ export type BusinessCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  category?: Prisma.SortOrder
+  professionalName?: Prisma.SortOrder
+  specialties?: Prisma.SortOrder
+  address?: Prisma.SortOrder
+  attentionMode?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   avatarUrl?: Prisma.SortOrder
@@ -453,6 +560,11 @@ export type BusinessMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  category?: Prisma.SortOrder
+  professionalName?: Prisma.SortOrder
+  specialties?: Prisma.SortOrder
+  address?: Prisma.SortOrder
+  attentionMode?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   avatarUrl?: Prisma.SortOrder
@@ -467,6 +579,11 @@ export type BusinessMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  category?: Prisma.SortOrder
+  professionalName?: Prisma.SortOrder
+  specialties?: Prisma.SortOrder
+  address?: Prisma.SortOrder
+  attentionMode?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   avatarUrl?: Prisma.SortOrder
@@ -522,6 +639,24 @@ export type BusinessUncheckedUpdateManyWithoutOwnerNestedInput = {
   update?: Prisma.BusinessUpdateWithWhereUniqueWithoutOwnerInput | Prisma.BusinessUpdateWithWhereUniqueWithoutOwnerInput[]
   updateMany?: Prisma.BusinessUpdateManyWithWhereWithoutOwnerInput | Prisma.BusinessUpdateManyWithWhereWithoutOwnerInput[]
   deleteMany?: Prisma.BusinessScalarWhereInput | Prisma.BusinessScalarWhereInput[]
+}
+
+export type NullableEnumAttentionModeFieldUpdateOperationsInput = {
+  set?: $Enums.AttentionMode | null
+}
+
+export type BusinessCreateNestedOneWithoutPhotosInput = {
+  create?: Prisma.XOR<Prisma.BusinessCreateWithoutPhotosInput, Prisma.BusinessUncheckedCreateWithoutPhotosInput>
+  connectOrCreate?: Prisma.BusinessCreateOrConnectWithoutPhotosInput
+  connect?: Prisma.BusinessWhereUniqueInput
+}
+
+export type BusinessUpdateOneRequiredWithoutPhotosNestedInput = {
+  create?: Prisma.XOR<Prisma.BusinessCreateWithoutPhotosInput, Prisma.BusinessUncheckedCreateWithoutPhotosInput>
+  connectOrCreate?: Prisma.BusinessCreateOrConnectWithoutPhotosInput
+  upsert?: Prisma.BusinessUpsertWithoutPhotosInput
+  connect?: Prisma.BusinessWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BusinessUpdateToOneWithWhereWithoutPhotosInput, Prisma.BusinessUpdateWithoutPhotosInput>, Prisma.BusinessUncheckedUpdateWithoutPhotosInput>
 }
 
 export type BusinessCreateNestedOneWithoutServicesInput = {
@@ -584,6 +719,11 @@ export type BusinessCreateWithoutOwnerInput = {
   id?: string
   name: string
   description?: string | null
+  category?: $Enums.BusinessCategory
+  professionalName?: string | null
+  specialties?: string | null
+  address?: string | null
+  attentionMode?: $Enums.AttentionMode | null
   timezone?: string
   avatarUrl?: string | null
   avatarPublicId?: string | null
@@ -591,6 +731,7 @@ export type BusinessCreateWithoutOwnerInput = {
   coverPublicId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  photos?: Prisma.BusinessPhotoCreateNestedManyWithoutBusinessInput
   services?: Prisma.ServiceCreateNestedManyWithoutBusinessInput
   availabilities?: Prisma.AvailabilityCreateNestedManyWithoutBusinessInput
   reservations?: Prisma.ReservationCreateNestedManyWithoutBusinessInput
@@ -601,6 +742,11 @@ export type BusinessUncheckedCreateWithoutOwnerInput = {
   id?: string
   name: string
   description?: string | null
+  category?: $Enums.BusinessCategory
+  professionalName?: string | null
+  specialties?: string | null
+  address?: string | null
+  attentionMode?: $Enums.AttentionMode | null
   timezone?: string
   avatarUrl?: string | null
   avatarPublicId?: string | null
@@ -608,6 +754,7 @@ export type BusinessUncheckedCreateWithoutOwnerInput = {
   coverPublicId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  photos?: Prisma.BusinessPhotoUncheckedCreateNestedManyWithoutBusinessInput
   services?: Prisma.ServiceUncheckedCreateNestedManyWithoutBusinessInput
   availabilities?: Prisma.AvailabilityUncheckedCreateNestedManyWithoutBusinessInput
   reservations?: Prisma.ReservationUncheckedCreateNestedManyWithoutBusinessInput
@@ -647,6 +794,11 @@ export type BusinessScalarWhereInput = {
   id?: Prisma.StringFilter<"Business"> | string
   name?: Prisma.StringFilter<"Business"> | string
   description?: Prisma.StringNullableFilter<"Business"> | string | null
+  category?: Prisma.EnumBusinessCategoryFilter<"Business"> | $Enums.BusinessCategory
+  professionalName?: Prisma.StringNullableFilter<"Business"> | string | null
+  specialties?: Prisma.StringNullableFilter<"Business"> | string | null
+  address?: Prisma.StringNullableFilter<"Business"> | string | null
+  attentionMode?: Prisma.EnumAttentionModeNullableFilter<"Business"> | $Enums.AttentionMode | null
   timezone?: Prisma.StringFilter<"Business"> | string
   ownerId?: Prisma.StringFilter<"Business"> | string
   avatarUrl?: Prisma.StringNullableFilter<"Business"> | string | null
@@ -657,10 +809,15 @@ export type BusinessScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Business"> | Date | string
 }
 
-export type BusinessCreateWithoutServicesInput = {
+export type BusinessCreateWithoutPhotosInput = {
   id?: string
   name: string
   description?: string | null
+  category?: $Enums.BusinessCategory
+  professionalName?: string | null
+  specialties?: string | null
+  address?: string | null
+  attentionMode?: $Enums.AttentionMode | null
   timezone?: string
   avatarUrl?: string | null
   avatarPublicId?: string | null
@@ -668,6 +825,115 @@ export type BusinessCreateWithoutServicesInput = {
   coverPublicId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  owner: Prisma.UserCreateNestedOneWithoutBusinessesInput
+  services?: Prisma.ServiceCreateNestedManyWithoutBusinessInput
+  availabilities?: Prisma.AvailabilityCreateNestedManyWithoutBusinessInput
+  reservations?: Prisma.ReservationCreateNestedManyWithoutBusinessInput
+  clientSessions?: Prisma.ClientSessionCreateNestedManyWithoutBusinessInput
+}
+
+export type BusinessUncheckedCreateWithoutPhotosInput = {
+  id?: string
+  name: string
+  description?: string | null
+  category?: $Enums.BusinessCategory
+  professionalName?: string | null
+  specialties?: string | null
+  address?: string | null
+  attentionMode?: $Enums.AttentionMode | null
+  timezone?: string
+  ownerId: string
+  avatarUrl?: string | null
+  avatarPublicId?: string | null
+  coverUrl?: string | null
+  coverPublicId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutBusinessInput
+  availabilities?: Prisma.AvailabilityUncheckedCreateNestedManyWithoutBusinessInput
+  reservations?: Prisma.ReservationUncheckedCreateNestedManyWithoutBusinessInput
+  clientSessions?: Prisma.ClientSessionUncheckedCreateNestedManyWithoutBusinessInput
+}
+
+export type BusinessCreateOrConnectWithoutPhotosInput = {
+  where: Prisma.BusinessWhereUniqueInput
+  create: Prisma.XOR<Prisma.BusinessCreateWithoutPhotosInput, Prisma.BusinessUncheckedCreateWithoutPhotosInput>
+}
+
+export type BusinessUpsertWithoutPhotosInput = {
+  update: Prisma.XOR<Prisma.BusinessUpdateWithoutPhotosInput, Prisma.BusinessUncheckedUpdateWithoutPhotosInput>
+  create: Prisma.XOR<Prisma.BusinessCreateWithoutPhotosInput, Prisma.BusinessUncheckedCreateWithoutPhotosInput>
+  where?: Prisma.BusinessWhereInput
+}
+
+export type BusinessUpdateToOneWithWhereWithoutPhotosInput = {
+  where?: Prisma.BusinessWhereInput
+  data: Prisma.XOR<Prisma.BusinessUpdateWithoutPhotosInput, Prisma.BusinessUncheckedUpdateWithoutPhotosInput>
+}
+
+export type BusinessUpdateWithoutPhotosInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.EnumBusinessCategoryFieldUpdateOperationsInput | $Enums.BusinessCategory
+  professionalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  specialties?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attentionMode?: Prisma.NullableEnumAttentionModeFieldUpdateOperationsInput | $Enums.AttentionMode | null
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  owner?: Prisma.UserUpdateOneRequiredWithoutBusinessesNestedInput
+  services?: Prisma.ServiceUpdateManyWithoutBusinessNestedInput
+  availabilities?: Prisma.AvailabilityUpdateManyWithoutBusinessNestedInput
+  reservations?: Prisma.ReservationUpdateManyWithoutBusinessNestedInput
+  clientSessions?: Prisma.ClientSessionUpdateManyWithoutBusinessNestedInput
+}
+
+export type BusinessUncheckedUpdateWithoutPhotosInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.EnumBusinessCategoryFieldUpdateOperationsInput | $Enums.BusinessCategory
+  professionalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  specialties?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attentionMode?: Prisma.NullableEnumAttentionModeFieldUpdateOperationsInput | $Enums.AttentionMode | null
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  services?: Prisma.ServiceUncheckedUpdateManyWithoutBusinessNestedInput
+  availabilities?: Prisma.AvailabilityUncheckedUpdateManyWithoutBusinessNestedInput
+  reservations?: Prisma.ReservationUncheckedUpdateManyWithoutBusinessNestedInput
+  clientSessions?: Prisma.ClientSessionUncheckedUpdateManyWithoutBusinessNestedInput
+}
+
+export type BusinessCreateWithoutServicesInput = {
+  id?: string
+  name: string
+  description?: string | null
+  category?: $Enums.BusinessCategory
+  professionalName?: string | null
+  specialties?: string | null
+  address?: string | null
+  attentionMode?: $Enums.AttentionMode | null
+  timezone?: string
+  avatarUrl?: string | null
+  avatarPublicId?: string | null
+  coverUrl?: string | null
+  coverPublicId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  photos?: Prisma.BusinessPhotoCreateNestedManyWithoutBusinessInput
   owner: Prisma.UserCreateNestedOneWithoutBusinessesInput
   availabilities?: Prisma.AvailabilityCreateNestedManyWithoutBusinessInput
   reservations?: Prisma.ReservationCreateNestedManyWithoutBusinessInput
@@ -678,6 +944,11 @@ export type BusinessUncheckedCreateWithoutServicesInput = {
   id?: string
   name: string
   description?: string | null
+  category?: $Enums.BusinessCategory
+  professionalName?: string | null
+  specialties?: string | null
+  address?: string | null
+  attentionMode?: $Enums.AttentionMode | null
   timezone?: string
   ownerId: string
   avatarUrl?: string | null
@@ -686,6 +957,7 @@ export type BusinessUncheckedCreateWithoutServicesInput = {
   coverPublicId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  photos?: Prisma.BusinessPhotoUncheckedCreateNestedManyWithoutBusinessInput
   availabilities?: Prisma.AvailabilityUncheckedCreateNestedManyWithoutBusinessInput
   reservations?: Prisma.ReservationUncheckedCreateNestedManyWithoutBusinessInput
   clientSessions?: Prisma.ClientSessionUncheckedCreateNestedManyWithoutBusinessInput
@@ -711,6 +983,11 @@ export type BusinessUpdateWithoutServicesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.EnumBusinessCategoryFieldUpdateOperationsInput | $Enums.BusinessCategory
+  professionalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  specialties?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attentionMode?: Prisma.NullableEnumAttentionModeFieldUpdateOperationsInput | $Enums.AttentionMode | null
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -718,6 +995,7 @@ export type BusinessUpdateWithoutServicesInput = {
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  photos?: Prisma.BusinessPhotoUpdateManyWithoutBusinessNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutBusinessesNestedInput
   availabilities?: Prisma.AvailabilityUpdateManyWithoutBusinessNestedInput
   reservations?: Prisma.ReservationUpdateManyWithoutBusinessNestedInput
@@ -728,6 +1006,11 @@ export type BusinessUncheckedUpdateWithoutServicesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.EnumBusinessCategoryFieldUpdateOperationsInput | $Enums.BusinessCategory
+  professionalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  specialties?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attentionMode?: Prisma.NullableEnumAttentionModeFieldUpdateOperationsInput | $Enums.AttentionMode | null
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -736,6 +1019,7 @@ export type BusinessUncheckedUpdateWithoutServicesInput = {
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  photos?: Prisma.BusinessPhotoUncheckedUpdateManyWithoutBusinessNestedInput
   availabilities?: Prisma.AvailabilityUncheckedUpdateManyWithoutBusinessNestedInput
   reservations?: Prisma.ReservationUncheckedUpdateManyWithoutBusinessNestedInput
   clientSessions?: Prisma.ClientSessionUncheckedUpdateManyWithoutBusinessNestedInput
@@ -745,6 +1029,11 @@ export type BusinessCreateWithoutAvailabilitiesInput = {
   id?: string
   name: string
   description?: string | null
+  category?: $Enums.BusinessCategory
+  professionalName?: string | null
+  specialties?: string | null
+  address?: string | null
+  attentionMode?: $Enums.AttentionMode | null
   timezone?: string
   avatarUrl?: string | null
   avatarPublicId?: string | null
@@ -752,6 +1041,7 @@ export type BusinessCreateWithoutAvailabilitiesInput = {
   coverPublicId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  photos?: Prisma.BusinessPhotoCreateNestedManyWithoutBusinessInput
   owner: Prisma.UserCreateNestedOneWithoutBusinessesInput
   services?: Prisma.ServiceCreateNestedManyWithoutBusinessInput
   reservations?: Prisma.ReservationCreateNestedManyWithoutBusinessInput
@@ -762,6 +1052,11 @@ export type BusinessUncheckedCreateWithoutAvailabilitiesInput = {
   id?: string
   name: string
   description?: string | null
+  category?: $Enums.BusinessCategory
+  professionalName?: string | null
+  specialties?: string | null
+  address?: string | null
+  attentionMode?: $Enums.AttentionMode | null
   timezone?: string
   ownerId: string
   avatarUrl?: string | null
@@ -770,6 +1065,7 @@ export type BusinessUncheckedCreateWithoutAvailabilitiesInput = {
   coverPublicId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  photos?: Prisma.BusinessPhotoUncheckedCreateNestedManyWithoutBusinessInput
   services?: Prisma.ServiceUncheckedCreateNestedManyWithoutBusinessInput
   reservations?: Prisma.ReservationUncheckedCreateNestedManyWithoutBusinessInput
   clientSessions?: Prisma.ClientSessionUncheckedCreateNestedManyWithoutBusinessInput
@@ -795,6 +1091,11 @@ export type BusinessUpdateWithoutAvailabilitiesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.EnumBusinessCategoryFieldUpdateOperationsInput | $Enums.BusinessCategory
+  professionalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  specialties?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attentionMode?: Prisma.NullableEnumAttentionModeFieldUpdateOperationsInput | $Enums.AttentionMode | null
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -802,6 +1103,7 @@ export type BusinessUpdateWithoutAvailabilitiesInput = {
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  photos?: Prisma.BusinessPhotoUpdateManyWithoutBusinessNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutBusinessesNestedInput
   services?: Prisma.ServiceUpdateManyWithoutBusinessNestedInput
   reservations?: Prisma.ReservationUpdateManyWithoutBusinessNestedInput
@@ -812,6 +1114,11 @@ export type BusinessUncheckedUpdateWithoutAvailabilitiesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.EnumBusinessCategoryFieldUpdateOperationsInput | $Enums.BusinessCategory
+  professionalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  specialties?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attentionMode?: Prisma.NullableEnumAttentionModeFieldUpdateOperationsInput | $Enums.AttentionMode | null
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -820,6 +1127,7 @@ export type BusinessUncheckedUpdateWithoutAvailabilitiesInput = {
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  photos?: Prisma.BusinessPhotoUncheckedUpdateManyWithoutBusinessNestedInput
   services?: Prisma.ServiceUncheckedUpdateManyWithoutBusinessNestedInput
   reservations?: Prisma.ReservationUncheckedUpdateManyWithoutBusinessNestedInput
   clientSessions?: Prisma.ClientSessionUncheckedUpdateManyWithoutBusinessNestedInput
@@ -829,6 +1137,11 @@ export type BusinessCreateWithoutReservationsInput = {
   id?: string
   name: string
   description?: string | null
+  category?: $Enums.BusinessCategory
+  professionalName?: string | null
+  specialties?: string | null
+  address?: string | null
+  attentionMode?: $Enums.AttentionMode | null
   timezone?: string
   avatarUrl?: string | null
   avatarPublicId?: string | null
@@ -836,6 +1149,7 @@ export type BusinessCreateWithoutReservationsInput = {
   coverPublicId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  photos?: Prisma.BusinessPhotoCreateNestedManyWithoutBusinessInput
   owner: Prisma.UserCreateNestedOneWithoutBusinessesInput
   services?: Prisma.ServiceCreateNestedManyWithoutBusinessInput
   availabilities?: Prisma.AvailabilityCreateNestedManyWithoutBusinessInput
@@ -846,6 +1160,11 @@ export type BusinessUncheckedCreateWithoutReservationsInput = {
   id?: string
   name: string
   description?: string | null
+  category?: $Enums.BusinessCategory
+  professionalName?: string | null
+  specialties?: string | null
+  address?: string | null
+  attentionMode?: $Enums.AttentionMode | null
   timezone?: string
   ownerId: string
   avatarUrl?: string | null
@@ -854,6 +1173,7 @@ export type BusinessUncheckedCreateWithoutReservationsInput = {
   coverPublicId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  photos?: Prisma.BusinessPhotoUncheckedCreateNestedManyWithoutBusinessInput
   services?: Prisma.ServiceUncheckedCreateNestedManyWithoutBusinessInput
   availabilities?: Prisma.AvailabilityUncheckedCreateNestedManyWithoutBusinessInput
   clientSessions?: Prisma.ClientSessionUncheckedCreateNestedManyWithoutBusinessInput
@@ -879,6 +1199,11 @@ export type BusinessUpdateWithoutReservationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.EnumBusinessCategoryFieldUpdateOperationsInput | $Enums.BusinessCategory
+  professionalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  specialties?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attentionMode?: Prisma.NullableEnumAttentionModeFieldUpdateOperationsInput | $Enums.AttentionMode | null
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -886,6 +1211,7 @@ export type BusinessUpdateWithoutReservationsInput = {
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  photos?: Prisma.BusinessPhotoUpdateManyWithoutBusinessNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutBusinessesNestedInput
   services?: Prisma.ServiceUpdateManyWithoutBusinessNestedInput
   availabilities?: Prisma.AvailabilityUpdateManyWithoutBusinessNestedInput
@@ -896,6 +1222,11 @@ export type BusinessUncheckedUpdateWithoutReservationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.EnumBusinessCategoryFieldUpdateOperationsInput | $Enums.BusinessCategory
+  professionalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  specialties?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attentionMode?: Prisma.NullableEnumAttentionModeFieldUpdateOperationsInput | $Enums.AttentionMode | null
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -904,6 +1235,7 @@ export type BusinessUncheckedUpdateWithoutReservationsInput = {
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  photos?: Prisma.BusinessPhotoUncheckedUpdateManyWithoutBusinessNestedInput
   services?: Prisma.ServiceUncheckedUpdateManyWithoutBusinessNestedInput
   availabilities?: Prisma.AvailabilityUncheckedUpdateManyWithoutBusinessNestedInput
   clientSessions?: Prisma.ClientSessionUncheckedUpdateManyWithoutBusinessNestedInput
@@ -913,6 +1245,11 @@ export type BusinessCreateWithoutClientSessionsInput = {
   id?: string
   name: string
   description?: string | null
+  category?: $Enums.BusinessCategory
+  professionalName?: string | null
+  specialties?: string | null
+  address?: string | null
+  attentionMode?: $Enums.AttentionMode | null
   timezone?: string
   avatarUrl?: string | null
   avatarPublicId?: string | null
@@ -920,6 +1257,7 @@ export type BusinessCreateWithoutClientSessionsInput = {
   coverPublicId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  photos?: Prisma.BusinessPhotoCreateNestedManyWithoutBusinessInput
   owner: Prisma.UserCreateNestedOneWithoutBusinessesInput
   services?: Prisma.ServiceCreateNestedManyWithoutBusinessInput
   availabilities?: Prisma.AvailabilityCreateNestedManyWithoutBusinessInput
@@ -930,6 +1268,11 @@ export type BusinessUncheckedCreateWithoutClientSessionsInput = {
   id?: string
   name: string
   description?: string | null
+  category?: $Enums.BusinessCategory
+  professionalName?: string | null
+  specialties?: string | null
+  address?: string | null
+  attentionMode?: $Enums.AttentionMode | null
   timezone?: string
   ownerId: string
   avatarUrl?: string | null
@@ -938,6 +1281,7 @@ export type BusinessUncheckedCreateWithoutClientSessionsInput = {
   coverPublicId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  photos?: Prisma.BusinessPhotoUncheckedCreateNestedManyWithoutBusinessInput
   services?: Prisma.ServiceUncheckedCreateNestedManyWithoutBusinessInput
   availabilities?: Prisma.AvailabilityUncheckedCreateNestedManyWithoutBusinessInput
   reservations?: Prisma.ReservationUncheckedCreateNestedManyWithoutBusinessInput
@@ -963,6 +1307,11 @@ export type BusinessUpdateWithoutClientSessionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.EnumBusinessCategoryFieldUpdateOperationsInput | $Enums.BusinessCategory
+  professionalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  specialties?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attentionMode?: Prisma.NullableEnumAttentionModeFieldUpdateOperationsInput | $Enums.AttentionMode | null
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -970,6 +1319,7 @@ export type BusinessUpdateWithoutClientSessionsInput = {
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  photos?: Prisma.BusinessPhotoUpdateManyWithoutBusinessNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutBusinessesNestedInput
   services?: Prisma.ServiceUpdateManyWithoutBusinessNestedInput
   availabilities?: Prisma.AvailabilityUpdateManyWithoutBusinessNestedInput
@@ -980,6 +1330,11 @@ export type BusinessUncheckedUpdateWithoutClientSessionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.EnumBusinessCategoryFieldUpdateOperationsInput | $Enums.BusinessCategory
+  professionalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  specialties?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attentionMode?: Prisma.NullableEnumAttentionModeFieldUpdateOperationsInput | $Enums.AttentionMode | null
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -988,6 +1343,7 @@ export type BusinessUncheckedUpdateWithoutClientSessionsInput = {
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  photos?: Prisma.BusinessPhotoUncheckedUpdateManyWithoutBusinessNestedInput
   services?: Prisma.ServiceUncheckedUpdateManyWithoutBusinessNestedInput
   availabilities?: Prisma.AvailabilityUncheckedUpdateManyWithoutBusinessNestedInput
   reservations?: Prisma.ReservationUncheckedUpdateManyWithoutBusinessNestedInput
@@ -997,6 +1353,11 @@ export type BusinessCreateManyOwnerInput = {
   id?: string
   name: string
   description?: string | null
+  category?: $Enums.BusinessCategory
+  professionalName?: string | null
+  specialties?: string | null
+  address?: string | null
+  attentionMode?: $Enums.AttentionMode | null
   timezone?: string
   avatarUrl?: string | null
   avatarPublicId?: string | null
@@ -1010,6 +1371,11 @@ export type BusinessUpdateWithoutOwnerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.EnumBusinessCategoryFieldUpdateOperationsInput | $Enums.BusinessCategory
+  professionalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  specialties?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attentionMode?: Prisma.NullableEnumAttentionModeFieldUpdateOperationsInput | $Enums.AttentionMode | null
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1017,6 +1383,7 @@ export type BusinessUpdateWithoutOwnerInput = {
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  photos?: Prisma.BusinessPhotoUpdateManyWithoutBusinessNestedInput
   services?: Prisma.ServiceUpdateManyWithoutBusinessNestedInput
   availabilities?: Prisma.AvailabilityUpdateManyWithoutBusinessNestedInput
   reservations?: Prisma.ReservationUpdateManyWithoutBusinessNestedInput
@@ -1027,6 +1394,11 @@ export type BusinessUncheckedUpdateWithoutOwnerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.EnumBusinessCategoryFieldUpdateOperationsInput | $Enums.BusinessCategory
+  professionalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  specialties?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attentionMode?: Prisma.NullableEnumAttentionModeFieldUpdateOperationsInput | $Enums.AttentionMode | null
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1034,6 +1406,7 @@ export type BusinessUncheckedUpdateWithoutOwnerInput = {
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  photos?: Prisma.BusinessPhotoUncheckedUpdateManyWithoutBusinessNestedInput
   services?: Prisma.ServiceUncheckedUpdateManyWithoutBusinessNestedInput
   availabilities?: Prisma.AvailabilityUncheckedUpdateManyWithoutBusinessNestedInput
   reservations?: Prisma.ReservationUncheckedUpdateManyWithoutBusinessNestedInput
@@ -1044,6 +1417,11 @@ export type BusinessUncheckedUpdateManyWithoutOwnerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.EnumBusinessCategoryFieldUpdateOperationsInput | $Enums.BusinessCategory
+  professionalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  specialties?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attentionMode?: Prisma.NullableEnumAttentionModeFieldUpdateOperationsInput | $Enums.AttentionMode | null
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1059,6 +1437,7 @@ export type BusinessUncheckedUpdateManyWithoutOwnerInput = {
  */
 
 export type BusinessCountOutputType = {
+  photos: number
   services: number
   availabilities: number
   reservations: number
@@ -1066,6 +1445,7 @@ export type BusinessCountOutputType = {
 }
 
 export type BusinessCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  photos?: boolean | BusinessCountOutputTypeCountPhotosArgs
   services?: boolean | BusinessCountOutputTypeCountServicesArgs
   availabilities?: boolean | BusinessCountOutputTypeCountAvailabilitiesArgs
   reservations?: boolean | BusinessCountOutputTypeCountReservationsArgs
@@ -1080,6 +1460,13 @@ export type BusinessCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Ext
    * Select specific fields to fetch from the BusinessCountOutputType
    */
   select?: Prisma.BusinessCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * BusinessCountOutputType without action
+ */
+export type BusinessCountOutputTypeCountPhotosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BusinessPhotoWhereInput
 }
 
 /**
@@ -1115,6 +1502,11 @@ export type BusinessSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   id?: boolean
   name?: boolean
   description?: boolean
+  category?: boolean
+  professionalName?: boolean
+  specialties?: boolean
+  address?: boolean
+  attentionMode?: boolean
   timezone?: boolean
   ownerId?: boolean
   avatarUrl?: boolean
@@ -1123,6 +1515,7 @@ export type BusinessSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   coverPublicId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  photos?: boolean | Prisma.Business$photosArgs<ExtArgs>
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   services?: boolean | Prisma.Business$servicesArgs<ExtArgs>
   availabilities?: boolean | Prisma.Business$availabilitiesArgs<ExtArgs>
@@ -1135,6 +1528,11 @@ export type BusinessSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   id?: boolean
   name?: boolean
   description?: boolean
+  category?: boolean
+  professionalName?: boolean
+  specialties?: boolean
+  address?: boolean
+  attentionMode?: boolean
   timezone?: boolean
   ownerId?: boolean
   avatarUrl?: boolean
@@ -1150,6 +1548,11 @@ export type BusinessSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   id?: boolean
   name?: boolean
   description?: boolean
+  category?: boolean
+  professionalName?: boolean
+  specialties?: boolean
+  address?: boolean
+  attentionMode?: boolean
   timezone?: boolean
   ownerId?: boolean
   avatarUrl?: boolean
@@ -1165,6 +1568,11 @@ export type BusinessSelectScalar = {
   id?: boolean
   name?: boolean
   description?: boolean
+  category?: boolean
+  professionalName?: boolean
+  specialties?: boolean
+  address?: boolean
+  attentionMode?: boolean
   timezone?: boolean
   ownerId?: boolean
   avatarUrl?: boolean
@@ -1175,8 +1583,9 @@ export type BusinessSelectScalar = {
   updatedAt?: boolean
 }
 
-export type BusinessOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "timezone" | "ownerId" | "avatarUrl" | "avatarPublicId" | "coverUrl" | "coverPublicId" | "createdAt" | "updatedAt", ExtArgs["result"]["business"]>
+export type BusinessOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "category" | "professionalName" | "specialties" | "address" | "attentionMode" | "timezone" | "ownerId" | "avatarUrl" | "avatarPublicId" | "coverUrl" | "coverPublicId" | "createdAt" | "updatedAt", ExtArgs["result"]["business"]>
 export type BusinessInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  photos?: boolean | Prisma.Business$photosArgs<ExtArgs>
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   services?: boolean | Prisma.Business$servicesArgs<ExtArgs>
   availabilities?: boolean | Prisma.Business$availabilitiesArgs<ExtArgs>
@@ -1194,6 +1603,7 @@ export type BusinessIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
 export type $BusinessPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Business"
   objects: {
+    photos: Prisma.$BusinessPhotoPayload<ExtArgs>[]
     owner: Prisma.$UserPayload<ExtArgs>
     services: Prisma.$ServicePayload<ExtArgs>[]
     availabilities: Prisma.$AvailabilityPayload<ExtArgs>[]
@@ -1204,6 +1614,11 @@ export type $BusinessPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     id: string
     name: string
     description: string | null
+    category: $Enums.BusinessCategory
+    professionalName: string | null
+    specialties: string | null
+    address: string | null
+    attentionMode: $Enums.AttentionMode | null
     timezone: string
     ownerId: string
     avatarUrl: string | null
@@ -1606,6 +2021,7 @@ readonly fields: BusinessFieldRefs;
  */
 export interface Prisma__BusinessClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  photos<T extends Prisma.Business$photosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Business$photosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BusinessPhotoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   owner<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   services<T extends Prisma.Business$servicesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Business$servicesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ServicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   availabilities<T extends Prisma.Business$availabilitiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Business$availabilitiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AvailabilityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -1643,6 +2059,11 @@ export interface BusinessFieldRefs {
   readonly id: Prisma.FieldRef<"Business", 'String'>
   readonly name: Prisma.FieldRef<"Business", 'String'>
   readonly description: Prisma.FieldRef<"Business", 'String'>
+  readonly category: Prisma.FieldRef<"Business", 'BusinessCategory'>
+  readonly professionalName: Prisma.FieldRef<"Business", 'String'>
+  readonly specialties: Prisma.FieldRef<"Business", 'String'>
+  readonly address: Prisma.FieldRef<"Business", 'String'>
+  readonly attentionMode: Prisma.FieldRef<"Business", 'AttentionMode'>
   readonly timezone: Prisma.FieldRef<"Business", 'String'>
   readonly ownerId: Prisma.FieldRef<"Business", 'String'>
   readonly avatarUrl: Prisma.FieldRef<"Business", 'String'>
@@ -2049,6 +2470,30 @@ export type BusinessDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Limit how many Businesses to delete.
    */
   limit?: number
+}
+
+/**
+ * Business.photos
+ */
+export type Business$photosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BusinessPhoto
+   */
+  select?: Prisma.BusinessPhotoSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the BusinessPhoto
+   */
+  omit?: Prisma.BusinessPhotoOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BusinessPhotoInclude<ExtArgs> | null
+  where?: Prisma.BusinessPhotoWhereInput
+  orderBy?: Prisma.BusinessPhotoOrderByWithRelationInput | Prisma.BusinessPhotoOrderByWithRelationInput[]
+  cursor?: Prisma.BusinessPhotoWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BusinessPhotoScalarFieldEnum | Prisma.BusinessPhotoScalarFieldEnum[]
 }
 
 /**

@@ -1,21 +1,15 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { Booking } from './booking';
+import { testProviders } from '../../testing/test-providers';
 
 describe('Booking', () => {
-  let component: Booking;
-  let fixture: ComponentFixture<Booking>;
-
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [Booking],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(Booking);
-    component = fixture.componentInstance;
-    await fixture.whenStable();
+    await TestBed.configureTestingModule({ imports: [Booking], providers: testProviders() }).compileComponents();
   });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('renderiza sin sesión y sin depender de servicios externos', async () => {
+    const fixture = TestBed.createComponent(Booking);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(fixture.componentInstance).toBeTruthy();
   });
 });

@@ -52,7 +52,9 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
+  ProfessionalApplication: 'ProfessionalApplication',
   Business: 'Business',
+  BusinessPhoto: 'BusinessPhoto',
   Service: 'Service',
   Availability: 'Availability',
   Reservation: 'Reservation',
@@ -82,6 +84,14 @@ export const UserScalarFieldEnum = {
   name: 'name',
   role: 'role',
   googleId: 'googleId',
+  passwordHash: 'passwordHash',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  phone: 'phone',
+  address: 'address',
+  phoneVerifiedAt: 'phoneVerifiedAt',
+  pendingVerificationSid: 'pendingVerificationSid',
+  phoneVerificationSentAt: 'phoneVerificationSentAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -89,10 +99,30 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const ProfessionalApplicationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  businessName: 'businessName',
+  category: 'category',
+  description: 'description',
+  monthlyPrice: 'monthlyPrice',
+  currency: 'currency',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProfessionalApplicationScalarFieldEnum = (typeof ProfessionalApplicationScalarFieldEnum)[keyof typeof ProfessionalApplicationScalarFieldEnum]
+
+
 export const BusinessScalarFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
+  category: 'category',
+  professionalName: 'professionalName',
+  specialties: 'specialties',
+  address: 'address',
+  attentionMode: 'attentionMode',
   timezone: 'timezone',
   ownerId: 'ownerId',
   avatarUrl: 'avatarUrl',
@@ -104,6 +134,18 @@ export const BusinessScalarFieldEnum = {
 } as const
 
 export type BusinessScalarFieldEnum = (typeof BusinessScalarFieldEnum)[keyof typeof BusinessScalarFieldEnum]
+
+
+export const BusinessPhotoScalarFieldEnum = {
+  id: 'id',
+  businessId: 'businessId',
+  imageUrl: 'imageUrl',
+  imagePublicId: 'imagePublicId',
+  caption: 'caption',
+  createdAt: 'createdAt'
+} as const
+
+export type BusinessPhotoScalarFieldEnum = (typeof BusinessPhotoScalarFieldEnum)[keyof typeof BusinessPhotoScalarFieldEnum]
 
 
 export const ServiceScalarFieldEnum = {

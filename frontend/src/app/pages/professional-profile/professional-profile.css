@@ -214,6 +214,11 @@ textarea {
   cursor: not-allowed;
 }
 
+.remove-button {
+  color: #a00000;
+  border-color: #e5bcbc;
+}
+
 @media (max-width: 600px) {
   .avatar-section {
     align-items: flex-start;

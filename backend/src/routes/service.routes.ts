@@ -27,14 +27,14 @@ router.get(
 router.post(
   "/",
   authenticate,
-  requireRole("PROFESSIONAL"),
+  requireRole("PROFESSIONAL", "SUPERADMIN"),
   createService
 );
 
 router.patch(
   "/:id",
   authenticate,
-  requireRole("PROFESSIONAL"),
+  requireRole("PROFESSIONAL", "SUPERADMIN"),
   updateService
 );
 

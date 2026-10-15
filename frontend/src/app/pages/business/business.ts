@@ -1,17 +1,21 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, computed } from '@angular/core';
+import { businessLabels, attentionModes } from '../../models/business-category';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 
 import { ApiService } from '../../core/services/api.service';
 import { Business as BusinessModel } from '../../models/business.model';
 import { Service } from '../../models/service.model';
+import { BusinessGallery } from '../../components/business-gallery';
 
 @Component({
   selector: 'app-business',
-  imports: [RouterLink],
+  imports: [RouterLink, BusinessGallery],
   templateUrl: './business.html',
   styleUrl: './business.css'
 })
 export class Business implements OnInit {
+  readonly labels = computed(() => businessLabels(this.business()?.category));
+  readonly mode = computed(() => attentionModes.find(item => item.value === this.business()?.attentionMode)?.label ?? '');
   business = signal<BusinessModel | null>(null);
   services = signal<Service[]>([]);
   loading = signal(true);

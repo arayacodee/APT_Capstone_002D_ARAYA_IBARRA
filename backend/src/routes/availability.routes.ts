@@ -37,14 +37,14 @@ router.get(
 router.post(
   "/",
   authenticate,
-  requireRole("PROFESSIONAL"),
+  requireRole("PROFESSIONAL", "SUPERADMIN"),
   createAvailability
 );
 
 router.delete(
   "/:id",
   authenticate,
-  requireRole("PROFESSIONAL"),
+  requireRole("PROFESSIONAL", "SUPERADMIN"),
   deleteAvailability
 );
 

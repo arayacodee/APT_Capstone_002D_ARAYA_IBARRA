@@ -1,0 +1,89 @@
+<main class="admin">
+  <p class="eyebrow">SUPERADMIN</p>
+  <h1>Administración de Cronos</h1>
+  <p class="intro">Gestiona usuarios y datos de todos los negocios.</p>
+  <nav aria-label="Secciones de administración">
+    @for (item of sections; track item.key) {
+      <button type="button" [class.active]="section().key === item.key" [attr.aria-current]="section().key === item.key ? 'page' : null" [disabled]="loading() || saving()" (click)="change(item)">{{ item.label }}</button>
+    }
+  </nav>
+  @if (error()) { <p class="error" role="alert">{{ error() }}</p> }
+  @if (message()) { <p class="success" role="status">{{ message() }}</p> }
+  @if (warning()) { <p class="warning" role="status">{{ warning() }}</p> }
+  <div class="heading"><h2>{{ section().label }}</h2>
+    @if (section().key === 'users') { <button type="button" class="primary" [disabled]="loading() || saving()" (click)="newUser()">Habilitar usuario</button> }
+  </div>
+  <ng-template #editorForm>
+    <form #editor (ngSubmit)="save()" class="editor">
+      <h3>{{ creating() ? 'Habilitar cuenta con Google' : 'Editar datos' }}</h3>
+      @if (selected(); as record) { <p>{{ title(record) }}{{ record['email'] ? ' · ' + value(record, 'email') : '' }}</p> }
+      @if (creating()) {
+        <label for="admin-email">Correo de Google</label><input id="admin-email" name="email" type="email" required [(ngModel)]="draft['email']" [disabled]="saving()">
+      }
+      @for (item of section().fields; track item.key) {
+        <label [for]="'admin-' + item.key">{{ item.label }}</label>
+        @switch (item.type) {
+          @case ('category') { <select [id]="'admin-' + item.key" [name]="item.key" [(ngModel)]="draft[item.key]" [disabled]="saving()">@for (category of categories; track category.value) { <option [value]="category.value">{{ category.label }}</option> }</select> }
+          @case ('mode') { <select [id]="'admin-' + item.key" [name]="item.key" [(ngModel)]="draft[item.key]" [disabled]="saving()"><option value="">Sin especificar</option>@for (mode of modes; track mode.value) { <option [value]="mode.value">{{ mode.label }}</option> }</select> }
+          @case ('textarea') { <textarea [id]="'admin-' + item.key" [name]="item.key" [(ngModel)]="draft[item.key]" [disabled]="saving()" rows="4"></textarea> }
+          @case ('role') {
+            @if (selected()?.['role'] === 'SUPERADMIN') { <p>Superadmin — rol protegido</p> }
+            @else { <select [id]="'admin-' + item.key" [name]="item.key" [(ngModel)]="draft[item.key]" [disabled]="saving()"><option value="CLIENT">Cliente</option><option value="PROFESSIONAL">Profesional</option></select> }
+          }
+          @default { <input [id]="'admin-' + item.key" [name]="item.key" [type]="item.type" [(ngModel)]="draft[item.key]" [disabled]="saving()" [step]="item.key === 'price' ? '0.01' : '1'"> }
+        }
+      }
+      <div class="actions"><button class="primary" type="submit" [disabled]="saving()">{{ saving() ? 'Guardando…' : 'Guardar' }}</button><button type="button" [disabled]="saving()" (click)="close()">Cerrar</button></div>
+    </form>
+  </ng-template>
+  @if (creating()) { <ng-container *ngTemplateOutlet="editorForm"></ng-container> }
+  @if (loading()) { <p role="status">Cargando datos…</p> }
+  @else {
+    <div class="records">
+      @for (record of records(); track record.id) {
+        <article>
+          <div><h3>{{ title(record) }}</h3>
+            @if (record['email']) { <p>{{ value(record, 'email') }}</p> }
+            @if (record['role']) { <span class="badge">{{ value(record, 'role') }}</span> }
+            @if (nested(record, 'business', 'name'); as business) { <p>Negocio: {{ business }}</p> }
+            @if (nested(record, 'owner', 'email'); as owner) { <p>Propietario: {{ owner }}</p> }
+            @if (record['status']) { <span class="badge">{{ value(record, 'status') }}</span><p>{{ value(record, 'startsAt') | date:'dd/MM/yyyy HH:mm' }}</p> }
+            @if (record['imageUrl']) { <a [href]="value(record, 'imageUrl')" target="_blank" rel="noopener noreferrer">Abrir imagen</a> }
+          </div>
+          <div class="actions record-actions">
+            @if (section().key === 'users' && record['role'] !== 'SUPERADMIN') { <button type="button" [disabled]="saving()" (click)="editPassword(record)">Cambiar contraseña</button> }
+            @if (section().fields.length) { <button type="button" [disabled]="saving()" (click)="edit(record)">Editar</button> }
+            @if (section().key === 'reservations' && (record['status'] === 'PENDING' || record['status'] === 'CONFIRMED')) {
+              <button type="button" [disabled]="saving()" (click)="reservationAction(record, 'cancel')">Cancelar reserva</button>
+              @if (record['status'] === 'CONFIRMED') { <button type="button" [disabled]="saving()" (click)="reservationAction(record, 'complete')">Registrar atención</button> }
+            }
+            @if (record['role'] !== 'SUPERADMIN') { <button type="button" class="danger delete-button" [disabled]="saving()" (click)="requestDeletion(record)">Eliminar</button> }
+          </div>
+          @if (selected()?.id === record.id) {
+            <ng-container *ngTemplateOutlet="editorForm"></ng-container>
+          }
+          @if (passwordUser()?.id === record.id) {
+            <form class="editor" (ngSubmit)="savePassword()">
+              <h3>Cambiar contraseña</h3><p>{{ value(record, 'email') }}</p>
+              <label>Nueva contraseña<input name="newPassword" type="password" autocomplete="new-password" [(ngModel)]="newPassword" required minlength="8" maxlength="256" [disabled]="saving()"></label>
+              <label>Confirmar contraseña<input name="confirmPassword" type="password" autocomplete="new-password" [(ngModel)]="confirmPassword" required minlength="8" maxlength="256" [disabled]="saving()"></label>
+              @if (error()) { <p class="error" role="alert">{{ error() }}</p> }
+              <div class="actions"><button type="submit" class="primary" [disabled]="saving()">Guardar contraseña</button><button type="button" [disabled]="saving()" (click)="closePassword()">Cancelar</button></div>
+            </form>
+          }
+          @if (deleting()?.id === record.id) {
+            <section class="delete-confirmation" role="region" aria-label="Confirmar eliminación">
+              <h4>Eliminar {{ title(record) }}</h4>
+              <p>{{ deletionEffects[section().key] }}</p>
+              <p><strong>Esta eliminación es permanente y no se puede deshacer.</strong></p>
+              @if (error()) { <p class="error" role="alert">{{ error() }}</p> }
+              <div class="actions"><button type="button" class="danger" [disabled]="saving()" (click)="confirmDeletion()">{{ saving() ? 'Eliminando…' : 'Confirmar eliminación' }}</button><button type="button" [disabled]="saving()" (click)="deleting.set(null)">Conservar registro</button></div>
+            </section>
+          }
+          <details><summary>Ver todos los datos</summary><pre>{{ record | json }}</pre></details>
+        </article>
+      } @empty { <p>No hay registros en esta sección.</p> }
+    </div>
+    <div class="pagination"><button type="button" [disabled]="page() === 1 || saving()" (click)="paginate(-1)">Anterior</button><span>Página {{ page() }}</span><button type="button" [disabled]="!hasMore() || saving()" (click)="paginate(1)">Siguiente</button></div>
+  }
+</main>

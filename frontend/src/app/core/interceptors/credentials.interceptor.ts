@@ -8,7 +8,8 @@ export const credentialsInterceptor: HttpInterceptorFn = (
   request,
   next
 ) => {
-  if (request.url.startsWith(environment.apiUrl)) {
+  const apiUrl = environment.apiUrl.replace(/\/$/, '');
+  if (request.url === apiUrl || request.url.startsWith(`${apiUrl}/`)) {
     request = request.clone({
       withCredentials: true
     });

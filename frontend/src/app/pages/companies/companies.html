@@ -1,0 +1,32 @@
+<main class="companies-page">
+  <header><p class="eyebrow">CRONOS PARA EMPRESAS</p><h1>Tu negocio, con una agenda que trabaja contigo.</h1><p>Presenta tus servicios, recibe reservas y organiza tus atenciones desde un solo lugar.</p></header>
+  <div class="registration-grid">
+    <aside class="plan-card" aria-label="Suscripción mensual"><span class="plan-tag">PLAN PROFESIONAL</span><h2>Todo para organizar tu negocio</h2><p class="price">$7.900 <span>CLP / mes</span></p><p>Suscripción mensual para tu empresa.</p>
+      <ul><li>Perfil público personalizado</li><li>Servicios o terapias y horarios</li><li>Reservas y citas en línea</li><li>Historial privado de atenciones</li><li>Imágenes del negocio y de sus trabajos</li></ul>
+      <p class="plan-note">Durante las pruebas puedes crear tu perfil profesional sin realizar un pago.</p>
+    </aside>
+    <section class="registration-card" aria-labelledby="registration-title">
+      <div class="steps"><span [class.active]="step() === 'business'">1 · Tu empresa</span><span [class.active]="step() === 'payment'">2 · Suscripción</span></div>
+      @if (error()) { <p class="error" role="alert">{{ error() }}</p> }
+      @if (!auth.isLoggedIn()) {
+        <h2 id="registration-title">Comienza el registro de tu empresa</h2><p>Primero crea tu cuenta de Cronos. Después podrás ingresar los datos de tu empresa.</p><a class="primary" routerLink="/login" [queryParams]="{returnUrl: '/companies', mode: 'register'}">Crear cuenta y registrar mi empresa</a><p>¿Ya tienes cuenta? <a routerLink="/login" [queryParams]="{returnUrl: '/companies', mode: 'login'}">Iniciar sesión para continuar</a></p>
+      } @else if (step() === 'business') {
+        <h2 id="registration-title">Registra tu empresa</h2><p>{{ auth.currentUser()?.email }}</p>
+        <form (ngSubmit)="save()">
+          <label>Nombre de tu empresa<input name="businessName" [(ngModel)]="form.businessName" required minlength="2" maxlength="100" [disabled]="busy()" placeholder="Ej.: Centro de Bienestar"></label>
+          <label>Tipo de negocio<select name="category" [(ngModel)]="form.category" [disabled]="busy()">@for (category of categories; track category.value) { <option [value]="category.value">{{ category.label }}</option> }</select></label>
+          <label>Presentación<textarea name="description" [(ngModel)]="form.description" rows="4" maxlength="500" [disabled]="busy()" placeholder="Cuéntanos qué ofreces y cómo atiendes a tus clientes o pacientes."></textarea></label>
+          <a routerLink="/account/profile" [queryParams]="{returnUrl: '/companies'}">Completar o revisar mis datos de contacto</a>
+          <button class="primary" type="submit" [disabled]="busy()">{{ busy() ? 'Guardando…' : 'Guardar y ver suscripción' }}</button>
+        </form>
+      } @else {
+        <h2 id="registration-title">Tu suscripción profesional</h2>
+        @if (saved()) { <p class="success" role="status">La solicitud de tu empresa quedó guardada.</p> }
+        <div class="order-summary"><p><span>Empresa</span><strong>{{ form.businessName }}</strong></p><p><span>Plan profesional mensual</span><strong>$7.900 CLP</strong></p><p><span>Frecuencia</span><strong>Mensual</strong></p></div>
+        <button class="webpay-button" type="button" [disabled]="busy()" (click)="activate()">{{ busy() ? 'Creando perfil…' : 'Crear perfil sin pago · prueba' }}</button>
+        <p>Este botón crea tu perfil profesional y abre tu panel. No realiza cobros ni activa una suscripción pagada.</p>
+        <button type="button" class="secondary" [disabled]="busy()" (click)="step.set('business')">Volver a los datos de mi empresa</button>
+      }
+    </section>
+  </div>
+</main>

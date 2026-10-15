@@ -1,0 +1,19 @@
+<main class="account-page"><section class="account-card">
+<h1>Mis datos</h1><p class="email">{{ auth.currentUser()?.email }}</p>
+@if (error()) { <p class="error" role="alert">{{ error() }}</p> }
+@if (message()) { <p class="success" role="status">{{ message() }}</p> }
+<form (ngSubmit)="save()">
+<div class="name-grid">
+<label>Nombre<input name="firstName" autocomplete="given-name" [(ngModel)]="form.firstName" required minlength="2" maxlength="80" [disabled]="busy()"></label>
+<label>Apellido<input name="lastName" autocomplete="family-name" [(ngModel)]="form.lastName" required minlength="2" maxlength="80" [disabled]="busy()"></label>
+</div>
+<label>Teléfono<input name="phone" type="tel" autocomplete="tel" [(ngModel)]="form.phone" required maxlength="40" [disabled]="busy()"></label>
+<small>Tu número se guarda sin verificación por SMS.</small>
+<label>Dirección<input name="address" autocomplete="street-address" [(ngModel)]="form.address" required minlength="5" maxlength="300" [disabled]="busy()"></label>
+<small>Tu dirección y teléfono no aparecen en los perfiles públicos.</small>
+<button type="submit" [disabled]="busy()">Guardar datos</button>
+<button type="button" class="primary" [disabled]="busy()" (click)="save(true)">Guardar y continuar</button>
+</form>
+<a routerLink="/">Volver al inicio</a>
+</section></main>
+

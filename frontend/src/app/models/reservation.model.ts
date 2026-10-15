@@ -40,6 +40,23 @@ export interface ClientSession {
   notes: string | null;
   createdAt: string;
   updatedAt: string;
+  client?: Pick<User, 'id' | 'name' | 'email'>;
+  business?: Pick<Business, 'id' | 'name' | 'timezone'>;
+  reservation?: Reservation;
+  evidences?: SessionEvidence[];
+}
+
+export interface SessionEvidence {
+  id: string;
+  sessionId: string;
+  imageUrl: string;
+  caption: string | null;
+  createdAt: string;
+}
+
+export interface SessionPage {
+  items: ClientSession[];
+  nextCursor: string | null;
 }
 
 export interface CompleteReservationResponse {

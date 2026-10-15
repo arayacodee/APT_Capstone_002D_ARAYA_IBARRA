@@ -22,6 +22,19 @@ import {
   providedIn: 'root'
 })
 export class AuthService {
+  activateProfessionalDemo(): Observable<User> { return this.api.activateProfessionalDemo().pipe(tap(r => this.currentUserSignal.set(r.user)), map(r => r.user)); }
+  login(email: string, password: string): Observable<User> { return this.api.passwordLogin(email, password).pipe(tap(r => this.currentUserSignal.set(r.user)), map(r => r.user)); }
+  register(data: { email: string; password: string; firstName: string; lastName: string; phone: string; address: string }): Observable<User> { return this.api.register(data).pipe(tap(r => this.currentUserSignal.set(r.user)), map(r => r.user)); }
+  updateContact(data: { firstName: string; lastName: string; phone: string; address: string }): Observable<User> {
+    return this.api.updateContact(data).pipe(tap(response => this.currentUserSignal.set(response.user)), map(response => response.user));
+  }
+  verifyPhone(code: string): Observable<User> {
+    return this.api.checkPhoneCode(code).pipe(tap(response => this.currentUserSignal.set(response.user)), map(response => response.user));
+  }
+  loginAsAdmin(email: string, password: string): Observable<User> {
+    return this.api.adminLogin(email, password).pipe(tap(response => this.currentUserSignal.set(response.user)), map(response => response.user));
+  }
+  readonly isSuperadmin = computed(() => this.currentUserSignal()?.role === 'SUPERADMIN');
   private readonly currentUserSignal =
     signal<User | null>(null);
 
@@ -40,7 +53,7 @@ export class AuthService {
 
   readonly isProfessional = computed(
     () =>
-      this.currentUserSignal()?.role ===
+      this.isSuperadmin() || this.currentUserSignal()?.role ===
       'PROFESSIONAL'
   );
 

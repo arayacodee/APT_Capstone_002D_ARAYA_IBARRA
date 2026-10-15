@@ -47,10 +47,20 @@ export { Prisma }
  */
 export type User = Prisma.UserModel
 /**
+ * Model ProfessionalApplication
+ * 
+ */
+export type ProfessionalApplication = Prisma.ProfessionalApplicationModel
+/**
  * Model Business
  * 
  */
 export type Business = Prisma.BusinessModel
+/**
+ * Model BusinessPhoto
+ * 
+ */
+export type BusinessPhoto = Prisma.BusinessPhotoModel
 /**
  * Model Service
  * 

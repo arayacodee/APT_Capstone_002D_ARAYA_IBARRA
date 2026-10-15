@@ -9,7 +9,7 @@ import {
   withInterceptors
 } from '@angular/common/http';
 
-import { provideRouter } from '@angular/router';
+import { provideRouter, withInMemoryScrolling } from '@angular/router';
 
 import { routes } from './app.routes';
 
@@ -21,7 +21,10 @@ import {
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideRouter(routes),
+    provideRouter(routes, withInMemoryScrolling({
+      scrollPositionRestoration: 'top',
+      anchorScrolling: 'enabled'
+    })),
 
     provideHttpClient(
       withInterceptors([

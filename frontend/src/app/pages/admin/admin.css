@@ -1,0 +1,32 @@
+.admin { max-width: var(--page-width); padding: 48px 24px 80px; margin: auto; }
+.eyebrow { color: var(--accent); font-size: 12px; font-weight: 700; letter-spacing: .12em; }
+h1 { font-size: clamp(30px, 4vw, 46px); letter-spacing: -.04em; margin-bottom: 12px; }
+.intro, article p { color: var(--text-secondary); }
+nav, .actions, .pagination, .heading { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+nav { margin: 28px 0; }
+button { border: 1px solid var(--border-strong); border-radius: 12px; padding: 10px 15px; background: var(--surface); cursor: pointer; }
+button.active, button.primary { background: var(--accent); border-color: var(--accent); color: white; }
+button:disabled { opacity: .5; cursor: default; }
+.heading { justify-content: space-between; margin-bottom: 20px; }
+.heading h2 { margin: 0; }
+.error, .success { padding: 16px; border-radius: 12px; background: var(--surface); }
+.error { color: var(--danger); } .success { color: var(--success); }
+.records { display: grid; gap: 16px; }
+article, .editor { padding: 24px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-medium); min-width: 0; }
+article h3 { margin-bottom: 8px; overflow-wrap: anywhere; }
+article .actions { margin-top: 16px; }
+.record-actions .delete-button { margin-left: auto; }
+article > .editor { margin-top: 20px; margin-bottom: 0; max-width: none; }
+.badge { font-size: 12px; border-radius: 8px; background: var(--surface-secondary); padding: 5px 8px; }
+details { margin-top: 18px; } summary { cursor: pointer; color: var(--text-secondary); }
+pre { overflow: auto; max-height: 320px; padding: 12px; background: var(--surface-secondary); font-size: 12px; }
+.editor { max-width: 680px; margin-bottom: 24px; display: grid; gap: 12px; }
+.editor { scroll-margin-top: 88px; }
+.danger { color: var(--danger); border-color: var(--danger); }
+.delete-confirmation { margin-top: 18px; padding: 20px; border: 1px solid var(--danger); border-radius: 12px; background: #fff7f7; }
+.delete-confirmation h4 { margin: 0 0 12px; }
+.warning { padding: 16px; border-radius: 12px; color: #765100; background: #fff5dc; }
+input, textarea, select { width: 100%; border: 1px solid var(--border-strong); border-radius: 10px; padding: 12px; background: var(--surface); }
+input[type=checkbox] { width: 20px; height: 20px; } textarea { resize: vertical; }
+.pagination { justify-content: center; margin-top: 24px; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
