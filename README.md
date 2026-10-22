@@ -2,6 +2,19 @@
 
 Plataforma de reservas para clientes y profesionales. Frontend Angular; API Express y TypeScript; PostgreSQL en Neon mediante Prisma; autenticación Google y sesión JWT en cookie HttpOnly; imágenes en Cloudinary.
 
+## Carpeta académica
+
+Las evidencias se organizan por fase y se separan entre individuales y grupales.
+
+| Carpeta | Contenido |
+| --- | --- |
+| [Fase 1](Fase%201/README.md) | Estructura de la entrega, guía de definición del proyecto y pendientes por integrante |
+| [Fase 2](Fase%202/README.md) | Documentos recuperados de la rama de fichas y clasificación según su contenido |
+| [Ficha de avance 02](Ficha_Avance_02_Proyecto_Capstone_completado.docx) | Seguimiento del equipo |
+| [Ficha de avance 04](entregables/Ficha_Avance_04_Cronos_COMPLETADA.docx) | Seguimiento y planificación del equipo |
+
+Los documentos individuales pendientes se indican en los índices; esos avisos no cuentan como evidencias entregadas.
+
 ## Desarrollo local
 
 Con las dependencias y `backend/.env` configurados, ejecutar en terminales separadas:
