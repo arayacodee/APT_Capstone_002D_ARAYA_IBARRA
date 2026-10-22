@@ -64,6 +64,8 @@
       </div>
     </section>
 
+    <app-attention-metrics />
+
     <section class="overview-section" aria-labelledby="overview-title">
       <div class="section-heading overview-heading">
         <div>
@@ -145,14 +147,9 @@
             <button
               type="button"
               class="complete-button"
-              [disabled]="completingReservationId() !== null"
               (click)="completeReservation(reservation.id)"
             >
-              @if (completingReservationId() === reservation.id) {
-                Registrando...
-              } @else {
-                Marcar como atendido
-              }
+              Marcar como atendido
             </button>
           </article>
         }
@@ -264,3 +261,5 @@
     </section>
   }
 </main>
+
+<app-attention-dialog (changed)="attentionChanged($event)" (saved)="successMessage.set('Atención registrada correctamente.')" />

@@ -38,6 +38,7 @@ export interface ClientSession {
   reservationId: string;
   occurredAt: string;
   notes: string | null;
+  amount?: string | number | null;
   createdAt: string;
   updatedAt: string;
   client?: Pick<User, 'id' | 'name' | 'email'>;
@@ -62,4 +63,15 @@ export interface SessionPage {
 export interface CompleteReservationResponse {
   reservation: Reservation;
   session: ClientSession;
+}
+
+export interface AttentionMetrics {
+  month: string;
+  timezone: string;
+  todayCount: number;
+  monthCount: number;
+  uniqueClients: number;
+  revenue: number;
+  unpricedCount: number;
+  daily: { date: string; count: number }[];
 }

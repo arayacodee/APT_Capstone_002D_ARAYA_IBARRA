@@ -1,0 +1,29 @@
+<section aria-labelledby="metrics-title" class="metrics-section">
+  <header><div><p class="eyebrow">ACTIVIDAD REALIZADA</p><h2 id="metrics-title">Resumen de atenciones</h2>
+    <p class="period">{{ monthLabel() || 'Mes actual' }} @if (metrics(); as data) { · {{ data.timezone }} }</p></div>
+    <button type="button" (click)="refresh()" [disabled]="loading()">{{ loading() ? 'Actualizando…' : 'Actualizar' }}</button></header>
+  @if (error()) { <p class="error" role="alert">{{ error() }} @if (metrics()) { Los datos visibles corresponden a la última carga. }</p> }
+  @if (loading()) { <p role="status" class="muted">Cargando resumen…</p> }
+  @if (metrics(); as data) {
+    <div class="metric-grid">
+      <article><span>Atenciones de hoy</span><strong>{{ data.todayCount }}</strong><small>Servicios completados hoy</small></article>
+      <article><span>Atenciones del mes</span><strong>{{ data.monthCount }}</strong><small>Según fecha de la atención</small></article>
+      <article><span>Clientes atendidos</span><strong>{{ data.uniqueClients }}</strong><small>Clientes únicos en el mes</small></article>
+      <article><span>Valor registrado del mes</span><strong>{{ formatPrice(data.revenue) }}</strong><small>Atenciones con valor guardado</small></article>
+    </div>
+    @if (data.unpricedCount) { <p class="muted">{{ data.unpricedCount }} atenciones anteriores sin valor registrado no se incluyen en el importe.</p> }
+    <div class="activity"><div class="chart-heading"><h3>Atenciones por día</h3><span>{{ data.monthCount }} en {{ monthLabel() }}</span></div>
+      @if (!data.monthCount) { <p class="muted">Aún no hay atenciones completadas este mes.</p> }
+      <div class="chart-scroll" tabindex="0" role="region" aria-label="Atenciones de cada día del mes">
+        <ol class="chart">
+          @for (day of data.daily; track day.date) {
+            <li [attr.aria-label]="day.date + ': ' + day.count + ' atenciones'" [title]="day.date + ': ' + day.count + ' atenciones'">
+              <span class="count">{{ day.count || '' }}</span><span class="bar-track" aria-hidden="true"><span class="bar" [style.height.%]="day.count / maxDaily() * 100"></span></span><span class="day" aria-hidden="true">{{ day.date.slice(-2) }}</span>
+            </li>
+          }
+        </ol>
+      </div>
+    </div>
+    <p class="muted footnote">Solo cuenta atenciones completadas. Registrar una atención pendiente mantiene su fecha original; las reservas canceladas quedan fuera.</p>
+  }
+</section>

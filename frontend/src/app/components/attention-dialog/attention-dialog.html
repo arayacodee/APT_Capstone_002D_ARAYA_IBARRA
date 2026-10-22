@@ -1,0 +1,47 @@
+<dialog #dialog aria-labelledby="attention-dialog-title" aria-describedby="attention-dialog-description" (cancel)="close($event)">
+  <header>
+    <div><p class="eyebrow">REGISTRO PRIVADO</p><h2 id="attention-dialog-title">{{ session() ? 'Detalle de atención' : 'Registrar atención' }}</h2></div>
+    <button class="close" type="button" aria-label="Cerrar ventana" [disabled]="busy()" (click)="close()">×</button>
+  </header>
+  <p id="attention-dialog-description" class="muted">{{ editing() ? 'Completa las notas y agrega evidencias antes de guardar.' : 'Consulta los datos, notas y evidencias de esta atención.' }}</p>
+  <section class="summary" aria-label="Datos de la atención">
+    <div><span>Cliente</span><strong>{{ session()?.client?.name || reservation()?.client?.name || session()?.client?.email || reservation()?.client?.email || 'Cliente' }}</strong></div>
+    <div><span>Servicio</span><strong>{{ reservation()?.service?.name || 'Servicio' }}</strong></div>
+    @if (session()?.occurredAt || reservation()?.startsAt; as date) { <div><span>Fecha y hora</span><strong>{{ formatDate(date) }}</strong></div> }
+    <div><span>{{ session() ? 'Valor registrado' : 'Valor del servicio' }}</span><strong>{{ formatPrice(session() ? session()?.amount : reservation()?.service?.price) }}</strong></div>
+  </section>
+  @if (error()) { <p class="error" role="alert">{{ error() }}</p> }
+  @if (!editing()) {
+    <h3>Notas de atención</h3><p class="notes">{{ session()?.notes || 'Sin notas registradas.' }}</p>
+  }
+  @if (session()?.evidences?.length) {
+    <h3>Evidencias</h3><div class="evidences">
+      @for (evidence of session()?.evidences; track evidence.id) {
+        <figure><a [href]="evidence.imageUrl" target="_blank" rel="noopener noreferrer"><img [src]="evidence.imageUrl" [alt]="evidence.caption || 'Evidencia de atención'" loading="lazy"></a>
+          @if (evidence.caption) { <figcaption>{{ evidence.caption }}</figcaption> }
+          @if (editing()) { <button type="button" [disabled]="busy()" (click)="removeEvidence(evidence)">Eliminar imagen</button> }
+        </figure>
+      }
+    </div>
+  } @else if (!editing()) { <p class="muted">Sin evidencias adjuntas.</p> }
+  @if (editing()) {
+    <form (submit)="$event.preventDefault(); save()">
+      <label for="attention-notes">Notas de atención <span class="muted">(opcional)</span></label>
+      <textarea #notesField id="attention-notes" [formControl]="notes" maxlength="1500" rows="4" placeholder="Preferencias, trabajo realizado o recomendaciones..."></textarea>
+      <small class="muted">{{ notes.value.length }} / 1500 caracteres</small>
+      <label for="attention-image">Agregar evidencia <span class="muted">(opcional)</span></label>
+      <p id="image-help" class="muted">JPEG, PNG o WebP, hasta 5 MB. Solo se muestra en el historial privado.</p>
+      <input id="attention-image" type="file" accept="image/jpeg,image/png,image/webp" aria-describedby="image-help" [disabled]="busy()" (change)="selectFile($event)">
+      @if (file(); as selected) {
+        <div class="file-selection"><span>{{ selected.name }}</span><button type="button" [disabled]="busy()" (click)="file.set(null)">Quitar selección</button></div>
+        <label for="attention-caption">Descripción de la imagen</label><input id="attention-caption" [formControl]="caption" maxlength="300">
+      }
+      <footer><button type="button" [disabled]="busy()" (click)="close()">{{ session() ? 'Cerrar' : 'Cancelar' }}</button>
+        <button class="primary" type="submit" [disabled]="busy() || notes.invalid || caption.invalid">{{ busy() ? 'Guardando…' : session() ? 'Guardar cambios' : 'Guardar y marcar como atendido' }}</button>
+      </footer>
+      @if (busy()) { <p role="status" class="muted">Guardando la atención y sus evidencias…</p> }
+    </form>
+  } @else {
+    <footer><button type="button" (click)="close()">Cerrar</button><button class="primary" type="button" (click)="edit()">Editar notas y evidencias</button></footer>
+  }
+</dialog>

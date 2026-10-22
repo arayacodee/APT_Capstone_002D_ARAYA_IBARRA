@@ -25,6 +25,7 @@ import {
   SessionEvidence,
   SessionPage
 } from '../../models/reservation.model';
+import { AttentionMetrics } from '../../models/reservation.model';
 
 
 import {
@@ -276,10 +277,14 @@ export class ApiService {
     );
   }
 
-  getSessions(cursor?: string): Observable<SessionPage> {
+  getSessions(cursor?: string, limit = 50): Observable<SessionPage> {
     return this.http.get<SessionPage>(
-      `${this.baseUrl}/api/sessions`, { params: cursor ? { cursor } : {} }
+      `${this.baseUrl}/api/sessions`, { params: cursor ? { cursor, limit } : { limit } }
     );
+  }
+
+  getAttentionMetrics(): Observable<AttentionMetrics> {
+    return this.http.get<AttentionMetrics>(`${this.baseUrl}/api/sessions/metrics`);
   }
 
   updateSession(id: string, notes: string | null): Observable<ClientSession> {

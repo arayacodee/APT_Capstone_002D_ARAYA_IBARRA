@@ -1,11 +1,31 @@
-main { max-width: 960px; margin: 2rem auto; padding: 0 1rem; }
-article { background: #fff; border: 1px solid #dce2ea; border-radius: 16px; padding: 1.5rem; margin: 1rem 0; }
-label { display: block; margin-top: 1rem; font-weight: 600; }
-textarea, input { display: block; width: 100%; box-sizing: border-box; margin: .5rem 0; padding: .7rem; border: 1px solid #b7c2d1; border-radius: 8px; font: inherit; }
-button { padding: .65rem 1rem; border-radius: 8px; border: 1px solid #b7c2d1; cursor: pointer; font: inherit; }
-button:disabled { opacity: .5; cursor: wait; }
-.evidences { display: flex; flex-wrap: wrap; gap: 1rem; }
-figure { margin: 1rem 0; width: 220px; max-width: 100%; }
-img { width: 100%; height: 170px; object-fit: cover; border-radius: 8px; }
-figcaption { overflow-wrap: anywhere; margin: .5rem 0; }
-.error { color: #9d2222; } .success { color: #17683e; }
+main { width: min(calc(100% - 48px), 1320px); margin: 0 auto; padding: 48px 0 100px; }
+.back { display: inline-block; color: #61616a; font-size: 14px; margin-bottom: 32px; text-decoration: none; }
+header { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 32px; }
+.eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .15em; color: #64646c; margin-bottom: 10px; }
+h1 { font-size: clamp(30px, 4vw, 44px); line-height: 1.1; letter-spacing: -.045em; margin-bottom: 14px; }
+header p:last-child { color: #64646c; line-height: 1.5; margin-bottom: 0; }
+.private-label { background: #eaeaec; color: #48484e; font-size: 12px; padding: 9px 14px; border-radius: 999px; white-space: nowrap; }
+.history-card { background: white; border: 1px solid var(--border); border-radius: 24px; overflow: hidden; box-shadow: var(--shadow-small); }
+.table-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 24px; }
+h2 { font-size: 18px; margin: 0; letter-spacing: -.02em; }
+.table-heading span, .pagination p, .footnote { font-size: 13px; color: #64646c; }
+.table-scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; min-width: 1050px; text-align: left; font-size: 13px; }
+caption { text-align: left; padding: 0 24px 18px; color: #64646c; font-size: 12px; }
+th { background: #f5f5f7; color: #55555d; font-size: 11px; letter-spacing: .045em; text-transform: uppercase; }
+th, td { padding: 18px 20px; border-top: 1px solid var(--border); vertical-align: middle; }
+td strong { display: block; min-width: 160px; max-width: 240px; overflow-wrap: anywhere; font-size: 13px; }
+td small { display: block; color: #64646c; margin-top: 5px; overflow-wrap: anywhere; }
+tbody tr:hover { background: #fbfbfd; }
+.date { min-width: 155px; font-variant-numeric: tabular-nums; }
+.price { font-weight: 600; white-space: nowrap; }
+.note-preview { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; max-width: 190px; min-width: 100px; overflow-wrap: anywhere; color: #64646c; }
+button { min-height: 40px; border: 1px solid var(--border-strong); border-radius: 999px; padding: 9px 14px; font-weight: 600; font-size: 12px; background: white; color: var(--text-primary); white-space: nowrap; cursor: pointer; }
+button:hover { background: #f1f1f3; } button:disabled { opacity: .45; cursor: default; }
+button:focus-visible, a:focus-visible, .table-scroll:focus-visible { outline: 3px solid #0071e3; outline-offset: 3px; }
+.pagination { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 24px; border-top: 1px solid var(--border); }
+.pagination p { margin: 0; } .pagination div { display: flex; gap: 8px; }
+.empty { padding: 56px 24px; text-align: center; color: #64646c; }
+.footnote { margin-top: 16px; line-height: 1.6; }
+.error { color: #a30b19; padding: 16px; border-radius: 12px; background: #fff1f2; margin-bottom: 20px; }
+@media(max-width: 640px) { main { width: calc(100% - 32px); padding-top: 28px; } header, .table-heading, .pagination { align-items: flex-start; flex-direction: column; } .table-heading, .pagination { padding: 20px; } }

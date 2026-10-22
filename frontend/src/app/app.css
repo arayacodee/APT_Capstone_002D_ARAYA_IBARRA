@@ -10,7 +10,7 @@
 
   backdrop-filter: saturate(180%) blur(20px);
 }
-.company-link { display: inline-block; margin-top: 20px; color: var(--accent); font-weight: 600; }
+.company-link { display: inline-block; margin-top: 20px; color: #75baff; font-weight: 600; }
 
 .navigation {
   display: flex;
@@ -80,7 +80,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 
-  color: var(--text-tertiary);
+  color: var(--text-secondary);
 
   font-size: 13px;
 }
