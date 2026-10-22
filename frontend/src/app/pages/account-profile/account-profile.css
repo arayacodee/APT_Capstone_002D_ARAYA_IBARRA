@@ -1,6 +1,26 @@
-.account-page { padding: 56px 24px 100px; } .account-card { max-width: 650px; margin: auto; padding: 36px; background: var(--surface); border: 1px solid var(--border); border-radius: 24px; }
-h1 { font-size: clamp(30px, 5vw, 42px); letter-spacing: -.04em; } p, small { color: var(--text-secondary); line-height: 1.6; } .eyebrow { color: var(--accent); font-size: 12px; font-weight: 700; letter-spacing: .1em; }
-form, label { display: grid; gap: 12px; } form { margin: 24px 0; gap: 18px; } label { font-weight: 600; } input { padding: 13px; border: 1px solid var(--border-strong); border-radius: 12px; width: 100%; min-width: 0; } .name-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-button { padding: 13px 20px; border: 1px solid var(--border-strong); border-radius: 12px; background: var(--surface); cursor: pointer; } .primary { color: white; background: var(--accent); border-color: var(--accent); margin-right: 16px; } button:disabled { opacity: .5; cursor: default; }
-.verification { margin: 28px 0; padding: 20px; background: var(--surface-secondary); border-radius: 16px; } .error { color: var(--danger); } .success { color: var(--success); } .email { overflow-wrap: anywhere; }
-@media(max-width: 520px) { .name-grid { grid-template-columns: 1fr; } .account-card { padding: 24px; } }
+.account-page { width: min(calc(100% - 48px), 960px); margin: 0 auto; padding: 48px 0 100px; }
+.back-link { display: inline-block; margin-bottom: 32px; font-size: 14px; color: var(--text-secondary); text-decoration: none; }
+.profile-header { margin-bottom: 32px; }
+h1 { font-size: clamp(32px, 5vw, 46px); letter-spacing: -.04em; margin-bottom: 12px; }
+h2 { font-size: 24px; letter-spacing: -.03em; margin-bottom: 8px; }
+p, small { color: #64646c; line-height: 1.6; }
+.profile-name { color: var(--text-primary); font-size: 20px; font-weight: 600; margin-bottom: 8px; overflow-wrap: anywhere; }
+.eyebrow { color: #64646c; font-size: 11px; font-weight: 700; letter-spacing: .14em; margin-bottom: 8px; }
+.account-card { margin-bottom: 44px; padding: 32px; background: var(--surface); border: 1px solid var(--border); border-radius: 24px; }
+.card-heading { display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; }
+.card-heading p { margin-bottom: 0; }
+.private-label { font-size: 12px; background: var(--background); padding: 8px 12px; border-radius: 999px; color: #64646c; }
+form, label { display: grid; gap: 10px; }
+form { margin-top: 28px; gap: 20px; }
+label { font-size: 14px; font-weight: 600; }
+input { padding: 13px; border: 1px solid #a6a6af; border-radius: 12px; width: 100%; min-width: 0; background: var(--surface); color: inherit; }
+.name-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; }
+button { min-height: 44px; padding: 12px 20px; border: 1px solid var(--border-strong); border-radius: 999px; background: var(--surface); color: inherit; cursor: pointer; font-size: 13px; font-weight: 600; }
+.primary { color: white; background: var(--text-primary); border-color: var(--text-primary); }
+button:disabled { opacity: .5; cursor: wait; }
+button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid #0071e3; outline-offset: 3px; }
+.error, .success { padding: 14px; border-radius: 12px; margin: 20px 0 0; }
+.error { color: #a30b19; background: #fff1f2; } .success { color: #176c2b; background: #edf8ef; }
+.email { overflow-wrap: anywhere; font-size: 14px; }
+@media(max-width: 520px) { .account-page { width: calc(100% - 32px); padding-top: 28px; } .name-grid { grid-template-columns: 1fr; } .account-card { padding: 22px; } .actions { flex-direction: column; } }

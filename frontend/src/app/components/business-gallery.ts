@@ -19,7 +19,7 @@ interface Photo { id: string; imageUrl: string; caption: string | null; }
 .gallery { margin: 32px 0; padding: 24px; border: 1px solid #ddd; border-radius: 20px; background: white; }
 .photos { display: grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); gap: 18px; margin-top: 24px; }
 figure { margin: 0; } img { width: 100%; height: 220px; object-fit: cover; border-radius: 12px; } figcaption { padding: 10px 0; }
-form, label { display: grid; gap: 10px; } form { margin: 20px 0; } input, button { padding: 12px; border: 1px solid #ddd; border-radius: 10px; font: inherit; } button { cursor: pointer; } small { color: #666; }
+form, label { display: grid; gap: 10px; min-width: 0; } form { margin: 20px 0; } input, button { padding: 12px; border: 1px solid #ddd; border-radius: 10px; font: inherit; } input { width: 100%; min-width: 0; max-width: 100%; } button { cursor: pointer; } small { color: #666; }
 `] })
 export class BusinessGallery implements OnChanges {
   readonly businessId = input.required<string>();

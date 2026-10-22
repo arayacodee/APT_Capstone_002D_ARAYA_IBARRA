@@ -1,39 +1,32 @@
-<main class="profile-page">
-
-  <a
-    routerLink="/dashboard"
-    class="back-link"
-  >
-    ← Volver al dashboard
-  </a>
-
+<section class="profile-page" aria-labelledby="business-profile-title">
   <header>
-    <p class="eyebrow">
-      PANEL PROFESIONAL
-    </p>
-
-    <h1>Editar perfil</h1>
-
-    <p>
-      Esta información aparecerá en tu perfil
-      público de Cronos.
-    </p>
+    <p class="eyebrow">PERFIL PÚBLICO</p>
+    <h2 id="business-profile-title">Mi negocio</h2>
+    <p>Edita la información, las imágenes y la galería que ven tus clientes.</p>
   </header>
 
   @if (loading()) {
-    <p>Cargando perfil...</p>
+    <p role="status">Cargando negocio...</p>
   }
 
   @if (errorMessage()) {
-    <p class="message error">
+    <p class="message error" role="alert">
       {{ errorMessage() }}
     </p>
   }
 
   @if (successMessage()) {
-    <p class="message success">
+    <p class="message success" role="status">
       {{ successMessage() }}
     </p>
+  }
+
+  @if (missingBusiness()) {
+    <section class="missing-business">
+      <h3>Aún no has configurado tu negocio</h3>
+      <p>Completa su perfil para publicar tus servicios y recibir reservas.</p>
+      <a routerLink="/professional/setup">Crear mi negocio →</a>
+    </section>
   }
 
   @if (!loading() && business()) {
@@ -256,4 +249,4 @@
   }
 
   @if (business(); as currentBusiness) { <app-business-gallery [businessId]="currentBusiness.id" [editable]="true" /> }
-</main>
+</section>

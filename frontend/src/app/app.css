@@ -81,9 +81,15 @@
   white-space: nowrap;
 
   color: var(--text-secondary);
-
+  display: inline-block;
+  padding: 8px 0;
+  text-decoration: none;
+  font-weight: 600;
   font-size: 13px;
 }
+
+.account-name:hover { color: var(--text-primary); text-decoration: underline; }
+.account-name:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
 
 .logout-button {
   padding: 8px 13px;
@@ -128,7 +134,7 @@
   }
 
   .account-name {
-    display: none;
+    max-width: 120px;
   }
 
   .brand {

@@ -27,6 +27,7 @@ import { BusinessGallery } from '../../components/business-gallery';
   styleUrl: './professional-profile.css'
 })
 export class ProfessionalProfile implements OnInit, OnDestroy {
+  readonly missingBusiness = signal(false);
   business = signal<Business | null>(null);
 
     // Estado temporal usado para seleccionar,
@@ -80,11 +81,8 @@ export class ProfessionalProfile implements OnInit, OnDestroy {
       },
 
       error: (error) => {
-        console.error(error);
-
-        this.errorMessage.set(
-          'No fue posible cargar tu perfil.'
-        );
+        if (error.status === 404) this.missingBusiness.set(true);
+        else this.errorMessage.set('No fue posible cargar el perfil de tu negocio.');
 
         this.loading.set(false);
       }

@@ -68,8 +68,8 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard/profile',
-    loadComponent: () => import('./pages/professional-profile/professional-profile').then(module => module.ProfessionalProfile),
-    canActivate: [professionalGuard]
+    redirectTo: '/account/profile',
+    pathMatch: 'full'
   },
   {
     path: '**',

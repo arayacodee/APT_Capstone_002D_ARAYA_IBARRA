@@ -1,19 +1,31 @@
-<main class="account-page"><section class="account-card">
-<h1>Mis datos</h1><p class="email">{{ auth.currentUser()?.email }}</p>
-@if (error()) { <p class="error" role="alert">{{ error() }}</p> }
-@if (message()) { <p class="success" role="status">{{ message() }}</p> }
-<form (ngSubmit)="save()">
-<div class="name-grid">
-<label>Nombre<input name="firstName" autocomplete="given-name" [(ngModel)]="form.firstName" required minlength="2" maxlength="80" [disabled]="busy()"></label>
-<label>Apellido<input name="lastName" autocomplete="family-name" [(ngModel)]="form.lastName" required minlength="2" maxlength="80" [disabled]="busy()"></label>
-</div>
-<label>Teléfono<input name="phone" type="tel" autocomplete="tel" [(ngModel)]="form.phone" required maxlength="40" [disabled]="busy()"></label>
-<small>Tu número se guarda sin verificación por SMS.</small>
-<label>Dirección<input name="address" autocomplete="street-address" [(ngModel)]="form.address" required minlength="5" maxlength="300" [disabled]="busy()"></label>
-<small>Tu dirección y teléfono no aparecen en los perfiles públicos.</small>
-<button type="submit" [disabled]="busy()">Guardar datos</button>
-<button type="button" class="primary" [disabled]="busy()" (click)="save(true)">Guardar y continuar</button>
-</form>
-<a routerLink="/">Volver al inicio</a>
-</section></main>
+<main class="account-page" aria-labelledby="profile-title">
+  <a class="back-link" [routerLink]="auth.isProfessional() ? '/dashboard' : '/'">← {{ auth.isProfessional() ? 'Volver al panel' : 'Volver al inicio' }}</a>
+  <header class="profile-header">
+    <p class="eyebrow">TU CUENTA EN CRONOS</p>
+    <h1 id="profile-title">Mi perfil</h1>
+    <p class="profile-name">{{ auth.currentUser()?.name || auth.currentUser()?.email }}</p>
+    <p>{{ auth.currentUser()?.role === 'PROFESSIONAL' ? 'Administra tu información personal y el perfil de tu negocio en un solo lugar.' : 'Consulta y actualiza tu información personal.' }}</p>
+  </header>
+  <section class="account-card" aria-labelledby="personal-title">
+    <div class="card-heading"><div><h2 id="personal-title">Información personal</h2><p class="email">{{ auth.currentUser()?.email }}</p></div><span class="private-label">Privado</span></div>
+    @if (error()) { <p class="error" role="alert">{{ error() }}</p> }
+    @if (message()) { <p class="success" role="status">{{ message() }}</p> }
+    <form [formGroup]="form" (ngSubmit)="save()">
+      <div class="name-grid">
+        <label>Nombre<input formControlName="firstName" autocomplete="given-name" required minlength="2" maxlength="80"></label>
+        <label>Apellido<input formControlName="lastName" autocomplete="family-name" required minlength="2" maxlength="80"></label>
+      </div>
+      <label>Teléfono<input formControlName="phone" type="tel" autocomplete="tel" required maxlength="40"></label>
+      <label>Dirección<input formControlName="address" autocomplete="street-address" required minlength="5" maxlength="300"></label>
+      <small>Tu teléfono y dirección personal se mantienen privados.</small>
+      <div class="actions">
+        <button type="submit" class="primary" [disabled]="busy()">{{ busy() ? 'Guardando…' : 'Guardar información personal' }}</button>
+        @if (hasReturnUrl) { <button type="button" [disabled]="busy()" (click)="save(true)">Guardar y continuar</button> }
+      </div>
+    </form>
+  </section>
+  @if (auth.currentUser()?.role === 'PROFESSIONAL') {
+    <app-professional-profile />
+  }
+</main>
 

@@ -31,10 +31,9 @@
 
       @if (auth.currentUser(); as user) {
         <div class="account">
-          @if (!auth.isSuperadmin()) { <a routerLink="/account/profile">Mis datos</a> }
-          <span class="account-name">
+          <a routerLink="/account/profile" class="account-name" [attr.aria-label]="'Mi perfil: ' + (user.name || user.email)" title="Ver y editar mi perfil">
             {{ user.name || user.email }}
-          </span>
+          </a>
 
           <button
             type="button"
