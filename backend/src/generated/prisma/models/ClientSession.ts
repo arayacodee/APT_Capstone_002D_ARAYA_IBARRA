@@ -20,8 +20,18 @@ export type ClientSessionModel = runtime.Types.Result.DefaultSelection<Prisma.$C
 
 export type AggregateClientSession = {
   _count: ClientSessionCountAggregateOutputType | null
+  _avg: ClientSessionAvgAggregateOutputType | null
+  _sum: ClientSessionSumAggregateOutputType | null
   _min: ClientSessionMinAggregateOutputType | null
   _max: ClientSessionMaxAggregateOutputType | null
+}
+
+export type ClientSessionAvgAggregateOutputType = {
+  amount: runtime.Decimal | null
+}
+
+export type ClientSessionSumAggregateOutputType = {
+  amount: runtime.Decimal | null
 }
 
 export type ClientSessionMinAggregateOutputType = {
@@ -31,6 +41,7 @@ export type ClientSessionMinAggregateOutputType = {
   reservationId: string | null
   occurredAt: Date | null
   notes: string | null
+  amount: runtime.Decimal | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -42,6 +53,7 @@ export type ClientSessionMaxAggregateOutputType = {
   reservationId: string | null
   occurredAt: Date | null
   notes: string | null
+  amount: runtime.Decimal | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -53,11 +65,20 @@ export type ClientSessionCountAggregateOutputType = {
   reservationId: number
   occurredAt: number
   notes: number
+  amount: number
   createdAt: number
   updatedAt: number
   _all: number
 }
 
+
+export type ClientSessionAvgAggregateInputType = {
+  amount?: true
+}
+
+export type ClientSessionSumAggregateInputType = {
+  amount?: true
+}
 
 export type ClientSessionMinAggregateInputType = {
   id?: true
@@ -66,6 +87,7 @@ export type ClientSessionMinAggregateInputType = {
   reservationId?: true
   occurredAt?: true
   notes?: true
+  amount?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -77,6 +99,7 @@ export type ClientSessionMaxAggregateInputType = {
   reservationId?: true
   occurredAt?: true
   notes?: true
+  amount?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -88,6 +111,7 @@ export type ClientSessionCountAggregateInputType = {
   reservationId?: true
   occurredAt?: true
   notes?: true
+  amount?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -131,6 +155,18 @@ export type ClientSessionAggregateArgs<ExtArgs extends runtime.Types.Extensions.
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: ClientSessionAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: ClientSessionSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: ClientSessionMinAggregateInputType
@@ -161,6 +197,8 @@ export type ClientSessionGroupByArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   _count?: ClientSessionCountAggregateInputType | true
+  _avg?: ClientSessionAvgAggregateInputType
+  _sum?: ClientSessionSumAggregateInputType
   _min?: ClientSessionMinAggregateInputType
   _max?: ClientSessionMaxAggregateInputType
 }
@@ -172,9 +210,12 @@ export type ClientSessionGroupByOutputType = {
   reservationId: string
   occurredAt: Date
   notes: string | null
+  amount: runtime.Decimal | null
   createdAt: Date
   updatedAt: Date
   _count: ClientSessionCountAggregateOutputType | null
+  _avg: ClientSessionAvgAggregateOutputType | null
+  _sum: ClientSessionSumAggregateOutputType | null
   _min: ClientSessionMinAggregateOutputType | null
   _max: ClientSessionMaxAggregateOutputType | null
 }
@@ -204,6 +245,7 @@ export type ClientSessionWhereInput = {
   reservationId?: Prisma.StringFilter<"ClientSession"> | string
   occurredAt?: Prisma.DateTimeFilter<"ClientSession"> | Date | string
   notes?: Prisma.StringNullableFilter<"ClientSession"> | string | null
+  amount?: Prisma.DecimalNullableFilter<"ClientSession"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFilter<"ClientSession"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ClientSession"> | Date | string
   business?: Prisma.XOR<Prisma.BusinessScalarRelationFilter, Prisma.BusinessWhereInput>
@@ -219,6 +261,7 @@ export type ClientSessionOrderByWithRelationInput = {
   reservationId?: Prisma.SortOrder
   occurredAt?: Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
+  amount?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   business?: Prisma.BusinessOrderByWithRelationInput
@@ -237,6 +280,7 @@ export type ClientSessionWhereUniqueInput = Prisma.AtLeast<{
   clientId?: Prisma.StringFilter<"ClientSession"> | string
   occurredAt?: Prisma.DateTimeFilter<"ClientSession"> | Date | string
   notes?: Prisma.StringNullableFilter<"ClientSession"> | string | null
+  amount?: Prisma.DecimalNullableFilter<"ClientSession"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFilter<"ClientSession"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ClientSession"> | Date | string
   business?: Prisma.XOR<Prisma.BusinessScalarRelationFilter, Prisma.BusinessWhereInput>
@@ -252,11 +296,14 @@ export type ClientSessionOrderByWithAggregationInput = {
   reservationId?: Prisma.SortOrder
   occurredAt?: Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
+  amount?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.ClientSessionCountOrderByAggregateInput
+  _avg?: Prisma.ClientSessionAvgOrderByAggregateInput
   _max?: Prisma.ClientSessionMaxOrderByAggregateInput
   _min?: Prisma.ClientSessionMinOrderByAggregateInput
+  _sum?: Prisma.ClientSessionSumOrderByAggregateInput
 }
 
 export type ClientSessionScalarWhereWithAggregatesInput = {
@@ -269,6 +316,7 @@ export type ClientSessionScalarWhereWithAggregatesInput = {
   reservationId?: Prisma.StringWithAggregatesFilter<"ClientSession"> | string
   occurredAt?: Prisma.DateTimeWithAggregatesFilter<"ClientSession"> | Date | string
   notes?: Prisma.StringNullableWithAggregatesFilter<"ClientSession"> | string | null
+  amount?: Prisma.DecimalNullableWithAggregatesFilter<"ClientSession"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ClientSession"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"ClientSession"> | Date | string
 }
@@ -277,6 +325,7 @@ export type ClientSessionCreateInput = {
   id?: string
   occurredAt: Date | string
   notes?: string | null
+  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   business: Prisma.BusinessCreateNestedOneWithoutClientSessionsInput
@@ -292,6 +341,7 @@ export type ClientSessionUncheckedCreateInput = {
   reservationId: string
   occurredAt: Date | string
   notes?: string | null
+  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   evidences?: Prisma.SessionEvidenceUncheckedCreateNestedManyWithoutSessionInput
@@ -301,6 +351,7 @@ export type ClientSessionUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   business?: Prisma.BusinessUpdateOneRequiredWithoutClientSessionsNestedInput
@@ -316,6 +367,7 @@ export type ClientSessionUncheckedUpdateInput = {
   reservationId?: Prisma.StringFieldUpdateOperationsInput | string
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   evidences?: Prisma.SessionEvidenceUncheckedUpdateManyWithoutSessionNestedInput
@@ -328,6 +380,7 @@ export type ClientSessionCreateManyInput = {
   reservationId: string
   occurredAt: Date | string
   notes?: string | null
+  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -336,6 +389,7 @@ export type ClientSessionUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -347,6 +401,7 @@ export type ClientSessionUncheckedUpdateManyInput = {
   reservationId?: Prisma.StringFieldUpdateOperationsInput | string
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -373,8 +428,13 @@ export type ClientSessionCountOrderByAggregateInput = {
   reservationId?: Prisma.SortOrder
   occurredAt?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  amount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type ClientSessionAvgOrderByAggregateInput = {
+  amount?: Prisma.SortOrder
 }
 
 export type ClientSessionMaxOrderByAggregateInput = {
@@ -384,6 +444,7 @@ export type ClientSessionMaxOrderByAggregateInput = {
   reservationId?: Prisma.SortOrder
   occurredAt?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  amount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -395,8 +456,13 @@ export type ClientSessionMinOrderByAggregateInput = {
   reservationId?: Prisma.SortOrder
   occurredAt?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  amount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type ClientSessionSumOrderByAggregateInput = {
+  amount?: Prisma.SortOrder
 }
 
 export type ClientSessionScalarRelationFilter = {
@@ -520,6 +586,14 @@ export type ClientSessionUncheckedUpdateOneWithoutReservationNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ClientSessionUpdateToOneWithWhereWithoutReservationInput, Prisma.ClientSessionUpdateWithoutReservationInput>, Prisma.ClientSessionUncheckedUpdateWithoutReservationInput>
 }
 
+export type NullableDecimalFieldUpdateOperationsInput = {
+  set?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
+}
+
 export type ClientSessionCreateNestedOneWithoutEvidencesInput = {
   create?: Prisma.XOR<Prisma.ClientSessionCreateWithoutEvidencesInput, Prisma.ClientSessionUncheckedCreateWithoutEvidencesInput>
   connectOrCreate?: Prisma.ClientSessionCreateOrConnectWithoutEvidencesInput
@@ -538,6 +612,7 @@ export type ClientSessionCreateWithoutClientInput = {
   id?: string
   occurredAt: Date | string
   notes?: string | null
+  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   business: Prisma.BusinessCreateNestedOneWithoutClientSessionsInput
@@ -551,6 +626,7 @@ export type ClientSessionUncheckedCreateWithoutClientInput = {
   reservationId: string
   occurredAt: Date | string
   notes?: string | null
+  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   evidences?: Prisma.SessionEvidenceUncheckedCreateNestedManyWithoutSessionInput
@@ -592,6 +668,7 @@ export type ClientSessionScalarWhereInput = {
   reservationId?: Prisma.StringFilter<"ClientSession"> | string
   occurredAt?: Prisma.DateTimeFilter<"ClientSession"> | Date | string
   notes?: Prisma.StringNullableFilter<"ClientSession"> | string | null
+  amount?: Prisma.DecimalNullableFilter<"ClientSession"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFilter<"ClientSession"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ClientSession"> | Date | string
 }
@@ -600,6 +677,7 @@ export type ClientSessionCreateWithoutBusinessInput = {
   id?: string
   occurredAt: Date | string
   notes?: string | null
+  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   client: Prisma.UserCreateNestedOneWithoutClientSessionsInput
@@ -613,6 +691,7 @@ export type ClientSessionUncheckedCreateWithoutBusinessInput = {
   reservationId: string
   occurredAt: Date | string
   notes?: string | null
+  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   evidences?: Prisma.SessionEvidenceUncheckedCreateNestedManyWithoutSessionInput
@@ -648,6 +727,7 @@ export type ClientSessionCreateWithoutReservationInput = {
   id?: string
   occurredAt: Date | string
   notes?: string | null
+  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   business: Prisma.BusinessCreateNestedOneWithoutClientSessionsInput
@@ -661,6 +741,7 @@ export type ClientSessionUncheckedCreateWithoutReservationInput = {
   clientId: string
   occurredAt: Date | string
   notes?: string | null
+  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   evidences?: Prisma.SessionEvidenceUncheckedCreateNestedManyWithoutSessionInput
@@ -686,6 +767,7 @@ export type ClientSessionUpdateWithoutReservationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   business?: Prisma.BusinessUpdateOneRequiredWithoutClientSessionsNestedInput
@@ -699,6 +781,7 @@ export type ClientSessionUncheckedUpdateWithoutReservationInput = {
   clientId?: Prisma.StringFieldUpdateOperationsInput | string
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   evidences?: Prisma.SessionEvidenceUncheckedUpdateManyWithoutSessionNestedInput
@@ -708,6 +791,7 @@ export type ClientSessionCreateWithoutEvidencesInput = {
   id?: string
   occurredAt: Date | string
   notes?: string | null
+  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   business: Prisma.BusinessCreateNestedOneWithoutClientSessionsInput
@@ -722,6 +806,7 @@ export type ClientSessionUncheckedCreateWithoutEvidencesInput = {
   reservationId: string
   occurredAt: Date | string
   notes?: string | null
+  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -746,6 +831,7 @@ export type ClientSessionUpdateWithoutEvidencesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   business?: Prisma.BusinessUpdateOneRequiredWithoutClientSessionsNestedInput
@@ -760,6 +846,7 @@ export type ClientSessionUncheckedUpdateWithoutEvidencesInput = {
   reservationId?: Prisma.StringFieldUpdateOperationsInput | string
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -770,6 +857,7 @@ export type ClientSessionCreateManyClientInput = {
   reservationId: string
   occurredAt: Date | string
   notes?: string | null
+  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -778,6 +866,7 @@ export type ClientSessionUpdateWithoutClientInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   business?: Prisma.BusinessUpdateOneRequiredWithoutClientSessionsNestedInput
@@ -791,6 +880,7 @@ export type ClientSessionUncheckedUpdateWithoutClientInput = {
   reservationId?: Prisma.StringFieldUpdateOperationsInput | string
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   evidences?: Prisma.SessionEvidenceUncheckedUpdateManyWithoutSessionNestedInput
@@ -802,6 +892,7 @@ export type ClientSessionUncheckedUpdateManyWithoutClientInput = {
   reservationId?: Prisma.StringFieldUpdateOperationsInput | string
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -812,6 +903,7 @@ export type ClientSessionCreateManyBusinessInput = {
   reservationId: string
   occurredAt: Date | string
   notes?: string | null
+  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -820,6 +912,7 @@ export type ClientSessionUpdateWithoutBusinessInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   client?: Prisma.UserUpdateOneRequiredWithoutClientSessionsNestedInput
@@ -833,6 +926,7 @@ export type ClientSessionUncheckedUpdateWithoutBusinessInput = {
   reservationId?: Prisma.StringFieldUpdateOperationsInput | string
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   evidences?: Prisma.SessionEvidenceUncheckedUpdateManyWithoutSessionNestedInput
@@ -844,6 +938,7 @@ export type ClientSessionUncheckedUpdateManyWithoutBusinessInput = {
   reservationId?: Prisma.StringFieldUpdateOperationsInput | string
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -886,6 +981,7 @@ export type ClientSessionSelect<ExtArgs extends runtime.Types.Extensions.Interna
   reservationId?: boolean
   occurredAt?: boolean
   notes?: boolean
+  amount?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
@@ -902,6 +998,7 @@ export type ClientSessionSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   reservationId?: boolean
   occurredAt?: boolean
   notes?: boolean
+  amount?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
@@ -916,6 +1013,7 @@ export type ClientSessionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   reservationId?: boolean
   occurredAt?: boolean
   notes?: boolean
+  amount?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
@@ -930,11 +1028,12 @@ export type ClientSessionSelectScalar = {
   reservationId?: boolean
   occurredAt?: boolean
   notes?: boolean
+  amount?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ClientSessionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "businessId" | "clientId" | "reservationId" | "occurredAt" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["clientSession"]>
+export type ClientSessionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "businessId" | "clientId" | "reservationId" | "occurredAt" | "notes" | "amount" | "createdAt" | "updatedAt", ExtArgs["result"]["clientSession"]>
 export type ClientSessionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
   client?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -968,6 +1067,7 @@ export type $ClientSessionPayload<ExtArgs extends runtime.Types.Extensions.Inter
     reservationId: string
     occurredAt: Date
     notes: string | null
+    amount: runtime.Decimal | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["clientSession"]>
@@ -1403,6 +1503,7 @@ export interface ClientSessionFieldRefs {
   readonly reservationId: Prisma.FieldRef<"ClientSession", 'String'>
   readonly occurredAt: Prisma.FieldRef<"ClientSession", 'DateTime'>
   readonly notes: Prisma.FieldRef<"ClientSession", 'String'>
+  readonly amount: Prisma.FieldRef<"ClientSession", 'Decimal'>
   readonly createdAt: Prisma.FieldRef<"ClientSession", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"ClientSession", 'DateTime'>
 }

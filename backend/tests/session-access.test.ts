@@ -8,7 +8,7 @@ Object.assign(process.env, {
   CLOUDINARY_CLOUD_NAME: 'test', CLOUDINARY_API_KEY: 'test', CLOUDINARY_API_SECRET: 'test',
 });
 const { prisma } = await import('../src/lib/prisma.js');
-const { getSessions, updateSession, addEvidence, deleteEvidence } = await import('../src/controllers/session.controller.js');
+const { getSessions, getAttentionMetrics, updateSession, addEvidence, deleteEvidence } = await import('../src/controllers/session.controller.js');
 const { requireRole } = await import('../src/middleware/auth.middleware.js');
 const { deleteBusinessAvatar, deleteBusinessCover } = await import('../src/controllers/business.controller.js');
 
@@ -38,6 +38,49 @@ test('un cliente no puede usar los endpoints profesionales de historial', () => 
   requireRole('PROFESSIONAL')({ authUser: { role: 'CLIENT' } } as any, res as any, () => { reached = true; });
   assert.equal(res.statusCode, 403);
   assert.equal(reached, false);
+});
+
+test('paginación limita resultados, devuelve cursor y rechaza tamaños inválidos', async () => {
+  const original = prisma.clientSession.findMany;
+  let query: any;
+  prisma.clientSession.findMany = (async (args: any) => { query = args; return Array.from({ length: 11 }, (_, i) => ({ id: `session-${i}` })); }) as any;
+  try {
+    const res = response();
+    const cursor = '00000000-0000-4000-8000-000000000001';
+    await getSessions({ authUser: { id: 'owner' }, query: { limit: '10', cursor } } as any, res as any);
+    assert.equal(query.take, 11);
+    assert.equal(query.skip, 1);
+    assert.equal(query.cursor.id, cursor);
+    assert.equal(res.body.items.length, 10);
+    assert.equal(res.body.nextCursor, 'session-9');
+    for (const limit of ['0', '51', '-1', 'abc', '1.5']) {
+      const invalid = response();
+      await getSessions({ query: { limit } } as any, invalid as any);
+      assert.equal(invalid.statusCode, 400);
+    }
+  } finally { prisma.clientSession.findMany = original; }
+});
+
+test('métricas filtran propietario, periodo acotado y solo reservas completadas', async () => {
+  const originals = { business: prisma.business.findFirst, sessions: prisma.clientSession.findMany };
+  let lookup: any;
+  let query: any;
+  prisma.business.findFirst = (async (args: any) => { lookup = args; return { id: 'own-business', timezone: 'America/Santiago' }; }) as any;
+  prisma.clientSession.findMany = (async (args: any) => { query = args; return []; }) as any;
+  try {
+    const res = response();
+    await getAttentionMetrics({ authUser: { id: 'owner' } } as any, res as any);
+    assert.equal(lookup.where.ownerId, 'owner');
+    assert.equal(query.where.businessId, 'own-business');
+    assert.equal(query.where.reservation.status, 'COMPLETED');
+    assert.ok(query.where.occurredAt.gte instanceof Date);
+    assert.ok(query.where.occurredAt.lt - query.where.occurredAt.gte < 36 * 86400000);
+    assert.equal(res.body.monthCount, 0);
+    prisma.business.findFirst = (async () => null) as any;
+    const missing = response();
+    await getAttentionMetrics({ authUser: { id: 'owner' } } as any, missing as any);
+    assert.equal(missing.statusCode, 404);
+  } finally { prisma.business.findFirst = originals.business; prisma.clientSession.findMany = originals.sessions; }
 });
 
 test('una nota no puede editar una atención ajena', async () => {

@@ -21,7 +21,7 @@ export async function completeSafely(tx: Prisma.TransactionClient, id: string, n
     where: { id, status: "CONFIRMED", startsAt: { lte: new Date() } },
     data: { status: "COMPLETED" },
   });
-  const reservation = await tx.reservation.findUniqueOrThrow({ where: { id } });
+  const reservation = await tx.reservation.findUniqueOrThrow({ where: { id }, include: { service: true } });
   if (!changed.count) {
     const session = await tx.clientSession.findUnique({ where: { reservationId: id } });
     if (reservation.status === "COMPLETED" && session) return { reservation, session };
@@ -34,6 +34,7 @@ export async function completeSafely(tx: Prisma.TransactionClient, id: string, n
       reservationId: id,
       occurredAt: reservation.startsAt,
       notes: notes || null,
+      amount: reservation.service.price,
     },
   });
   return { reservation, session };

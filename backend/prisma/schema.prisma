@@ -171,6 +171,7 @@ model ClientSession {
 
   occurredAt DateTime
   notes      String?
+  amount     Decimal? @db.Decimal(10, 2)
 
   // Cada atención pertenece a un negocio, un cliente y una reserva concreta.
   // reservationId es único para impedir dos historiales para la misma reserva.
@@ -185,6 +186,7 @@ model ClientSession {
 
   @@index([businessId, clientId])
   @@index([occurredAt])
+  @@index([businessId, occurredAt])
 }
 
 model SessionEvidence {

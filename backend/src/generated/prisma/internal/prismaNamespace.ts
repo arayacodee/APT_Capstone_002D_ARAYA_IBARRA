@@ -1251,6 +1251,7 @@ export const ClientSessionScalarFieldEnum = {
   reservationId: 'reservationId',
   occurredAt: 'occurredAt',
   notes: 'notes',
+  amount: 'amount',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

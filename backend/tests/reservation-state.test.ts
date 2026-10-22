@@ -15,7 +15,7 @@ function transaction(status = 'CONFIRMED', future = false) {
         reservation.status = data.status;
         return { count: 1 };
       },
-      findUniqueOrThrow: async () => ({ ...reservation })
+      findUniqueOrThrow: async () => ({ ...reservation, service: { price: '15000' } })
     },
     clientSession: {
       findUnique: async () => session,
@@ -42,6 +42,7 @@ test('completar dos veces conserva una única atención', async () => {
   assert.equal(first.session.id, second.session.id);
   assert.equal(state.creations(), 1);
   assert.equal(first.session.occurredAt, state.reservation.startsAt);
+  assert.equal(first.session.amount, '15000');
 });
 test('una cancelación previa impide completar', async () => {
   const state = transaction();

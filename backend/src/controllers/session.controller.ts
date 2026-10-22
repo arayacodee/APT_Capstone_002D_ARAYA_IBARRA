@@ -4,8 +4,9 @@ import { z } from "zod";
 import { prisma } from "../lib/prisma.js";
 import { cloudinary } from "../lib/cloudinary.js";
 import { uploadImageBuffer } from "../lib/cloudinary-upload.js";
+import { attentionMetrics, monthEnvelope } from "../lib/attention-metrics.js";
 
-const querySchema = z.object({ clientId: z.string().uuid().optional(), cursor: z.string().uuid().optional() });
+const querySchema = z.object({ clientId: z.string().uuid().optional(), cursor: z.string().uuid().optional(), limit: z.coerce.number().int().min(1).max(50).default(50) });
 const notesSchema = z.object({ notes: z.string().trim().max(1500).nullable() });
 const captionSchema = z.object({ caption: z.string().trim().max(300).optional() });
 const idSchema = z.string().uuid();
@@ -22,12 +23,24 @@ export async function getSessions(req: Request, res: Response) {
       evidences: { orderBy: { createdAt: "desc" } },
     },
     orderBy: [{ occurredAt: "desc" }, { id: "desc" }],
-    take: 51,
+    take: parsed.data.limit + 1,
     ...(parsed.data.cursor ? { cursor: { id: parsed.data.cursor }, skip: 1 } : {}),
   });
-  const hasMore = sessions.length > 50;
-  const items = sessions.slice(0, 50);
+  const hasMore = sessions.length > parsed.data.limit;
+  const items = sessions.slice(0, parsed.data.limit);
   return res.json({ items, nextCursor: hasMore ? items.at(-1)!.id : null });
+}
+
+export async function getAttentionMetrics(req: Request, res: Response) {
+  const business = await prisma.business.findFirst({ where: { ownerId: req.authUser!.id }, select: { id: true, timezone: true } });
+  if (!business) return res.status(404).json({ error: "Negocio no encontrado." });
+  const now = new Date();
+  const period = monthEnvelope(now, business.timezone);
+  const sessions = await prisma.clientSession.findMany({
+    where: { businessId: business.id, occurredAt: { gte: period.from, lt: period.until }, reservation: { status: "COMPLETED" } },
+    select: { occurredAt: true, clientId: true, amount: true },
+  });
+  return res.json(attentionMetrics(sessions, now, business.timezone));
 }
 
 export async function updateSession(req: Request<{ id: string }>, res: Response) {
