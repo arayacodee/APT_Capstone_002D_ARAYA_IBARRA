@@ -1,31 +1,109 @@
 <main class="account-page" aria-labelledby="profile-title">
-  <a class="back-link" [routerLink]="auth.isProfessional() ? '/dashboard' : '/'">← {{ auth.isProfessional() ? 'Volver al panel' : 'Volver al inicio' }}</a>
+  <a class="back-link" [routerLink]="auth.isProfessional() ? '/dashboard' : '/'"
+    >← {{ auth.isProfessional() ? 'Volver al panel' : 'Volver al inicio' }}</a
+  >
   <header class="profile-header">
-    <p class="eyebrow">TU CUENTA EN CRONOS</p>
-    <h1 id="profile-title">Mi perfil</h1>
-    <p class="profile-name">{{ auth.currentUser()?.name || auth.currentUser()?.email }}</p>
-    <p>{{ auth.currentUser()?.role === 'PROFESSIONAL' ? 'Administra tu información personal y el perfil de tu negocio en un solo lugar.' : 'Consulta y actualiza tu información personal.' }}</p>
+    <div class="profile-heading">
+      <p class="eyebrow">TU CUENTA EN CRONOS</p>
+      <h1 id="profile-title">Mi perfil</h1>
+      <p class="profile-description">
+        {{
+          auth.currentUser()?.role === 'PROFESSIONAL'
+            ? 'Tu información y tu negocio, en un solo lugar.'
+            : 'Tu información, siempre al día.'
+        }}
+      </p>
+    </div>
+    <div class="profile-identity">
+      <span class="identity-avatar" aria-hidden="true">{{
+        (auth.currentUser()?.name || auth.currentUser()?.email || 'C').charAt(0)
+      }}</span>
+      <div>
+        <p class="profile-name">{{ auth.currentUser()?.name || auth.currentUser()?.email }}</p>
+        <p class="identity-email">{{ auth.currentUser()?.email }}</p>
+      </div>
+    </div>
   </header>
   <section class="account-card" aria-labelledby="personal-title">
-    <div class="card-heading"><div><h2 id="personal-title">Información personal</h2><p class="email">{{ auth.currentUser()?.email }}</p></div><span class="private-label">Privado</span></div>
-    @if (error()) { <p class="error" role="alert">{{ error() }}</p> }
-    @if (message()) { <p class="success" role="status">{{ message() }}</p> }
-    <form [formGroup]="form" (ngSubmit)="save()">
-      <div class="name-grid">
-        <label>Nombre<input formControlName="firstName" autocomplete="given-name" required minlength="2" maxlength="80"></label>
-        <label>Apellido<input formControlName="lastName" autocomplete="family-name" required minlength="2" maxlength="80"></label>
+    <div class="card-heading">
+      <p class="section-kicker">TU INFORMACIÓN</p>
+      <h2 id="personal-title">Información personal</h2>
+      <p>Mantén tus datos de contacto actualizados.</p>
+      <div class="privacy-note">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          aria-hidden="true"
+        >
+          <rect x="5" y="10" width="14" height="10" rx="3" />
+          <path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v2" />
+        </svg>
+        <div>
+          <strong>Solo para ti</strong
+          ><span>Tu teléfono y dirección personal se mantienen privados.</span>
+        </div>
       </div>
-      <label>Teléfono<input formControlName="phone" type="tel" autocomplete="tel" required maxlength="40"></label>
-      <label>Dirección<input formControlName="address" autocomplete="street-address" required minlength="5" maxlength="300"></label>
-      <small>Tu teléfono y dirección personal se mantienen privados.</small>
-      <div class="actions">
-        <button type="submit" class="primary" [disabled]="busy()">{{ busy() ? 'Guardando…' : 'Guardar información personal' }}</button>
-        @if (hasReturnUrl) { <button type="button" [disabled]="busy()" (click)="save(true)">Guardar y continuar</button> }
-      </div>
-    </form>
+    </div>
+    <div class="personal-editor">
+      @if (error()) {
+        <p class="error" role="alert">{{ error() }}</p>
+      }
+      @if (message()) {
+        <p class="success" role="status">{{ message() }}</p>
+      }
+      <form [formGroup]="form" (ngSubmit)="save()">
+        <div class="name-grid">
+          <label
+            >Nombre<input
+              formControlName="firstName"
+              autocomplete="given-name"
+              required
+              minlength="2"
+              maxlength="80"
+          /></label>
+          <label
+            >Apellido<input
+              formControlName="lastName"
+              autocomplete="family-name"
+              required
+              minlength="2"
+              maxlength="80"
+          /></label>
+        </div>
+        <div class="name-grid">
+          <label
+            >Teléfono<input
+              formControlName="phone"
+              type="tel"
+              autocomplete="tel"
+              required
+              maxlength="40"
+          /></label>
+          <label
+            >Dirección<input
+              formControlName="address"
+              autocomplete="street-address"
+              required
+              minlength="5"
+              maxlength="300"
+          /></label>
+        </div>
+        <div class="actions">
+          <button type="submit" class="primary" [disabled]="busy()">
+            {{ busy() ? 'Guardando…' : 'Guardar información personal' }}
+          </button>
+          @if (hasReturnUrl) {
+            <button type="button" [disabled]="busy()" (click)="save(true)">
+              Guardar y continuar
+            </button>
+          }
+        </div>
+      </form>
+    </div>
   </section>
   @if (auth.currentUser()?.role === 'PROFESSIONAL') {
     <app-professional-profile />
   }
 </main>
-

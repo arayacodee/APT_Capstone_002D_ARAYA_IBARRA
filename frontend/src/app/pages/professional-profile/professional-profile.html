@@ -1,8 +1,15 @@
 <section class="profile-page" aria-labelledby="business-profile-title">
-  <header>
-    <p class="eyebrow">PERFIL PÚBLICO</p>
-    <h2 id="business-profile-title">Mi negocio</h2>
-    <p>Edita la información, las imágenes y la galería que ven tus clientes.</p>
+  <header class="business-heading">
+    <div>
+      <p class="eyebrow">PRESENCIA PÚBLICA</p>
+      <h2 id="business-profile-title">Mi negocio</h2>
+      <p>Dale a tu negocio una imagen que hable por ti.</p>
+    </div>
+    @if (business(); as currentBusiness) {
+      <a class="public-link" [routerLink]="['/business', currentBusiness.id]"
+        >Ver perfil público <span aria-hidden="true">↗</span></a
+      >
+    }
   </header>
 
   @if (loading()) {
@@ -30,167 +37,159 @@
   }
 
   @if (!loading() && business()) {
-
-        <section class="cover-section">
-
-      <div class="cover-preview">
-
-        @if (coverPreview()) {
-          <img
-            [src]="coverPreview()"
-            alt="Vista previa de la portada"
-          />
-        } @else if (business()?.coverUrl) {
-          <img
-            [src]="business()!.coverUrl!"
-            alt="Portada del negocio"
-          />
-        } @else {
-          <div class="cover-placeholder">
-            <span>Portada del negocio</span>
-          </div>
-        }
-
-      </div>
-
-      <div class="cover-content">
-
-        <div>
-          <h2>Portada</h2>
-
-          <p>
-            Esta imagen será el elemento visual principal
-            de tu perfil público.
-          </p>
+    <div class="media-grid">
+      <section class="cover-section">
+        <div class="cover-preview">
+          @if (coverPreview()) {
+            <img [src]="coverPreview()" alt="Vista previa de la portada" />
+          } @else if (business()?.coverUrl) {
+            <img [src]="business()!.coverUrl!" alt="Portada del negocio" />
+          } @else {
+            <div class="cover-placeholder">
+              <span>Portada del negocio</span>
+            </div>
+          }
         </div>
 
-        <div class="cover-actions">
-          @if (business()?.coverUrl) {
-            <button type="button" class="secondary-button remove-button" [disabled]="imageBusy()" (click)="removeImage('cover')">
-              {{ deletingImage() === 'cover' ? 'Eliminando...' : 'Eliminar portada' }}
+        <div class="cover-content">
+          <div>
+            <h3>Portada</h3>
+
+            <p>Esta imagen será el elemento visual principal de tu perfil público.</p>
+          </div>
+
+          <div class="cover-actions">
+            @if (business()?.coverUrl) {
+              <button
+                type="button"
+                class="secondary-button remove-button"
+                [disabled]="imageBusy()"
+                (click)="removeImage('cover')"
+              >
+                {{ deletingImage() === 'cover' ? 'Eliminando...' : 'Eliminar portada' }}
+              </button>
+            }
+            @if (selectedCover()) {
+              <button
+                type="button"
+                class="secondary-button"
+                [disabled]="imageBusy()"
+                (click)="cancelCoverSelection()"
+              >
+                Cancelar selección
+              </button>
+            }
+
+            <label class="file-button">
+              Seleccionar portada
+
+              <input
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                [disabled]="imageBusy()"
+                (change)="onCoverSelected($event)"
+              />
+            </label>
+
+            @if (selectedCover()) {
+              <button
+                type="button"
+                class="secondary-button"
+                [disabled]="imageBusy()"
+                (click)="uploadCover()"
+              >
+                @if (uploadingCover()) {
+                  Subiendo...
+                } @else {
+                  Guardar portada
+                }
+              </button>
+            }
+          </div>
+
+          <small> JPEG, PNG o WebP. Máximo 5 MB. Recomendado: imagen horizontal. </small>
+        </div>
+      </section>
+
+      <section class="avatar-section">
+        <div class="avatar-preview">
+          @if (avatarPreview()) {
+            <img [src]="avatarPreview()" alt="Vista previa de la foto de perfil" />
+          } @else if (business()?.avatarUrl) {
+            <img [src]="business()!.avatarUrl!" alt="Foto del perfil profesional" />
+          } @else {
+            <span>
+              {{ business()?.name?.charAt(0) }}
+            </span>
+          }
+        </div>
+
+        <div class="avatar-content">
+          <div>
+            <h3>Foto de perfil</h3>
+
+            <p>
+              Esta imagen aparecerá en tu perfil público y posteriormente en la vitrina de Cronos.
+            </p>
+          </div>
+
+          @if (business()?.avatarUrl) {
+            <button
+              type="button"
+              class="secondary-button remove-button"
+              [disabled]="imageBusy()"
+              (click)="removeImage('avatar')"
+            >
+              {{ deletingImage() === 'avatar' ? 'Eliminando...' : 'Eliminar foto de perfil' }}
             </button>
           }
-          @if (selectedCover()) {
-            <button type="button" class="secondary-button" [disabled]="imageBusy()" (click)="cancelCoverSelection()">Cancelar selección</button>
+          @if (selectedAvatar()) {
+            <button
+              type="button"
+              class="secondary-button"
+              [disabled]="imageBusy()"
+              (click)="cancelAvatarSelection()"
+            >
+              Cancelar selección
+            </button>
           }
-
-
           <label class="file-button">
-            Seleccionar portada
+            Seleccionar imagen
 
             <input
               type="file"
               accept="image/jpeg,image/png,image/webp"
               [disabled]="imageBusy()"
-              (change)="onCoverSelected($event)"
+              (change)="onAvatarSelected($event)"
             />
           </label>
 
-          @if (selectedCover()) {
+          @if (selectedAvatar()) {
             <button
               type="button"
               class="secondary-button"
               [disabled]="imageBusy()"
-              (click)="uploadCover()"
+              (click)="uploadAvatar()"
             >
-              @if (uploadingCover()) {
+              @if (uploadingAvatar()) {
                 Subiendo...
               } @else {
-                Guardar portada
+                Guardar fotografía
               }
             </button>
           }
 
+          <small> JPEG, PNG o WebP. Máximo 2 MB. </small>
         </div>
+      </section>
+    </div>
 
-        <small>
-          JPEG, PNG o WebP. Máximo 5 MB.
-          Recomendado: imagen horizontal.
-        </small>
-
+    <form class="profile-form" (ngSubmit)="saveProfile()">
+      <div class="editor-heading">
+        <p class="eyebrow">INFORMACIÓN DEL NEGOCIO</p>
+        <h3>Cómo te ven tus clientes</h3>
+        <p>Presenta tus servicios y comparte lo que hace especial a tu negocio.</p>
       </div>
-
-    </section>
-
-    <section class="avatar-section">
-
-      <div class="avatar-preview">
-
-        @if (avatarPreview()) {
-          <img
-            [src]="avatarPreview()"
-            alt="Vista previa de la foto de perfil"
-          />
-        } @else if (business()?.avatarUrl) {
-          <img
-            [src]="business()!.avatarUrl!"
-            alt="Foto del perfil profesional"
-          />
-        } @else {
-          <span>
-            {{ business()?.name?.charAt(0) }}
-          </span>
-        }
-
-      </div>
-
-      <div class="avatar-content">
-
-        <div>
-          <h2>Foto de perfil</h2>
-
-          <p>
-            Esta imagen aparecerá en tu perfil público
-            y posteriormente en la vitrina de Cronos.
-          </p>
-        </div>
-
-        @if (business()?.avatarUrl) {
-          <button type="button" class="secondary-button remove-button" [disabled]="imageBusy()" (click)="removeImage('avatar')">
-            {{ deletingImage() === 'avatar' ? 'Eliminando...' : 'Eliminar foto de perfil' }}
-          </button>
-        }
-        @if (selectedAvatar()) {
-          <button type="button" class="secondary-button" [disabled]="imageBusy()" (click)="cancelAvatarSelection()">Cancelar selección</button>
-        }
-        <label class="file-button">
-          Seleccionar imagen
-
-          <input
-            type="file"
-            accept="image/jpeg,image/png,image/webp"
-            [disabled]="imageBusy()"
-            (change)="onAvatarSelected($event)"
-          />
-        </label>
-
-        @if (selectedAvatar()) {
-          <button
-            type="button"
-            class="secondary-button"
-            [disabled]="imageBusy()"
-            (click)="uploadAvatar()"
-          >
-            @if (uploadingAvatar()) {
-              Subiendo...
-            } @else {
-              Guardar fotografía
-            }
-          </button>
-        }
-
-        <small>
-          JPEG, PNG o WebP. Máximo 2 MB.
-        </small>
-
-      </div>
-
-    </section>
-
-    <form
-      class="profile-form"
-      (ngSubmit)="saveProfile()"
-    >
 
       <label>
         Nombre profesional o negocio
@@ -212,7 +211,7 @@
           name="description"
           [(ngModel)]="form.description"
           maxlength="500"
-          rows="6"
+          rows="3"
           placeholder="Describe tu negocio, especialidad o forma de trabajo."
         ></textarea>
       </label>
@@ -220,33 +219,18 @@
       <app-business-profile-fields [form]="form" [disabled]="imageBusy()" />
 
       <div class="actions">
-        <button
-          type="submit"
-          class="primary-button"
-          [disabled]="imageBusy()"
-        >
+        <button type="submit" class="primary-button" [disabled]="imageBusy()">
           @if (saving()) {
             Guardando...
           } @else {
             Guardar cambios
           }
         </button>
-
-        @if (business(); as currentBusiness) {
-          <a
-            [routerLink]="[
-              '/business',
-              currentBusiness.id
-            ]"
-          >
-            Ver perfil público
-          </a>
-        }
-
       </div>
-
     </form>
   }
 
-  @if (business(); as currentBusiness) { <app-business-gallery [businessId]="currentBusiness.id" [editable]="true" /> }
+  @if (business(); as currentBusiness) {
+    <app-business-gallery [businessId]="currentBusiness.id" [editable]="true" />
+  }
 </section>
