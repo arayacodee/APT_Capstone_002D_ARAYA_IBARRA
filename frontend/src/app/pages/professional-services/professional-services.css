@@ -17,6 +17,13 @@
   text-decoration: none;
 }
 
+.top-nav .page-logo {
+  display: block;
+  width: 82px;
+  height: 34px;
+  object-fit: contain;
+}
+
 header {
   padding: 48px 0 32px;
 }
