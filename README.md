@@ -1,17 +1,18 @@
-# Cronos
+# APT_Capstone_002D_ARAYA_IBARRA
+
+Proyecto CRONOS de Manuel Araya y Martin Ibarra, sección 002D.
 
 Plataforma de reservas para clientes y profesionales. Frontend Angular; API Express y TypeScript; PostgreSQL en Neon mediante Prisma; autenticación Google y sesión JWT en cookie HttpOnly; imágenes en Cloudinary.
 
 ## Carpeta académica
 
-Las evidencias se organizan por fase y se separan entre individuales y grupales.
+Las evidencias se organizan por fase. Fase 2 separa evidencias individuales, grupales y del proyecto según la referencia del curso.
 
 | Carpeta | Contenido |
 | --- | --- |
 | [Fase 1](Fase%201/README.md) | Estructura de la entrega, guía de definición del proyecto y pendientes por integrante |
-| [Fase 2](Fase%202/README.md) | Documentos recuperados de la rama de fichas y clasificación según su contenido |
-| [Ficha de avance 02](Ficha_Avance_02_Proyecto_Capstone_completado.docx) | Seguimiento del equipo |
-| [Ficha de avance 04](entregables/Ficha_Avance_04_Cronos_COMPLETADA.docx) | Seguimiento y planificación del equipo |
+| [Fase 2](Fase%202/README.md) | Individuales, avance, informe final y evidencias del proyecto |
+| [Fichas de iteración](Fase%202/Evidencias%20Proyecto/Fichas_Iteracion/README.md) | Fichas 02 y 04 disponibles; 01 y 03 pendientes |
 
 Los documentos individuales pendientes se indican en los índices; esos avisos no cuentan como evidencias entregadas.
 

@@ -1,7 +1,10 @@
-# Autoevaluación individual de Fase 2 pendiente de identificar
+# Documentos pendientes de identificar
 
-Archivo: [2.2_APT122_AutoevaluacionAvance_Fase2_CRONOS_100.docx](2.2_APT122_AutoevaluacionAvance_Fase2_CRONOS_100.docx).
+| Archivo | Estado |
+| --- | --- |
+| [2.1 Diario de reflexión](2.1_APT122_DiarioReflexionFase2_CRONOS.docx) | Redactado en grupo; pendiente de identificar y personalizar para cumplir la entrega individual de la referencia |
+| [2.2 Autoevaluación de avance](2.2_APT122_AutoevaluacionAvance_Fase2_CRONOS_100.docx) | Complementario; evaluación individual sin nombre de estudiante |
 
-El documento corresponde a una autoevaluación individual, pero no contiene el nombre del estudiante. Martin Ibarra lo subió en `ef5c2cc`; ese dato no permite atribuirle la evaluación.
+Ambos fueron subidos por Martin Ibarra en `ef5c2cc`. Se conserva su contenido original y no se registra ninguno como entrega individual de Manuel Araya ni de Martin Ibarra.
 
-Cuando se confirme el estudiante, trasladar el archivo a su carpeta individual y nombrarlo con su apellido y nombre. Por ahora no se registra como evidencia individual de Manuel Araya ni de Martin Ibarra.
+Cuando se confirme al estudiante, su diario debe guardarse en la carpeta correspondiente con el nombre `Apellido_Nombre_2.1_APT122_DiarioReflexionFase2.docx`.
