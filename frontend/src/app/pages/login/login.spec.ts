@@ -41,4 +41,37 @@ describe('Login', () => {
     fixture.componentInstance.submit();
     expect(destination).toBe('/companies');
   });
+  it('muestra el acceso con Google y continúa a la ruta solicitada tras autenticar', () => {
+    TestBed.overrideProvider(ActivatedRoute, { useValue: { snapshot: { queryParamMap: convertToParamMap({ returnUrl: '/my-reservations' }) } } });
+    const originalGoogle = window.google;
+    let callback: ((response: GoogleCredentialResponse) => void) | undefined;
+    const renderButton = vi.fn();
+    const initialize = vi.fn((config: { callback: (response: GoogleCredentialResponse) => void }) => { callback = config.callback; });
+    window.google = { accounts: { id: {
+      initialize, renderButton, prompt: vi.fn()
+    } } };
+    const auth = TestBed.inject(AuthService);
+    const user = { id: 'client', role: 'CLIENT' } as any;
+    const loginWithGoogle = vi.fn(() => of(user));
+    auth.loginWithGoogle = loginWithGoogle;
+    const router = TestBed.inject(Router);
+    const navigateByUrl = vi.spyOn(router, 'navigateByUrl').mockResolvedValue(true);
+    try {
+      const fixture = TestBed.createComponent(Login);
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('#google-signin-button')).toBeTruthy();
+      expect(renderButton).toHaveBeenCalledOnce();
+      callback?.({ credential: 'google-id-token' });
+      expect(loginWithGoogle).toHaveBeenCalledWith('google-id-token');
+      expect(navigateByUrl).toHaveBeenCalledWith('/my-reservations');
+      fixture.destroy();
+      const secondVisit = TestBed.createComponent(Login);
+      secondVisit.detectChanges();
+      expect(initialize).toHaveBeenCalledOnce();
+      expect(renderButton).toHaveBeenCalledTimes(2);
+      secondVisit.destroy();
+    } finally {
+      window.google = originalGoogle;
+    }
+  });
 });

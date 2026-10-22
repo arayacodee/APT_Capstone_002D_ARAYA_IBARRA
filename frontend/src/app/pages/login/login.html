@@ -1,5 +1,11 @@
 <main class="login-page"><section class="login-card">
 <h1>{{ companyRegistration ? 'Tu cuenta para registrar tu empresa' : 'Bienvenido a Cronos' }}</h1><p>{{ companyRegistration ? 'Al completar este paso continuarás con los datos de tu empresa.' : '¿Quieres iniciar sesión o crear una cuenta?' }}</p>
+<section class="google-section" aria-label="Acceso con Google">
+  <p class="google-label">Continúa con tu cuenta Google</p>
+  <div #googleButton id="google-signin-button"></div>
+  @if (googleErrorMessage()) { <p class="error" role="alert">{{ googleErrorMessage() }}</p> }
+</section>
+<p class="login-divider">O usa tu correo electrónico</p>
 <div class="access-options"><button type="button" (click)="choose('login')" [class.selected]="mode() === 'login'" [disabled]="loading()">Iniciar sesión</button><button type="button" (click)="choose('register')" [class.selected]="mode() === 'register'" [disabled]="loading()">Registrarme</button></div>
 @if (mode()) {
 <h2>{{ mode() === 'login' ? 'Iniciar sesión' : 'Crear mi cuenta' }}</h2>

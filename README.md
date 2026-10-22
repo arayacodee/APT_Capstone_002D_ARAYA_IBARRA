@@ -90,7 +90,7 @@ Las pruebas cubren estados de reservas, permisos del historial, sesión, consult
 
 ## Datos de contacto y registro de empresas
 
-`/login` permite elegir iniciar sesión con correo y contraseña, o registrarse con nombre, apellido, correo, contraseña (mínimo 8 caracteres), teléfono y dirección. Las contraseñas se guardan como hashes scrypt con sal aleatoria. El registro crea un cliente y nunca acepta roles desde el navegador. El teléfono se guarda como texto sin verificar su existencia ni exigir SMS. Los datos de contacto son privados.
+`/login` permite continuar con Google, iniciar sesión con correo y contraseña, o registrarse con nombre, apellido, correo, contraseña (mínimo 8 caracteres), teléfono y dirección. Las contraseñas se guardan como hashes scrypt con sal aleatoria. El registro crea un cliente y nunca acepta roles desde el navegador. El teléfono se guarda como texto sin verificar su existencia ni exigir SMS. Los datos de contacto son privados.
 
 Las cuentas anteriores de Google conservan sus datos y permisos. El superadmin puede crear o reemplazar su contraseña mediante **Usuarios → Cambiar contraseña**, con confirmación y mínimo 8 caracteres. Este endpoint requiere superadmin, guarda únicamente un hash y protege las cuentas de administración (su acceso se configura mediante `.env`). Se retiró la creación de contraseña desde Mis datos y su endpoint. La recuperación de contraseñas por correo queda pendiente.
 

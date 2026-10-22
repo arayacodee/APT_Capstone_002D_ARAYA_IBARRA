@@ -1,13 +1,31 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { User } from '../../models/user.model';
+import { environment } from '../../../environments/environment';
+
+let initializedGoogle: GoogleAccountsId | null = null;
+let activeCredentialHandler: ((response: GoogleCredentialResponse) => void) | null = null;
+
 @Component({ selector: 'app-login', imports: [RouterLink, FormsModule], templateUrl: './login.html', styleUrl: './login.css' })
-export class Login implements OnInit {
+export class Login implements OnInit, AfterViewInit, OnDestroy {
   readonly loading = signal(false);
   readonly errorMessage = signal('');
+  readonly googleErrorMessage = signal('');
   readonly mode = signal<'login' | 'register' | null>(null);
+  private readonly googleButton = viewChild.required<ElementRef<HTMLElement>>('googleButton');
+  private googleScript: HTMLScriptElement | null = null;
+  private destroyed = false;
+  private readonly onGoogleCredential = (response: GoogleCredentialResponse) => this.handleGoogleCredential(response);
+  private readonly onGoogleScriptLoad = () => {
+    if (this.googleScript) this.googleScript.dataset['googleState'] = 'loaded';
+    this.renderGoogleButton();
+  };
+  private readonly onGoogleScriptError = () => {
+    if (this.googleScript) this.googleScript.dataset['googleState'] = 'failed';
+    this.googleErrorMessage.set('No fue posible cargar Google. Recarga la página e inténtalo nuevamente.');
+  };
   form = { email: '', password: '', firstName: '', lastName: '', phone: '', address: '' };
   constructor(private readonly auth: AuthService, private readonly router: Router, private readonly route: ActivatedRoute) {}
   get companyRegistration(): boolean { return this.route.snapshot.queryParamMap.get('returnUrl') === '/companies'; }
@@ -16,6 +34,55 @@ export class Login implements OnInit {
     if (user) { this.navigateAfterLogin(user); return; }
     const mode = this.route.snapshot.queryParamMap.get('mode');
     if (mode === 'register' || mode === 'login') this.choose(mode);
+  }
+  ngAfterViewInit(): void {
+    if (this.auth.currentUser()) return;
+    if (window.google?.accounts?.id) { this.renderGoogleButton(); return; }
+
+    let script = document.querySelector<HTMLScriptElement>('script[src="https://accounts.google.com/gsi/client"]');
+    if (script?.dataset['googleState'] === 'failed') script.remove();
+    if (!script || script.dataset['googleState'] === 'failed') {
+      script = document.createElement('script');
+      script.src = 'https://accounts.google.com/gsi/client';
+      script.async = true;
+    }
+    this.googleScript = script;
+    script.addEventListener('load', this.onGoogleScriptLoad);
+    script.addEventListener('error', this.onGoogleScriptError);
+    if (!script.isConnected) document.head.appendChild(script);
+    else if (script.dataset['googleState'] === 'loaded') this.renderGoogleButton();
+  }
+  ngOnDestroy(): void {
+    this.destroyed = true;
+    if (activeCredentialHandler === this.onGoogleCredential) activeCredentialHandler = null;
+    this.googleScript?.removeEventListener('load', this.onGoogleScriptLoad);
+    this.googleScript?.removeEventListener('error', this.onGoogleScriptError);
+  }
+  private renderGoogleButton(): void {
+    if (this.destroyed) return;
+    const google = window.google?.accounts?.id;
+    if (!google) { this.onGoogleScriptError(); return; }
+    const container = this.googleButton().nativeElement;
+    activeCredentialHandler = this.onGoogleCredential;
+    if (initializedGoogle !== google) {
+      google.initialize({ client_id: environment.googleClientId, callback: response => activeCredentialHandler?.(response) });
+      initializedGoogle = google;
+    }
+    container.replaceChildren();
+    google.renderButton(container, {
+      type: 'standard', theme: 'outline', size: 'large', text: 'continue_with',
+      shape: 'rectangular', width: Math.min(320, container.clientWidth || 320), locale: 'es'
+    });
+    this.googleErrorMessage.set('');
+  }
+  private handleGoogleCredential(response: GoogleCredentialResponse): void {
+    if (this.destroyed || this.loading() || !response.credential) return;
+    this.loading.set(true);
+    this.errorMessage.set('');
+    this.auth.loginWithGoogle(response.credential).subscribe({
+      next: user => { if (this.destroyed) return; this.loading.set(false); this.navigateAfterLogin(user); },
+      error: error => { if (this.destroyed) return; this.loading.set(false); this.errorMessage.set(error?.error?.error ?? 'No fue posible iniciar sesión con Google.'); }
+    });
   }
   choose(mode: 'login' | 'register'): void { this.mode.set(mode); this.errorMessage.set(''); this.form.password = ''; }
   submit(): void {
