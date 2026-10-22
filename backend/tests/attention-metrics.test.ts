@@ -3,7 +3,9 @@ import assert from 'node:assert/strict';
 import { attentionMetrics, localDay, monthEnvelope } from '../src/lib/attention-metrics.js';
 
 const timezone = 'America/Santiago';
-const session = (date: string, clientId = 'client', amount: string | null = '15000') => ({ occurredAt: new Date(date), clientId, amount });
+const session = (date: string, clientId = 'client', price = '15000') => ({
+  occurredAt: new Date(date), clientId, amount: null, reservation: { service: { price } },
+});
 
 test('el mes se determina por calendario del negocio, incluyendo año y medianoche local', () => {
   const now = new Date('2026-11-01T02:59:59Z'); // October 31, 23:59:59 in Santiago.
@@ -24,17 +26,24 @@ test('el mes se determina por calendario del negocio, incluyendo año y medianoc
   assert.equal(attentionMetrics([], new Date('2026-11-01T03:00:00Z'), timezone).month, '2026-11');
 });
 
-test('registros tardíos cuentan por occurredAt, clientes no se duplican y precios desconocidos no se inventan', () => {
+test('registros tardíos cuentan por occurredAt y el importe usa el precio del servicio incluso sin valor guardado', () => {
   const result = attentionMetrics([
-    session('2026-10-05T12:00:00Z'), session('2026-10-22T12:00:00Z', 'client', null),
+    session('2026-10-05T12:00:00Z'), session('2026-10-22T12:00:00Z', 'client'),
     session('2026-10-22T13:00:00Z', 'another', '0'), session('2026-09-15T12:00:00Z'),
     session('2026-10-23T12:00:00Z'),
   ], new Date('2026-10-22T15:00:00Z'), timezone);
   assert.equal(result.monthCount, 3);
   assert.equal(result.todayCount, 2);
   assert.equal(result.uniqueClients, 2);
-  assert.equal(result.unpricedCount, 1);
-  assert.equal(result.revenue, 15000);
+  assert.equal(result.revenue, 30000);
+});
+
+test('la tarifa del servicio es la fuente del importe aunque exista un valor anterior en la atención', () => {
+  const attention = { ...session('2026-10-22T12:00:00Z', 'client', '18000'), amount: '10000' };
+  const now = new Date('2026-10-22T15:00:00Z');
+  assert.equal(attentionMetrics([attention], now, timezone).revenue, 18000);
+  attention.reservation.service.price = '20000';
+  assert.equal(attentionMetrics([attention], now, timezone).revenue, 20000);
 });
 
 test('el calendario incluye días vacíos, febrero bisiesto y cambio de año', () => {

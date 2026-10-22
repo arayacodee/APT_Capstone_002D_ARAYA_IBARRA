@@ -8,7 +8,7 @@
     <div><span>Cliente</span><strong>{{ session()?.client?.name || reservation()?.client?.name || session()?.client?.email || reservation()?.client?.email || 'Cliente' }}</strong></div>
     <div><span>Servicio</span><strong>{{ reservation()?.service?.name || 'Servicio' }}</strong></div>
     @if (session()?.occurredAt || reservation()?.startsAt; as date) { <div><span>Fecha y hora</span><strong>{{ formatDate(date) }}</strong></div> }
-    <div><span>{{ session() ? 'Valor registrado' : 'Valor del servicio' }}</span><strong>{{ formatPrice(session() ? session()?.amount : reservation()?.service?.price) }}</strong></div>
+    <div><span>Valor del servicio</span><strong>{{ formatPrice(reservation()?.service?.price) }}</strong></div>
   </section>
   @if (error()) { <p class="error" role="alert">{{ error() }}</p> }
   @if (!editing()) {

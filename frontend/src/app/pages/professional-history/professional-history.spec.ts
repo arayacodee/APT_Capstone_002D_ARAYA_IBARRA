@@ -5,12 +5,13 @@ import { ApiService } from '../../core/services/api.service';
 import { ProfessionalHistory } from './professional-history';
 
 describe('Historial profesional', () => {
-  const session = { id: 'session', notes: 'Nota inicial', amount: '15000', occurredAt: '2026-10-05T15:00:00Z', evidences: [] };
-  let api: { getMyBusiness: ReturnType<typeof vi.fn>; getSessions: ReturnType<typeof vi.fn> };
+  const session = { id: 'session', notes: 'Nota inicial', amount: null, reservation: { service: { name: 'Low fade', price: '15000' } }, occurredAt: '2026-10-05T15:00:00Z', evidences: [] };
+  let api: { getMyBusiness: ReturnType<typeof vi.fn>; getSessions: ReturnType<typeof vi.fn>; getAttentionMetrics: ReturnType<typeof vi.fn> };
   beforeEach(() => {
     api = {
       getMyBusiness: vi.fn().mockReturnValue(of({ category: 'WELLNESS' })),
       getSessions: vi.fn().mockReturnValue(of({ items: [session], nextCursor: 'next' })),
+      getAttentionMetrics: vi.fn().mockReturnValue(of({ month: '2026-10', timezone: 'America/Santiago', todayCount: 0, monthCount: 1, uniqueClients: 1, revenue: 15000, daily: [] })),
     };
     TestBed.configureTestingModule({ imports: [ProfessionalHistory], providers: [provideRouter([]), { provide: ApiService, useValue: api }] });
   });
@@ -21,6 +22,9 @@ describe('Historial profesional', () => {
     expect(fixture.nativeElement.querySelector('tbody textarea')).toBeNull();
     expect(fixture.nativeElement.querySelector('tbody').textContent).toContain('$15.000');
     expect(fixture.nativeElement.textContent).toContain('Historial de sesiones');
+    expect(fixture.nativeElement.querySelector('app-attention-metrics')).not.toBeNull();
+    expect(fixture.nativeElement.textContent).toContain('Resumen de atenciones');
+    expect(fixture.nativeElement.textContent).not.toContain('Sin registro');
   });
   it('reemplaza la página, usa el cursor y permite regresar sin duplicados', () => {
     const fixture = TestBed.createComponent(ProfessionalHistory);

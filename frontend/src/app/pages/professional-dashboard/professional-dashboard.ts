@@ -26,11 +26,10 @@ import { Service } from '../../models/service.model';
 import { Availability } from '../../models/availability.model';
 import { ClientSession, Reservation } from '../../models/reservation.model';
 import { AttentionDialog } from '../../components/attention-dialog/attention-dialog';
-import { AttentionMetrics } from '../../components/attention-metrics/attention-metrics';
 
 @Component({
   selector: 'app-professional-dashboard',
-  imports: [RouterLink, AttentionDialog, AttentionMetrics],
+  imports: [RouterLink, AttentionDialog],
   templateUrl: './professional-dashboard.html',
   styleUrl: './professional-dashboard.css'
 })
@@ -49,7 +48,6 @@ export class ProfessionalDashboard implements OnInit {
   loading = signal(true);
 
   readonly attentionDialog = viewChild.required(AttentionDialog);
-  readonly attentionMetrics = viewChild(AttentionMetrics);
 
   errorMessage = signal('');
   successMessage = signal('');
@@ -181,9 +179,7 @@ export class ProfessionalDashboard implements OnInit {
   }
 
   attentionChanged(session: ClientSession): void {
-    const newlyCompleted = this.reservations().some(item => item.id === session.reservationId && item.status !== 'COMPLETED');
     this.reservations.update(items => items.map(item => item.id === session.reservationId ? { ...item, status: 'COMPLETED' } : item));
-    if (newlyCompleted) this.attentionMetrics()?.refresh();
   }
 
   activeServicesCount(): number {

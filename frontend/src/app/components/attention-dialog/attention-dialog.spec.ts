@@ -7,7 +7,7 @@ import { AttentionDialog } from './attention-dialog';
 describe('Registro de atención en ventana', () => {
   const reservation = { id: 'reservation', clientId: 'client', startsAt: '2026-10-05T15:00:00Z',
     client: { id: 'client', name: 'Ana' }, service: { name: 'Corte', price: '15000' } } as Reservation;
-  const session = { id: 'session', reservationId: 'reservation', notes: 'Nota', amount: '15000', occurredAt: reservation.startsAt, evidences: [] } as unknown as ClientSession;
+  const session = { id: 'session', reservationId: 'reservation', reservation, notes: 'Nota', amount: null, occurredAt: reservation.startsAt, evidences: [] } as unknown as ClientSession;
   let api: { completeReservation: ReturnType<typeof vi.fn>; updateSession: ReturnType<typeof vi.fn>; addEvidence: ReturnType<typeof vi.fn> };
   beforeEach(() => {
     // jsdom has no modal top layer. Only the native browser methods are stubbed.
@@ -70,5 +70,14 @@ describe('Registro de atención en ventana', () => {
     expect(component.notes.value).toBe('Cambio');
     expect(component.error()).toBe('Sin conexión');
     expect(component.busy()).toBe(false);
+  });
+  it('el detalle usa el precio del servicio aunque la atención tenga otro importe o no lo tenga', () => {
+    const fixture = TestBed.createComponent(AttentionDialog); fixture.detectChanges();
+    for (const amount of [null, '5000']) {
+      fixture.componentInstance.openSession({ ...session, amount }); fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('.summary').textContent).toContain('$15.000');
+      expect(fixture.nativeElement.querySelector('.summary').textContent).not.toContain('$5.000');
+      fixture.componentInstance.close();
+    }
   });
 });

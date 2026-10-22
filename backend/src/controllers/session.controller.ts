@@ -38,7 +38,7 @@ export async function getAttentionMetrics(req: Request, res: Response) {
   const period = monthEnvelope(now, business.timezone);
   const sessions = await prisma.clientSession.findMany({
     where: { businessId: business.id, occurredAt: { gte: period.from, lt: period.until }, reservation: { status: "COMPLETED" } },
-    select: { occurredAt: true, clientId: true, amount: true },
+    select: { occurredAt: true, clientId: true, reservation: { select: { service: { select: { price: true } } } } },
   });
   return res.json(attentionMetrics(sessions, now, business.timezone));
 }

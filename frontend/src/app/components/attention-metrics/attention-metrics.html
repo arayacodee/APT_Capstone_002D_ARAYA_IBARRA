@@ -9,9 +9,8 @@
       <article><span>Atenciones de hoy</span><strong>{{ data.todayCount }}</strong><small>Servicios completados hoy</small></article>
       <article><span>Atenciones del mes</span><strong>{{ data.monthCount }}</strong><small>Según fecha de la atención</small></article>
       <article><span>Clientes atendidos</span><strong>{{ data.uniqueClients }}</strong><small>Clientes únicos en el mes</small></article>
-      <article><span>Valor registrado del mes</span><strong>{{ formatPrice(data.revenue) }}</strong><small>Atenciones con valor guardado</small></article>
+      <article><span>Valor de servicios del mes</span><strong>{{ formatPrice(data.revenue) }}</strong><small>Según el precio de cada servicio</small></article>
     </div>
-    @if (data.unpricedCount) { <p class="muted">{{ data.unpricedCount }} atenciones anteriores sin valor registrado no se incluyen en el importe.</p> }
     <div class="activity"><div class="chart-heading"><h3>Atenciones por día</h3><span>{{ data.monthCount }} en {{ monthLabel() }}</span></div>
       @if (!data.monthCount) { <p class="muted">Aún no hay atenciones completadas este mes.</p> }
       <div class="chart-scroll" tabindex="0" role="region" aria-label="Atenciones de cada día del mes">

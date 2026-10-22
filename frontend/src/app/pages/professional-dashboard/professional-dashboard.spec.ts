@@ -11,5 +11,6 @@ describe('ProfessionalDashboard', () => {
     fixture.detectChanges();
     await fixture.whenStable();
     expect(fixture.componentInstance).toBeTruthy();
+    expect(fixture.nativeElement.querySelector('app-attention-metrics')).toBeNull();
   });
 });

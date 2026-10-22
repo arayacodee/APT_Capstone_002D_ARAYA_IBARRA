@@ -73,6 +73,7 @@ test('métricas filtran propietario, periodo acotado y solo reservas completadas
     assert.equal(lookup.where.ownerId, 'owner');
     assert.equal(query.where.businessId, 'own-business');
     assert.equal(query.where.reservation.status, 'COMPLETED');
+    assert.equal(query.select.reservation.select.service.select.price, true);
     assert.ok(query.where.occurredAt.gte instanceof Date);
     assert.ok(query.where.occurredAt.lt - query.where.occurredAt.gte < 36 * 86400000);
     assert.equal(res.body.monthCount, 0);

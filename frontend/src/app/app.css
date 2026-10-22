@@ -113,14 +113,27 @@
 @media (max-width: 720px) {
   .navigation {
     width: calc(100% - 32px);
+    height: auto;
+    min-height: 64px;
+    padding: 10px 0;
+    flex-wrap: wrap;
+    gap: 12px;
   }
 
   .nav-links {
-    gap: 14px;
+    gap: 12px;
+    flex: 1 1 180px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
   }
 
   .account-name {
     display: none;
+  }
+
+  .brand {
+    width: 64px;
+    flex: 0 0 64px;
   }
 }
 

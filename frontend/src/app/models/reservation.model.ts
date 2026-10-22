@@ -72,6 +72,5 @@ export interface AttentionMetrics {
   monthCount: number;
   uniqueClients: number;
   revenue: number;
-  unpricedCount: number;
   daily: { date: string; count: number }[];
 }

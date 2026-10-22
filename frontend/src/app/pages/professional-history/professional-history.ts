@@ -7,9 +7,10 @@ import { Business } from '../../models/business.model';
 import { businessLabels } from '../../models/business-category';
 import { ClientSession } from '../../models/reservation.model';
 import { AttentionDialog } from '../../components/attention-dialog/attention-dialog';
+import { AttentionMetrics } from '../../components/attention-metrics/attention-metrics';
 
 @Component({
-  selector: 'app-professional-history', imports: [RouterLink, AttentionDialog],
+  selector: 'app-professional-history', imports: [RouterLink, AttentionDialog, AttentionMetrics],
   templateUrl: './professional-history.html', styleUrl: './professional-history.css',
 })
 export class ProfessionalHistory implements OnInit {

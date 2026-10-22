@@ -14,19 +14,22 @@ Las filas muestran cliente, servicio, fecha, valor, notas resumidas y cantidad d
 imágenes. **Ver detalle** abre una vista de consulta, con edición de notas y evidencias
 disponible mediante una acción explícita. Se mantienen los permisos del propietario.
 
-## Valores y migración
+## Valor del servicio
 
-La migración `20261022143000_session_amount` agrega `ClientSession.amount`, decimal
-nullable, y un índice por negocio y fecha. Al completar una reserva se guarda la
-tarifa del servicio en la misma transacción, independientemente de cambios futuros
-de precio. No representa un pago confirmado. Las atenciones antiguas quedan sin
-importe: la base anterior no guardaba precios históricos y la tarifa actual no
-permite reconstruirlos de forma fiable. La interfaz indica **Sin registro** y el
-resumen informa cuántos registros se excluyen del importe.
+La tabla, el detalle y el resumen mensual usan `reservation.service.price` como
+fuente del valor, también para atenciones antiguas sin `ClientSession.amount`.
+El total suma la tarifa actual del servicio por cada atención completada del mes;
+si se cambia una tarifa, ese importe se refleja al volver a consultar el resumen.
+No representa pagos confirmados.
 
-Aplicar con `npx prisma migrate deploy` y generar el cliente con
-`npm run prisma:generate`, desde `backend`. Aplicada en la base de desarrollo el
-22 de octubre de 2026, con confirmación del usuario.
+La migración `20261022143000_session_amount`, aplicada previamente en desarrollo,
+se conserva. El campo `amount` conserva el valor capturado al completar una atención,
+pero no determina los valores mostrados ni el total del resumen. Este ajuste no
+requiere migraciones ni modifica atenciones existentes.
+
+El acceso **Resumen** del menú profesional abre `/dashboard/history`, donde el
+resumen de métricas aparece sobre la tabla. El panel mantiene la agenda, servicios,
+disponibilidad y registro de atenciones.
 
 ## Resumen mensual
 
@@ -37,9 +40,9 @@ usa `occurredAt` (fecha original de la reserva), incluyendo año, mes y día en 
 horaria del negocio; no usa `createdAt` ni depende de la zona del navegador/servidor.
 Excluye fechas futuras. Un registro tardío pertenece al mes en que ocurrió.
 
-Devuelve atenciones de hoy y del mes, clientes únicos del mes, suma de valores
-registrados, cantidad sin importe y todos los días del mes (incluidos ceros).
-El panel actualiza al guardar una atención, al solicitarlo y al detectar el cambio
+Devuelve atenciones de hoy y del mes, clientes únicos del mes, suma de los precios
+de los servicios y todos los días del mes (incluidos ceros).
+El resumen carga al abrir el historial, al solicitarlo y al detectar el cambio
 de fecha local (comprobado cada 30 segundos). Una falla conserva el último resumen
 con una advertencia. La API de historial admite `limit` de 1 a 50 y mantiene el
 valor predeterminado de 50 para otros consumidores.
@@ -48,15 +51,13 @@ valor predeterminado de 50 para otros consumidores.
 
 - Backend: compilación y pruebas de permisos, paginación, idempotencia, precio
   guardado, límites del mes en Santiago, cambio de año, horario de verano, febrero
-  bisiesto, clientes únicos y registros sin importe.
+  bisiesto, clientes únicos y precios de servicios en atenciones sin importe guardado.
 - Frontend: compilación y pruebas de tabla, cambio de página sin acumulación,
   recuperación de errores, ventana sin completar al cancelar, registro con imagen,
   reintento sin completar dos veces y actualización al cambiar de mes local.
 - Revisión visual con los componentes reales y datos de ejemplo aislados de la API.
-- 33 pruebas de backend y 40 de frontend aprobadas; compilaciones correctas.
-  Comparación de las métricas con SQL independiente, solo lectura, sobre los dos
-  negocios de desarrollo. Auditoría Axe sin incidencias en los estados revisados
-  del panel, historial y ventanas; revisión de diseño en escritorio y móvil.
+- Comparación de las métricas con SQL independiente, solo lectura, sobre los dos
+  negocios de desarrollo. Auditoría Axe y revisión de diseño en escritorio y móvil.
 
 Referencias: [consultas de componentes Angular](https://angular.dev/guide/components/queries)
 y [comportamiento del diálogo nativo](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/dialog).

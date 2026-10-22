@@ -2,6 +2,7 @@
   <a class="back" routerLink="/dashboard">← Volver al panel</a>
   <header><div><p class="eyebrow">REGISTRO DE TU NEGOCIO</p><h1 id="history-title">{{ labels().history }}</h1>
     <p>Consulta el detalle de cada atención, sus notas y evidencias privadas.</p></div><span class="private-label">Historial privado</span></header>
+  <app-attention-metrics />
   @if (error()) { <div class="error" role="alert">{{ error() }} <button type="button" (click)="load()" [disabled]="loading()">Reintentar</button></div> }
   @if (loading()) { <p role="status">Cargando atenciones…</p> }
   <section class="history-card" aria-label="Atenciones registradas" [attr.aria-busy]="loading()">
@@ -15,7 +16,7 @@
             <tr><td><strong>{{ session.client?.name || session.client?.email || labels().person }}</strong>
               @if (session.client?.name) { <small>{{ session.client?.email }}</small> }</td>
               <td>{{ session.reservation?.service?.name || labels().service }}</td><td class="date">{{ formatDate(session) }}</td>
-              <td class="price">{{ formatPrice(session.amount) }}</td>
+              <td class="price">{{ formatPrice(session.reservation?.service?.price) }}</td>
               <td><span class="note-preview">{{ session.notes || 'Sin notas' }}</span></td><td>{{ session.evidences?.length || 0 }} imágenes</td>
               <td><button type="button" (click)="detail().openSession(session)" [attr.aria-label]="'Ver detalle de atención de ' + (session.client?.name || session.client?.email || labels().person)">Ver detalle ↗</button></td>
             </tr>
@@ -31,6 +32,6 @@
         <button type="button" (click)="next()" [disabled]="loading() || !nextCursor()">Siguiente →</button></div>
     </nav>
   </section>
-  <p class="footnote">Los valores corresponden a la tarifa guardada al registrar la atención. Los registros anteriores sin valor guardado se indican como “Sin registro”.</p>
+  <p class="footnote">Los valores corresponden al precio actual de cada servicio, tanto en el historial como en el resumen mensual.</p>
 </main>
 <app-attention-dialog (changed)="updateSession($event)" />
