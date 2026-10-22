@@ -1,17 +1,15 @@
 # Fase 2
 
-Estos cuatro documentos fueron subidos por Martin Ibarra en el commit `ef5c2cc` de `MxrtinIbxrrx-fichas`. Se recuperaron conservando sus nombres y contenido originales. La clasificación se basa en el contenido del documento y no solamente en quién lo subió.
+Estructura ajustada a la referencia del curso. Los archivos disponibles conservan su contenido original; los índices señalan los pendientes sin sustituir las entregas.
 
-## Evidencias grupales
-
-| Documento | Clasificación |
+| Sección | Organización |
 | --- | --- |
-| [2.1 Diario de reflexión](Evidencias%20Grupales/2.1_APT122_DiarioReflexionFase2_CRONOS.docx) | El documento indica que se responde con el grupo y contiene una reflexión conjunta |
-| [2.3 Formativa de avance](Evidencias%20Grupales/2.3_APT122_FormativaAvance_Fase2_CRONOS_100.docx) | El documento describe una evaluación grupal |
-| [2.4 Guía de Fase 2](Evidencias%20Grupales/2.4_GuiaEstudiante_Fase2_CRONOS_COMPLETADA.docx) | Contiene el plan de trabajo de ambos integrantes |
+| [Evidencias Individuales](Evidencias%20Individuales/README.md) | Diario 2.1 separado por estudiante; archivos sin atribución en Por identificar |
+| [Evidencias Grupales](Evidencias%20Grupales/README.md) | Avance e informe final con sus guías y planillas |
+| [Evidencias Proyecto](Evidencias%20Proyecto/README.md) | Presentación, documentación, aplicación, base de datos y fichas de iteración |
 
-## Evidencias individuales
+El diario 2.1 disponible fue subido por Martin Ibarra en `ef5c2cc`, pero está redactado como reflexión grupal. Según la nueva referencia se ubica entre las evidencias individuales, pendiente de identificar y personalizar; no se da por entregado para ninguno de los integrantes.
 
-La [autoevaluación 2.2](Evidencias%20Individuales/Por%20identificar/2.2_APT122_AutoevaluacionAvance_Fase2_CRONOS_100.docx) es individual, pero no identifica al estudiante. Se mantiene en [Por identificar](Evidencias%20Individuales/Por%20identificar/README.md) hasta confirmar a quién corresponde.
+La autoevaluación 2.2 y la formativa 2.3 se conservan como complementarios. No reemplazan las planillas de evaluación en Excel exigidas en la imagen.
 
-Ninguno de estos documentos sustituye las evidencias de [Fase 1](../Fase%201/README.md).
+La revisión de las ramas no encontró el informe 2.6, las dos planillas XLSX ni una presentación. Las guías en inglés son optativas. Las fichas disponibles son la 02 y la 04; faltan la 01 y la 03 de la serie solicitada.
