@@ -2,6 +2,7 @@
 
 Documentación disponible en el repositorio:
 
+- [Diagrama de actividades: reserva de un servicio profesional, versión 2](Diagramas%20de%20actividades/Cronos_Diagrama_Actividadesv2.drawio.png).
 - [Descripción, instalación, roles y API en el README principal](../../../README.md).
 - [Documentación del frontend](../../../frontend/README.md).
 
