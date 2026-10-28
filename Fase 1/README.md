@@ -1,14 +1,14 @@
 # Fase 1
 
-Carpeta organizada según la referencia de formalización de Fase 1. La guía de definición del proyecto en español está disponible; los demás documentos obligatorios siguen pendientes.
+Carpeta organizada según la referencia de formalización de Fase 1. Están disponibles la guía de definición del proyecto en español y los documentos individuales 1.1 y 1.2 de Manuel Araya; los demás documentos obligatorios siguen pendientes.
 
 ## Evidencias individuales
 
-Cada integrante debe cargar sus tres archivos en su propia carpeta. La revisión de las ramas y su historial no encontró individuales de Fase 1 de Manuel Araya ni de Martin Ibarra.
+Cada integrante debe cargar sus tres archivos en su propia carpeta. Manuel Araya tiene disponibles los documentos 1.1 y 1.2; su documento 1.3 y los tres individuales de Martin Ibarra siguen pendientes.
 
 | Integrante | Carpeta | 1.1 Autoevaluación de competencias | 1.2 Diario de reflexión | 1.3 Autoevaluación de Fase 1 |
 | --- | --- | --- | --- | --- |
-| Manuel Araya | [Araya_Manuel](Evidencias%20Individuales/Araya_Manuel/README.md) | Pendiente | Pendiente | Pendiente |
+| Manuel Araya | [Araya_Manuel](Evidencias%20Individuales/Araya_Manuel/README.md) | [Disponible](Evidencias%20Individuales/Araya_Manuel/Manuel_Araya_1.1_APT122_AutoevaluacionCompetencias_fase1.docx) | [Disponible](Evidencias%20Individuales/Araya_Manuel/Manuel_Araya_1.2_APT122_DiarioReflexionFase1.docx) | Pendiente |
 | Martin Ibarra | [Ibarra_Martin](Evidencias%20Individuales/Ibarra_Martin/README.md) | Pendiente | Pendiente | Pendiente |
 
 ## Evidencias grupales
